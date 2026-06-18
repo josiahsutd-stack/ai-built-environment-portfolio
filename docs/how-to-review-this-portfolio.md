@@ -5,14 +5,14 @@
 1. Read the top of `README.md`.
 2. Open `projects/aec-code-compliance-rag/README.md`.
 3. Review `projects/aec-code-compliance-rag/EVAL.md`.
-4. Skim one supporting flagship: agent, MLOps, fine-tuning, or VLM.
+4. Skim one supporting review project: agent, MLOps, fine-tuning, or VLM.
 5. Skim `docs/technical-review-guide.md`.
 
 ## 15-Minute Review Path
 
 1. Run `python scripts/verify.py`.
-2. Run the flagship demo: `streamlit run projects/aec-code-compliance-rag/app.py`.
-3. Run the flagship eval: `python projects/aec-code-compliance-rag/scripts/evaluate_retrieval.py`.
+2. Run the primary demo: `streamlit run projects/aec-code-compliance-rag/app.py`.
+3. Run the primary eval: `python projects/aec-code-compliance-rag/scripts/evaluate_retrieval.py`.
 4. Review `projects/projects.yml`.
 5. Inspect `tests/test_rag.py`.
 

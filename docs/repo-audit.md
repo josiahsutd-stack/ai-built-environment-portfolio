@@ -13,11 +13,11 @@ Shared code lives under `shared/`, setup scripts under `scripts/`, docs under `d
 
 ## Projects Found
 
-Flagship project:
+Primary review project:
 
 - AEC Code Compliance RAG Assistant
 
-Supporting flagship projects:
+Supporting review projects:
 
 - Agentic Research Operations Assistant
 - Multimodal VLM Visual QA Assistant
@@ -97,7 +97,7 @@ Secondary projects:
 
 ## Remaining Recommendations
 
-- Add screenshot or short GIF evidence for the AEC RAG flagship.
+- Add screenshot or short GIF evidence for the AEC RAG primary project.
 - Deepen AEC RAG internals over time rather than making all projects equally complex.
 - Add richer eval suites to AEC RAG, LLM evals, and Agentic Research Ops.
 - Add local model provider implementations where hardware allows.

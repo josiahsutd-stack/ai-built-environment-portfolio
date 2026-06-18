@@ -82,7 +82,7 @@ pytest tests/test_energy_model.py
 - Add model registry and batch scoring.
 - Add climate-file and utility-bill integrations.
 
-## What This Proves To Employers
+## What This Demonstrates To Employers
 
 - Classic ML pipeline development
 - Feature engineering and evaluation

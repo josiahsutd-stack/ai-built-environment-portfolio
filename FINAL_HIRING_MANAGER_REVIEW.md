@@ -6,7 +6,7 @@ Perspective: senior AI engineering hiring manager reviewing this repository for 
 
 ## 1. Would I Interview This Candidate?
 
-Yes, for junior/applied AI engineering, AI solutions engineering, and junior MLOps-adjacent roles. The portfolio now gives a credible signal because it routes reviewers to a clear flagship, includes local reproducibility, uses synthetic/mock labels honestly, and shows evaluation artifacts rather than relying on buzzwords.
+Yes, for junior/applied AI engineering, AI solutions engineering, and junior MLOps-adjacent roles that value local prototypes and domain thinking. I would interview, but I would treat the repo as evidence of structured applied-AI project work, not evidence of production ownership.
 
 I would not interview directly for senior AI engineer, senior MLOps, or production compliance-AI ownership based on this repo alone.
 
@@ -16,7 +16,7 @@ I would not interview directly for senior AI engineer, senior MLOps, or producti
 | --- | --- |
 | Internship | Strong yes |
 | Junior AI engineer | Yes |
-| Applied AI engineer | Yes, especially domain/applied teams |
+| Applied AI engineer | Yes for junior/applied prototype roles; not for production ownership roles |
 | AI solutions engineer | Yes |
 | Junior MLOps role | Yes, with caveat that MLOps is a local skeleton |
 | Senior AI engineer | No, not enough production ownership evidence |
@@ -31,11 +31,11 @@ I would not interview directly for senior AI engineer, senior MLOps, or producti
 
 ## 4. Strongest Hiring Signals
 
-1. AEC RAG is now a credible flagship with architecture docs, eval metrics, citations, no-answer behavior, demo outputs, and tests.
+1. AEC RAG is the best evidence in the portfolio, with architecture docs, eval metrics, citations, no-answer behavior, demo outputs, and tests.
 2. The repo is honest about synthetic data and mock providers.
 3. The agent project has traces, tool calls, approval gating, and SQLite persistence.
 4. The MLOps project has artifact metadata, inference logs, drift checks, and monitoring report structure.
-5. Fine-tuning and VLM projects are framed responsibly instead of overselling mocked capability.
+5. Fine-tuning and VLM projects are framed as workflow demonstrations rather than proof of model adaptation or visual reasoning.
 
 ## 5. Weakest Hiring Signals
 
@@ -44,6 +44,7 @@ I would not interview directly for senior AI engineer, senior MLOps, or producti
 - No real VLM benchmark.
 - No real AEC code corpus or jurisdiction validation.
 - Many secondary projects remain lightweight.
+- The repo still lacks screenshots or recorded demo proof, so reviewers must run the projects themselves.
 
 ## 6. Remaining Credibility Gaps
 
@@ -78,21 +79,23 @@ For adaptation/multimodal roles, also inspect:
 
 Before: broad and honest but still easy to misread as a list of demos. The AEC project was the best differentiator but the root README and supporting projects did not fully reinforce that.
 
-After: clearer five-project review path, deeper AEC evaluation, stronger MLOps/fine-tuning/VLM code contracts, supporting architecture/limitations docs, demo outputs, and explicit final/baseline review files.
+After the first upgrade: clearer five-project review path, deeper AEC evaluation, stronger MLOps/fine-tuning/VLM code contracts, supporting architecture/limitations docs, demo outputs, and explicit final/baseline review files.
+
+After the skeptical second pass: AEC is the only project labeled as flagship in metadata; the other review-path projects are supporting evidence; stale eval docs were fixed; research notes are explicitly not SOTA implementation claims; and the final score was lowered to avoid overclaiming.
 
 ## 10. Final Scores
 
 | Category | Baseline | Final | Rationale |
 | --- | ---: | ---: | --- |
-| Recruiter clarity | 7 | 8 | Root README now gives 15-minute and 60-minute review paths. |
-| Hiring-manager credibility | 7 | 8 | More artifacts, limitations, and demo outputs across key projects. |
+| Recruiter clarity | 7 | 8 | Root README now gives 15-minute and 60-minute review paths and labels the AEC project as the primary review target. |
+| Hiring-manager credibility | 7 | 7.5 | More artifacts and limitations, but still local/synthetic with no external usage evidence. |
 | Technical depth | 6 | 7 | Added AEC eval metrics, MLOps PSI/reporting, stricter LoRA validation, VLM prompt contract. |
 | Production realism | 5 | 6 | Better metadata/logging/monitoring, still local and synthetic. |
-| Testing quality | 7 | 8 | More tests for no-answer eval, drift/reporting, duplicate validation, prompt contract. |
+| Testing quality | 7 | 8 | More tests for no-answer eval, drift/reporting, metadata, duplicate validation, split validation, and prompt contract. |
 | Evaluation rigor | 5 | 7 | AEC eval is stronger; other evals still lightweight. |
 | Code quality | 7 | 7 | Maintains simple local modules; no unnecessary heavy framework. |
-| Documentation quality | 7 | 8 | Added audit, benchmark, SOTA notes, final review, and project docs. |
+| Documentation quality | 7 | 8 | Added audit, benchmark, research notes, final review, and project docs while reducing inflated wording. |
 | Originality / differentiation | 8 | 8 | Built-environment AI angle remains the strongest differentiator. |
-| Interview conversion likelihood | 6 | 8 | Stronger chance for junior/applied interviews if reviewers start with AEC. |
+| Interview conversion likelihood | 6 | 7.5 | Stronger chance for junior/applied interviews if reviewers start with AEC, but lack of real usage evidence still caps the signal. |
 
-Final overall hiring signal: 8 / 10 for junior/applied AI engineering, 5 / 10 for senior AI engineering.
+Final overall hiring signal: 7.4 / 10 for junior/applied AI engineering, 4.5 / 10 for senior AI engineering.

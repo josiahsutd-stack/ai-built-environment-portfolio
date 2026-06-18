@@ -7,7 +7,7 @@ This project includes a small synthetic retrieval evaluation set for reviewer in
 From the repository root:
 
 ```bash
-python projects/aec-code-compliance-rag/evaluate_retrieval.py
+python projects/aec-code-compliance-rag/scripts/evaluate_retrieval.py
 ```
 
 This writes:
@@ -16,12 +16,6 @@ This writes:
 - `demo_outputs/retrieval_eval_report.md`
 - `demo_outputs/accessible_route_answer.md`
 - `demo_outputs/no_answer_failure_case.md`
-
-Equivalent wrapper:
-
-```bash
-python projects/aec-code-compliance-rag/scripts/evaluate_retrieval.py
-```
 
 ## Evaluation Data
 

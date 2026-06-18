@@ -78,7 +78,7 @@ pytest
 - Add schedule-baseline comparison.
 - Add confidence calibration and human review queues.
 
-## What This Proves To Employers
+## What This Demonstrates To Employers
 
 - Applied computer vision workflow design
 - ML pipeline and evaluation basics
@@ -88,7 +88,7 @@ pytest
 ## Engineering Notes
 
 - The current system uses synthetic progress metadata so the workflow can be reviewed without private site photos or labeling dependencies.
-- The classifier is intentionally lightweight, but the app/API boundary mirrors a production CV pipeline: ingest, classify, summarize, and report.
+- The classifier is intentionally lightweight; the app/API boundary shows the same broad stages a fuller CV system would need: ingest, classify, summarize, and report.
 - The report layer is a key product feature because construction teams need digestible status signals, not just raw predictions.
 - A production version would add image/video ingestion, object detection, calibration across camera locations, privacy review, and schedule-baseline integration.
 

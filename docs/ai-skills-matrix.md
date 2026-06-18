@@ -25,7 +25,7 @@ Legend: **strong** = primary project signal, **medium** = meaningful implementat
 | anomaly detection | Time-Series Anomaly Forecasting | Site Robot Safety Monitor |  |
 | MLOps | MLOps Serving/Monitoring | Deep Vision |  |
 | LLMOps | LLM Evals/Guardrails | Agentic Research Ops |  |
-| Docker | MLOps, Deep Vision, Guardrails, existing deployed demos |  |  |
+| Docker | MLOps, Deep Vision, Guardrails, local demo containers |  |  |
 | CI/CD | GitHub Actions workflow |  |  |
 | testing | Portfolio test suite |  |  |
 | model evaluation | Deep Vision, MLOps, Time-Series, RL, Recommender | LLM Evals |  |

@@ -2,7 +2,7 @@
 
 Planner-executor research agent that breaks a task into tool calls, searches local documents, creates a cited report, stores persistent SQLite traces, evaluates the trace, and requires human approval before finalization.
 
-Supporting flagship project for agentic AI workflow review.
+Supporting review project for agentic AI workflow review.
 
 ## Problem
 
@@ -61,7 +61,7 @@ flowchart LR
 - Add web search connectors, PDF ingestion, richer memory, richer retry policies, and larger eval suites.
 - Add review queues and role-based approvals.
 
-## What This Proves To Employers
+## What This Demonstrates To Employers
 
 Agentic AI engineering, tool calling, RAG, workflow orchestration, trace persistence, observability, and human-in-the-loop design.
 

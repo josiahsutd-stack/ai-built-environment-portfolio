@@ -44,7 +44,7 @@ flowchart LR
 
 - Add PyTorch CNN/U-Net training, confusion matrices, real defect data, and latency benchmarks.
 
-## What This Proves To Employers
+## What This Demonstrates To Employers
 
 Deep learning workflow understanding, computer vision evaluation, data generation, and inference packaging.
 

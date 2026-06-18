@@ -6,9 +6,9 @@ This repository is intentionally local-first: projects run with synthetic data o
 
 ## Best Projects To Review First
 
-| Project | Hiring signal | What is real | What is mocked or synthetic |
+| Project | Evidence to inspect | What is real | What is mocked or synthetic |
 | --- | --- | --- | --- |
-| [AEC Code Compliance RAG](projects/aec-code-compliance-rag/README.md) | Strongest flagship: RAG, citations, eval, AEC domain fit. | Chunking, metadata, TF-IDF retrieval, citation formatting, eval script, demo outputs, tests. | Synthetic guidance; markdown page markers; no legal/code advice. |
+| [AEC Code Compliance RAG](projects/aec-code-compliance-rag/README.md) | Primary review project: RAG, citations, eval, and AEC domain fit. | Chunking, metadata, TF-IDF retrieval, citation formatting, eval script, demo outputs, tests. | Synthetic guidance; markdown page markers; no legal/code advice. |
 | [Agentic Research Ops Assistant](projects/agentic-research-ops-assistant/README.md) | Agent orchestration, tool registry, approval gate, traces. | Planner/executor flow, local search, tool traces, SQLite persistence, trace eval. | Local demo docs; deterministic tools; not autonomous web research. |
 | [MLOps Model Serving Monitoring](projects/mlops-model-serving-monitoring/README.md) | Model lifecycle, serving schema, logging, drift report. | Training pipeline, artifact metadata, FastAPI-compatible functions, SQLite logs, PSI-style drift checks. | Synthetic churn data; local registry; no production alerting. |
 | [Fine-Tuning LoRA Lab](projects/fine-tuning-lora-lab/README.md) | Honest adaptation workflow and dataset discipline. | Dataset generation, validation, split checks, LoRA config, eval template. | Training is mocked; no model weights are updated. |
@@ -17,7 +17,7 @@ This repository is intentionally local-first: projects run with synthetic data o
 ## Hiring-Manager Review Path
 
 1. Read this README and the limitations below.
-2. Open the AEC flagship: [projects/aec-code-compliance-rag](projects/aec-code-compliance-rag/README.md).
+2. Open the primary AEC project: [projects/aec-code-compliance-rag](projects/aec-code-compliance-rag/README.md).
 3. Inspect [AEC EVAL.md](projects/aec-code-compliance-rag/EVAL.md), [AEC ARCHITECTURE.md](projects/aec-code-compliance-rag/ARCHITECTURE.md), and [tests/test_rag.py](tests/test_rag.py).
 4. Review one supporting system depending on role: agent, MLOps, fine-tuning, or VLM.
 5. Run `python scripts/verify.py`.
@@ -65,7 +65,7 @@ Then inspect:
 | Mock provider | Deterministic substitute for an LLM/VLM so the workflow can be tested without paid APIs. |
 | Synthetic data | Generated/demo data with no customer, employer, or private project content. |
 | Prototype | A runnable local skeleton that shows engineering shape but lacks production data, monitoring, security, and scale. |
-| Production-like component | A small local version of a real concern, such as SQLite inference logs, model metadata, citation objects, trace records, eval cases, or drift reports. |
+| Local engineering scaffold | A small local version of a real concern, such as SQLite inference logs, model metadata, citation objects, trace records, eval cases, or drift reports. |
 
 ## Skills Demonstrated
 
@@ -75,7 +75,7 @@ Then inspect:
 - MLOps: training pipeline, model artifact metadata, inference logging, drift detection, monitoring report.
 - Multimodal AI: image validation, VLM provider boundary, schema parsing, mock/hosted distinction.
 - Fine-tuning workflow: dataset validation, LoRA config planning, eval templates, hardware honesty.
-- Built-environment AI: AEC compliance support, BIM QA, construction robotics/safety simulations.
+- Built-environment AI: AEC document-assistance workflow, BIM QA, construction robotics/safety simulations.
 
 ## Reproducibility
 
@@ -140,7 +140,7 @@ These broaden the portfolio but should not be treated as equally deep:
 - [Baseline audit](PORTFOLIO_BASELINE_AUDIT.md)
 - [Review rounds](PORTFOLIO_REVIEW_ROUNDS.md)
 - [External portfolio benchmark](EXTERNAL_PORTFOLIO_BENCHMARK.md)
-- [SOTA research notes](SOTA_RESEARCH_NOTES.md)
+- [Research notes, not SOTA claims](SOTA_RESEARCH_NOTES.md)
 - [Final hiring-manager review](FINAL_HIRING_MANAGER_REVIEW.md)
 - [How to review this portfolio](docs/how-to-review-this-portfolio.md)
 - [Technical review guide](docs/technical-review-guide.md)

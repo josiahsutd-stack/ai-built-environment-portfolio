@@ -80,7 +80,7 @@ pytest tests/test_job_fit.py
 - Add LLM-based evidence mapping from portfolio projects to job requirements.
 - Add cover-letter and recruiter-message drafts with review controls.
 
-## What This Proves To Employers
+## What This Demonstrates To Employers
 
 - NLP product thinking
 - Structured classification

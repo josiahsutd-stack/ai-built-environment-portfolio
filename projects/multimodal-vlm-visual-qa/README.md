@@ -2,7 +2,7 @@
 
 Visual question-answering assistant for image QA, screenshot explanation, defect description, and image-to-structured-JSON extraction. It runs locally in mock mode without API keys and can optionally call an OpenAI-compatible hosted vision provider.
 
-Supporting flagship project for multimodal workflow review. Mock mode validates the product boundary; it does not perform real visual reasoning.
+Supporting review project for multimodal workflow review. Mock mode validates the product boundary; it does not perform real visual reasoning.
 
 ## Problem
 
@@ -57,7 +57,7 @@ flowchart LR
 - Add OCR, bounding boxes, and image-region grounding.
 - Add eval sets for visual hallucination and extraction accuracy.
 
-## What This Proves To Employers
+## What This Demonstrates To Employers
 
 VLM engineering, multimodal product thinking, structured AI outputs, image workflow validation, optional hosted-provider integration, and honest mock-provider design.
 

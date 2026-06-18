@@ -1,6 +1,6 @@
 # AEC Code Compliance RAG Assistant
 
-Primary flagship project for this AI engineering portfolio.
+Primary review project for this AI engineering portfolio.
 
 This is a local, source-grounded retrieval assistant for synthetic AEC guidance. It demonstrates the engineering shape behind a compliance-oriented RAG workflow: document chunking, metadata preservation, transparent retrieval, citation formatting, evaluation questions, demo outputs, and failure handling.
 
@@ -10,7 +10,7 @@ It does not use real project data, customer data, or live building codes. The in
 
 Architecture, engineering, and construction teams often need to search across code clauses, planning notes, accessibility guidance, drawing QA standards, and internal assumptions before issuing work. A generic chatbot is risky in that setting because it can answer confidently without showing where the evidence came from.
 
-This project focuses on the safer applied AI pattern: retrieve evidence first, show citations, expose retrieval metadata, and clearly state when the local demo corpus has no answer.
+This project focuses on a safer applied AI pattern: retrieve evidence first, show citations, expose retrieval metadata, and clearly state when the local demo corpus has no answer.
 
 ## Why It Matters
 
@@ -124,9 +124,9 @@ The tests cover:
 - Add versioned document metadata for jurisdiction, code year, issue date, and superseded clauses.
 - Add a reviewer workflow where uncertain answers are routed to a qualified professional.
 
-## What This Proves To Employers
+## What This Demonstrates To Employers
 
-- Practical RAG system design for a real domain workflow.
+- Practical RAG system design for a domain workflow.
 - Source-grounded answer design and citation ergonomics.
 - Retrieval evaluation and failure analysis discipline.
 - Local-first engineering that reviewers can run without paid APIs.

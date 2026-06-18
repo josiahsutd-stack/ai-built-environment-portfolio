@@ -1,6 +1,6 @@
-# SOTA / Research Notes
+# Research Notes, Not SOTA Claims
 
-These notes summarize research and industry practices that are relevant to the repository. They are used to guide lightweight, local, testable improvements rather than to claim SOTA performance.
+These notes summarize research and industry practices that are relevant to the repository. They are used to guide lightweight, local, testable improvements rather than to claim SOTA performance. Items marked `Future only` or `Docs only` are not implemented evidence and should not be presented as incorporated capability.
 
 ## RAG
 
@@ -50,7 +50,7 @@ These notes summarize research and industry practices that are relevant to the r
 | [BIM, NLP, and AI for automated compliance checking](https://par.nsf.gov/biblio/10347911-chapter-building-information-modeling-natural-language-processing-artificial-intelligence-automated-compliance-checking) | Building-code compliance involves regulatory text analytics and BIM information analytics. | Yes, as framing. | Keep compliance claims cautious and traceable. |
 | [Building-code RAG framework](https://www.iaarc.org/publications/csce_crc_2025/an_llm_based_framework_with_retrieval_augmented_generation_for_building_code_interpretation.html) | RAG can reduce hallucination risk for building-code interpretation but still needs careful retrieval and validation. | Yes, local. | AEC RAG focuses on retrieval eval, citations, and no-answer behavior. |
 
-## SOTA Ideas Explicitly Not Added
+## Research Ideas Explicitly Not Added
 
 - No GraphRAG implementation.
 - No hosted embedding/reranking dependency.

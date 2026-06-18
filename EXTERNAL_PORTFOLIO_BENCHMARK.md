@@ -7,7 +7,7 @@ This benchmark uses public repositories and engineering references for conceptua
 | Source | What makes it strong | Conceptual lesson for this repo | What not to copy |
 | --- | --- | --- | --- |
 | [GokuMohandas/Made-With-ML](https://github.com/GokuMohandas/Made-With-ML) | End-to-end ML system framing with lessons, code, deployment, iteration, and software-engineering discipline. | Favor fewer deep systems with clear lifecycle evidence over many shallow demos. | Do not copy lesson structure or wording. |
-| [Full Stack Deep Learning text recognizer labs](https://github.com/the-full-stack/fsdl-text-recognizer-2022-labs) | Incrementally builds a full DL application with setup, modeling, deployment, and CI-oriented thinking. | Show architecture and reproducible commands for flagship projects. | Do not imitate the educational lab format. |
+| [Full Stack Deep Learning text recognizer labs](https://github.com/the-full-stack/fsdl-text-recognizer-2022-labs) | Incrementally builds a full DL application with setup, modeling, deployment, and CI-oriented thinking. | Show architecture and reproducible commands for the primary project and selected supporting projects. | Do not imitate the educational lab format. |
 | [DataTalksClub MLOps Zoomcamp](https://github.com/DataTalksClub/mlops-zoomcamp) | Covers training, deployment, monitoring, and project work in a structured MLOps path. | MLOps projects should include monitoring, logging, reproducibility, and operational vocabulary. | Do not imply course completion or copy homework/project formats. |
 | [ZenML Projects](https://github.com/zenml-io/zenml-projects) | Demonstrates reusable MLOps workflows and domain examples with clear pipeline framing. | Add local monitoring reports and model metadata even without full orchestration. | Do not claim enterprise readiness. |
 | [Microsoft GraphRAG](https://github.com/microsoft/graphrag) | Strong documentation around indexing, graph construction, and query flow. | Only mention graph approaches as future work unless graph construction/eval is implemented. | Do not add GraphRAG branding without graph logic. |
@@ -17,12 +17,12 @@ This benchmark uses public repositories and engineering references for conceptua
 
 ## Comparison Against This Repo
 
-This repo is strongest where it is domain-specific and honest: AEC RAG, built-environment workflows, and local runnable demos. It is weaker than strong public examples in depth per project, screenshots/demo evidence, and mature operational scaffolding.
+This repo's best evidence is where it is domain-specific and honest: AEC RAG, built-environment workflows, and local runnable demos. It is weaker than strong public examples in depth per project, screenshots/demo evidence, and mature operational scaffolding.
 
 ## Improvements Adapted Conceptually
 
 - Focus the first review path on 3-5 projects.
-- Add architecture and evaluation docs to the strongest projects.
+- Add architecture and evaluation docs to the primary project and selected supporting projects.
 - Add demo outputs so reviewers can inspect behavior without running everything.
 - Add monitoring/report artifacts for MLOps.
 - Keep mock/synthetic labels prominent.

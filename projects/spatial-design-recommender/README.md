@@ -80,7 +80,7 @@ pytest tests/test_recommender.py
 - Add preference learning from designer feedback.
 - Generate option-comparison reports.
 
-## What This Proves To Employers
+## What This Demonstrates To Employers
 
 - Recommendation-system thinking
 - Explainable AI for design decisions

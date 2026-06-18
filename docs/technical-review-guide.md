@@ -1,8 +1,8 @@
 # Technical Review Guide
 
-This document is written for recruiters and technical reviewers. It summarizes what the flagship project demonstrates, what is intentionally mocked or synthetic, and which implementation details are worth inspecting. The intended interpretation is: these are local, testable demos of engineering shape with clear production next steps, not inflated production claims.
+This document is written for recruiters and technical reviewers. It summarizes what the primary project and supporting review projects demonstrate, what is intentionally mocked or synthetic, and which implementation details are worth inspecting. The intended interpretation is: these are local, testable demos of engineering shape with clear next steps, not inflated production claims.
 
-## Flagship Project
+## Primary Review Project
 
 ### AEC Code Compliance RAG Assistant
 
@@ -11,9 +11,9 @@ This document is written for recruiters and technical reviewers. It summarizes w
 - Engineering rationale: compliance-oriented AI should expose evidence, metadata, uncertainty, and no-result behavior before answer polish.
 - Limitations to note: synthetic corpus, markdown page markers, local TF-IDF baseline, no live building-code validation, and no professional compliance advice.
 - Technical question supported: "How do you evaluate and cite an AEC RAG system?" Evidence includes `EVAL.md`, `ARCHITECTURE.md`, `evaluate_retrieval.py`, `demo_outputs/`, and `tests/test_rag.py`.
-- Production extension: PDF ingestion, clause/version metadata, hybrid retrieval, reranking, answer-faithfulness checks, jurisdiction filters, and expert approval workflow.
+- Next extension: PDF ingestion, clause/version metadata, hybrid retrieval, reranking, answer-faithfulness checks, jurisdiction filters, and expert approval workflow.
 
-## Supporting Flagship Projects
+## Supporting Review Projects
 
 ### Agentic Research Operations Assistant
 
@@ -22,7 +22,7 @@ This document is written for recruiters and technical reviewers. It summarizes w
 - Engineering rationale: the agent keeps every step inspectable, permissioned, retryable, and auditable.
 - Limitations to note: local documents only; no live web search or production workflow engine.
 - Technical question supported: "How are hallucinations controlled?" Evidence in the project includes citations, retrieved context, approval checkpoints, tool traces, persisted runs, and eval findings.
-- Production extension: PDF ingestion, web/search connectors, richer memory, role-based tool permissions, and richer eval suites.
+- Next extension: PDF ingestion, web/search connectors, richer memory, role-based tool permissions, and richer eval suites.
 
 ### MLOps Model Serving and Monitoring Platform
 
@@ -31,7 +31,7 @@ This document is written for recruiters and technical reviewers. It summarizes w
 - Engineering rationale: the project shows deployment and monitoring shape without external services.
 - Limitations to note: synthetic data, local model artifact, and lightweight drift checks.
 - Technical question supported: "How is model quality monitored?" Evidence to look for includes inference schema checks, SQLite prediction logs, drift metrics, model metadata, and the planned path to delayed labels.
-- Production extension: MLflow-compatible registry, alert thresholds, retraining workflows, and real delayed labels.
+- Next extension: MLflow-compatible registry, alert thresholds, retraining workflows, and real delayed labels.
 
 ### Fine-Tuning and LoRA Lab
 
@@ -39,7 +39,7 @@ This document is written for recruiters and technical reviewers. It summarizes w
 - Architecture evidence: synthetic instruction data -> validation -> train/validation split -> LoRA config -> mock training report -> evaluation template.
 - Engineering rationale: adaptation work should start with dataset quality and evaluation design, not a fake training metric.
 - Limitations to note: no tokenizer/model loading, no GPU training, no updated weights, no real accuracy claim.
-- Production extension: PEFT trainer, real model config, held-out eval harness, adapter artifact storage, and safety review.
+- Next extension: PEFT trainer, real model config, held-out eval harness, adapter artifact storage, and safety review.
 
 ### Multimodal VLM Visual QA Assistant
 
@@ -48,7 +48,7 @@ This document is written for recruiters and technical reviewers. It summarizes w
 - Engineering rationale: multimodal apps need schemas and uncertainty before real provider integration.
 - Limitations to note: mock mode validates workflow but does not perform real visual reasoning; hosted mode requires a real API key and model access.
 - Technical question supported: "How would this be evaluated?" Evidence to look for includes extraction accuracy, uncertainty calibration, visual hallucination cases, and schema validity.
-- Production extension: OCR, region grounding, real eval images, visual hallucination tests, and latency monitoring.
+- Next extension: OCR, region grounding, real eval images, visual hallucination tests, and latency monitoring.
 
 ### LLM Evals and Guardrails Platform
 
@@ -57,7 +57,7 @@ This document is written for recruiters and technical reviewers. It summarizes w
 - Engineering rationale: deterministic baseline evals are easy to run in CI and easy to inspect.
 - Limitations to note: transparent rules are not a full red-team program.
 - Technical question supported: "How are LLM systems made more reliable?" Evidence in the project includes eval sets, regression checks, structured-output validation, prompt-injection checks, and monitoring surfaces.
-- Production extension: prompt versioning, model-graded evals, persisted results, and CI gating.
+- Next extension: prompt versioning, model-graded evals, persisted results, and CI gating.
 
 ## Secondary Project Review Signals
 

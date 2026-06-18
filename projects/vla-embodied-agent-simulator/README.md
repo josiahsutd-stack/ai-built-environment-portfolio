@@ -46,7 +46,7 @@ flowchart LR
 - Add Gymnasium integration, learned policies, richer visual observations, and robotics simulation.
 - Add ROS 2 bridge and safety validation before hardware use.
 
-## What This Proves To Employers
+## What This Demonstrates To Employers
 
 VLA concepts, embodied AI simulation, action planning, robotics safety thinking, and practical environment design.
 

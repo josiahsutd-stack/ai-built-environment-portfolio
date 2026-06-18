@@ -1,4 +1,5 @@
 import json
+from pathlib import Path
 
 import pytest
 from agentic_research_ops_assistant import ResearchAgent, evaluate_trace
@@ -7,7 +8,12 @@ from deep_learning_vision_lab import (
     evaluate_predictions,
     generate_defect_dataset,
 )
-from fine_tuning_lora_lab import generate_instruction_dataset, mock_lora_train, validate_dataset
+from fine_tuning_lora_lab import (
+    generate_instruction_dataset,
+    mock_lora_train,
+    split_dataset,
+    validate_dataset,
+)
 from llm_evals_guardrails_platform import (
     detect_prompt_injection,
     evaluate_case,
@@ -204,6 +210,10 @@ def test_mlops_artifact_logging_and_drift_history(tmp_path) -> None:
 
     assert artifacts["model_path"].endswith(".joblib")
     assert "metadata_path" in artifacts
+    metadata = json.loads(Path(artifacts["metadata_path"]).read_text(encoding="utf-8"))
+    assert metadata["feature_schema"] == metrics["feature_schema"]
+    assert metadata["dataset_info"]["source"] == "synthetic generated churn data"
+    assert "git_commit" in metadata
     assert log_id == 1
     assert report_id == 1
     logs = list_prediction_logs(db_path=db_path)
@@ -257,6 +267,11 @@ def test_fine_tuning_dataset_validation_rejects_duplicates() -> None:
 
     assert not validation["valid"]
     assert validation["duplicate_rows"] == [1]
+
+
+def test_fine_tuning_split_rejects_invalid_ratio() -> None:
+    with pytest.raises(ValueError):
+        split_dataset(generate_instruction_dataset(), train_ratio=1.0)
 
 
 def test_vlm_rejects_unsupported_image_type() -> None:

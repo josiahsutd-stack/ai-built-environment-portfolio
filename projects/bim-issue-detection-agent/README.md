@@ -82,7 +82,7 @@ pytest tests/test_bim_issues.py
 - Add owner, discipline, due date, and status fields.
 - Integrate with issue trackers such as BIMcollab or Jira.
 
-## What This Proves To Employers
+## What This Demonstrates To Employers
 
 - Structured data validation
 - AI agent design around deterministic tools

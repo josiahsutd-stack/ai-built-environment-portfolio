@@ -84,7 +84,7 @@ pytest tests/test_robot_task_planner.py
 - Add human approval workflows for restricted-zone crossings.
 - Use simulation before deployment on physical hardware.
 
-## What This Proves To Employers
+## What This Demonstrates To Employers
 
 - Embodied AI planning fundamentals
 - Robotics workflow thinking for construction sites

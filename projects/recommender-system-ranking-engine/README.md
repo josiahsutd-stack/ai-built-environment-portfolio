@@ -44,7 +44,7 @@ flowchart LR
 
 - Add matrix factorization, two-tower retrieval, online feedback, and ranking experiments.
 
-## What This Proves To Employers
+## What This Demonstrates To Employers
 
 Recommender systems, embeddings, ranking metrics, applied ML evaluation, and product thinking.
 

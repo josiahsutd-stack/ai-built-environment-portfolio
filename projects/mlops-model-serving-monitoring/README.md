@@ -2,7 +2,7 @@
 
 Synthetic churn-risk MLOps demo with model training, prediction schema, FastAPI serving, model artifact saving, SQLite inference logging, drift-history persistence, and Streamlit monitoring.
 
-Supporting flagship project for local MLOps review.
+Supporting review project for local MLOps review.
 
 ## Problem
 
@@ -57,9 +57,9 @@ flowchart LR
 
 - Add MLflow-compatible registry, production alerting, delayed-label monitoring, and retraining workflows.
 
-## What This Proves To Employers
+## What This Demonstrates To Employers
 
-MLOps, model serving, artifact management, inference logging, monitoring, drift detection, API engineering, and production ML thinking.
+MLOps, model serving, artifact management, inference logging, monitoring, drift detection, API engineering, and production-aware ML thinking.
 
 ## Engineering Notes
 
@@ -70,7 +70,7 @@ MLOps, model serving, artifact management, inference logging, monitoring, drift 
 
 ## Technical Review Discussion Points
 
-- Reviewers can trace the path from training data to deployed prediction endpoint.
+- Reviewers can trace the path from training data to a local prediction endpoint.
 - Schema validation, model metadata, and prediction logging are shown as core ML serving requirements.
 - Drift detection is documented with its uses and limits.
 - MLflow, delayed labels, retraining triggers, and production alerts are clear production extensions.

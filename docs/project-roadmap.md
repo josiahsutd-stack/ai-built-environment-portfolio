@@ -21,8 +21,8 @@
 - Added optional OpenAI-compatible hosted provider support to the VLM project while preserving mock mode.
 - Added model artifact saving, SQLite prediction logging, and drift-history persistence to the MLOps project.
 - Added SQLite trace persistence, tool metadata, permission-aware planning, and trace evaluation to Agentic Research Ops.
-- Promoted AEC Code Compliance RAG into the primary flagship with retrieval evaluation, citation metadata, architecture docs, demo outputs, and focused tests.
-- Added supporting flagship docs and artifacts for Agentic Research Ops, MLOps, Fine-Tuning LoRA Lab, and Multimodal VLM Visual QA.
+- Promoted AEC Code Compliance RAG into the primary review project with retrieval evaluation, citation metadata, architecture docs, demo outputs, and focused tests.
+- Added supporting review-project docs and artifacts for Agentic Research Ops, MLOps, Fine-Tuning LoRA Lab, and Multimodal VLM Visual QA.
 - Added cross-platform `scripts/setup.py`, `scripts/verify.py`, and `make verify`.
 
 ## Portfolio Polish

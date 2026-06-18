@@ -46,7 +46,7 @@ flowchart LR
 
 - Add richer backtesting, seasonality models, alert routing, and data-quality monitoring.
 
-## What This Proves To Employers
+## What This Demonstrates To Employers
 
 Time-series ML, anomaly detection, monitoring, forecasting, and applied data science.
 

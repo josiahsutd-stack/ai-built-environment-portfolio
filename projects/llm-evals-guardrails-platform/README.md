@@ -44,7 +44,7 @@ flowchart LR
 
 - Add model-graded evals, prompt version registry, SQLite persistence, and CI regression gates.
 
-## What This Proves To Employers
+## What This Demonstrates To Employers
 
 LLMOps, guardrails, prompt-injection awareness, structured-output validation, and responsible AI engineering.
 

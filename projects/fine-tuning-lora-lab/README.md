@@ -2,7 +2,7 @@
 
 Compute-aware fine-tuning workflow for support-ticket classification with dataset generation, validation, split logic, LoRA config, mock training, and evaluation report.
 
-Supporting flagship project for fine-tuning workflow review. It is intentionally honest: local training is mocked and no model weights are updated.
+Supporting review project for fine-tuning workflow review. It is intentionally honest: local training is mocked and no model weights are updated.
 
 ## Problem
 
@@ -54,7 +54,7 @@ flowchart LR
 
 - Add tokenizer, PEFT/LoRA trainer, GPU instructions, model registry, and held-out evaluation.
 
-## What This Proves To Employers
+## What This Demonstrates To Employers
 
 Fine-tuning workflow knowledge, dataset preparation, model adaptation planning, evaluation discipline, and responsible compute-aware engineering.
 

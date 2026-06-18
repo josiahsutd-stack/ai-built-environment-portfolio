@@ -84,7 +84,7 @@ pytest tests/test_site_robot_safety.py
 - Add incident review dashboards and risk trend analysis.
 - Validate thresholds with robotics safety engineers and site teams.
 
-## What This Proves To Employers
+## What This Demonstrates To Employers
 
 - Embodied AI safety thinking
 - Human-robot interaction awareness

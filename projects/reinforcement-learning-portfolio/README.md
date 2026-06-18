@@ -44,7 +44,7 @@ flowchart LR
 
 - Add Gymnasium wrappers, DQN/PPO integrations, experiment tracking, and richer simulations.
 
-## What This Proves To Employers
+## What This Demonstrates To Employers
 
 RL fundamentals, reward shaping, sequential decision-making, simulation, and applied optimization thinking.
 

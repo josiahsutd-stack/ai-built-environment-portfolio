@@ -22,7 +22,7 @@ REQUIRED_DOCS = [
 ]
 REQUIRED_README_PATTERNS = {
     "demo command": r"streamlit run projects/.+/app\.py",
-    "what proves": r"## What This Proves [Tt]o Employers|## What It Proves to Employers",
+    "what demonstrates": r"## What This Demonstrates [Tt]o Employers|## What It Demonstrates to Employers",
     "limitations": r"## Limitations",
     "engineering notes": r"## Engineering Notes",
     "technical review discussion points": r"## Technical Review Discussion Points",

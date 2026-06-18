@@ -2,7 +2,7 @@
 
 ## Feature First For AI Engineer Roles
 
-1. AEC Code Compliance RAG Assistant as the primary flagship
+1. AEC Code Compliance RAG Assistant as the primary review project
 2. Agentic Research Operations Assistant as supporting agent evidence
 3. MLOps Model Serving and Monitoring Platform as supporting operational ML evidence
 4. Multimodal VLM Visual QA Assistant as supporting multimodal evidence
