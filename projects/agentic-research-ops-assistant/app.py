@@ -20,6 +20,9 @@ st.caption(
 task = st.text_area("Research task", "Compare three AI model deployment strategies.")
 agent = ResearchAgent(PROJECT_ROOT / "sample_data" / "local_docs")
 
+with st.expander("Available tool registry"):
+    st.json([tool.model_dump() for tool in agent.available_tools()])
+
 if st.button("Run agent", type="primary"):
     trace = agent.run(task)
     st.subheader("Plan")
@@ -28,5 +31,10 @@ if st.button("Run agent", type="primary"):
     st.json([call.model_dump() for call in trace.tool_calls])
     st.subheader("Citations")
     st.write(trace.citations)
+    st.subheader("Trace evaluation")
+    st.json(trace.evaluation)
     st.subheader("Final report")
     st.markdown(trace.final_report)
+
+st.subheader("Recent persisted traces")
+st.dataframe(agent.recent_traces(limit=5), use_container_width=True)

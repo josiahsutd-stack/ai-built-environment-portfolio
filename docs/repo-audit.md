@@ -15,14 +15,14 @@ Shared code lives under `shared/`, setup scripts under `scripts/`, docs under `d
 
 Flagship projects:
 
-- AEC Code Compliance RAG Assistant
 - Agentic Research Operations Assistant
 - Multimodal VLM Visual QA Assistant
 - MLOps Model Serving and Monitoring Platform
-- LLM Evals and Guardrails Platform
 
 Secondary projects:
 
+- AEC Code Compliance RAG Assistant
+- LLM Evals and Guardrails Platform
 - Reinforcement Learning Portfolio
 - Deep Learning Vision Lab
 - Recommender System Ranking Engine
@@ -89,10 +89,11 @@ Secondary projects:
 - Added cross-platform setup/verify scripts.
 - Added optional hosted VLM provider support.
 - Added MLOps model artifact saving, SQLite inference logging, and drift-history persistence.
+- Added Agentic Research Ops SQLite trace persistence, tool metadata, and trace evaluation.
 
 ## Remaining Recommendations
 
-- Add screenshot or short GIF evidence for the 5 flagship projects.
+- Add screenshot or short GIF evidence for the 3 flagship projects.
 - Deepen flagship project internals over time rather than making all projects equally complex.
-- Add SQLite persistence to LLM evals and agent traces.
+- Add richer eval suites to LLM evals and Agentic Research Ops.
 - Add local model provider implementations where hardware allows.

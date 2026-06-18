@@ -6,30 +6,26 @@ This portfolio combines domain-specific AI for the built environment with genera
 
 ## Recommended Review Path For Recruiters
 
-If you are reviewing my portfolio, I recommend starting with these five projects. They are the strongest signals of applied AI engineering depth; the remaining projects are useful supporting experiments rather than equal flagship claims.
+If you are reviewing my portfolio, I recommend starting with these three projects. They are the strongest signals of applied AI engineering depth; the remaining projects are useful supporting evidence rather than equal flagship claims.
 
-- [AEC Code Compliance RAG Assistant](projects/aec-code-compliance-rag/README.md) - built-environment differentiator with source-grounded retrieval, citations, and compliance-oriented uncertainty handling.
-- [Agentic Research Operations Assistant](projects/agentic-research-ops-assistant/README.md) - planner/executor agent, tool calling, local RAG, citations, and approval checkpoints.
+- [Agentic Research Operations Assistant](projects/agentic-research-ops-assistant/README.md) - planner/executor agent, tool registry, local RAG, citations, approval checkpoints, SQLite trace persistence, and trace evaluation.
 - [MLOps Model Serving and Monitoring Platform](projects/mlops-model-serving-monitoring/README.md) - training, model artifacts, FastAPI serving, SQLite inference logs, drift history, Docker, and tests.
-- [LLM Evals and Guardrails Platform](projects/llm-evals-guardrails-platform/README.md) - prompt-injection, structured-output, citation, and regression-style eval checks.
 - [Multimodal VLM Visual QA Assistant](projects/multimodal-vlm-visual-qa/README.md) - VLM product workflow with mock mode plus an optional OpenAI-compatible vision-provider path.
 
 ## Why I Structured This Portfolio This Way
 
 I designed this repository for two kinds of hiring review:
 
-- If you are hiring for general AI engineering, I recommend reviewing the agent, MLOps, LLM evals, and VLM projects first.
-- If you are hiring for built-environment, robotics, or embodied AI work, I recommend reviewing the AEC document, BIM QA, construction progress, energy modeling, spatial design, and construction robotics projects.
+- If you are hiring for general AI engineering, I recommend reviewing the agent, MLOps, and VLM projects first.
+- If you are hiring for built-environment, robotics, or embodied AI work, I recommend also reviewing the AEC document, BIM QA, construction progress, energy modeling, spatial design, and construction robotics projects.
 - I kept every project runnable locally with synthetic data or mock providers so you can inspect the engineering without needing private datasets, paid APIs, or hidden infrastructure.
 
 ## Flagship Projects
 
 | Project | Why it is featured | Evidence to inspect |
 | --- | --- | --- |
-| [AEC Code Compliance RAG](projects/aec-code-compliance-rag/README.md) | Strongest niche signal: AI plus built-environment document workflows. | Chunking, retrieval, citations, incomplete-evidence handling, AEC limitations. |
-| [Agentic Research Ops](projects/agentic-research-ops-assistant/README.md) | Practical agent orchestration rather than a generic chatbot. | Planner, tool calls, local document retrieval, citations, approval checkpoint, traces. |
+| [Agentic Research Ops](projects/agentic-research-ops-assistant/README.md) | Practical agent orchestration rather than a generic chatbot. | Planner, tool registry, permissions, local document retrieval, citations, approval checkpoint, persistent traces, trace eval. |
 | [MLOps Serving Monitoring](projects/mlops-model-serving-monitoring/README.md) | Shows operational ML beyond notebook modeling. | Model artifact, FastAPI schema, SQLite inference log, drift-history table, Docker path, tests. |
-| [LLM Evals Guardrails](projects/llm-evals-guardrails-platform/README.md) | Relevant LLMOps skill area with inspectable checks. | Prompt-injection checks, structured-output validation, citation checks, eval result schema. |
 | [Multimodal VLM Visual QA](projects/multimodal-vlm-visual-qa/README.md) | Shows multimodal product workflow and provider boundary. | Image validation, structured VQA schema, mock mode, optional OpenAI-compatible hosted provider. |
 
 ## Secondary Experiments
@@ -38,9 +34,9 @@ These projects are intentionally presented as supporting experiments. They broad
 
 | Area | Projects |
 | --- | --- |
-| Built-environment AI | Construction Progress CV, BIM Issue Detection Agent, Building Energy ML, Spatial Design Recommender, AI + AEC Job Fit Analyzer |
+| Built-environment AI | AEC Code Compliance RAG, Construction Progress CV, BIM Issue Detection Agent, Building Energy ML, Spatial Design Recommender, AI + AEC Job Fit Analyzer |
 | Construction robotics / embodied AI | Construction Robot Task Planner, Site Robot Safety Monitor, VLA Embodied Agent Simulator |
-| General ML experiments | Reinforcement Learning Portfolio, Deep Learning Vision Lab, Recommender Ranking Engine, Time-Series Anomaly Forecasting, Fine-Tuning LoRA Lab |
+| General AI/ML experiments | LLM Evals Guardrails, Reinforcement Learning Portfolio, Deep Learning Vision Lab, Recommender Ranking Engine, Time-Series Anomaly Forecasting, Fine-Tuning LoRA Lab |
 
 ## AI For The Built Environment
 

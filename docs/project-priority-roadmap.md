@@ -3,10 +3,10 @@
 ## Feature First For AI Engineer Roles
 
 1. Agentic Research Operations Assistant
-2. LLM Evals and Guardrails Platform
-3. MLOps Model Serving and Monitoring Platform
-4. Multimodal VLM Visual QA Assistant
-5. AEC Code Compliance RAG Assistant
+2. MLOps Model Serving and Monitoring Platform
+3. Multimodal VLM Visual QA Assistant
+4. AEC Code Compliance RAG Assistant as built-environment supporting evidence
+5. LLM Evals and Guardrails Platform as LLMOps supporting evidence
 
 ## Feature First For Robotics / VLA Roles
 

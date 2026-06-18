@@ -3,13 +3,13 @@ projects:
     slug: aec-code-compliance-rag
     category: AI for the Built Environment
     skill_area: RAG and LLM engineering
-    flagship: true
+    flagship: false
     demo_command: streamlit run projects/aec-code-compliance-rag/app.py
     test_command: pytest tests/test_rag.py
     tech_stack: [Python, Streamlit, scikit-learn]
     summary: Source-grounded retrieval assistant over synthetic AEC guidance with citations and incomplete-evidence handling.
     skills: [RAG, retrieval, citations, mock LLM]
-    status: flagship
+    status: solid
     mock_mode_supported: true
     readme_path: projects/aec-code-compliance-rag/README.md
   - name: Construction Progress CV Tracker
@@ -124,8 +124,8 @@ projects:
     demo_command: streamlit run projects/agentic-research-ops-assistant/app.py
     test_command: pytest tests/test_general_ai_projects.py
     tech_stack: [Python, Streamlit, Pydantic, scikit-learn]
-    summary: Planner-executor agent with tools, citations, memory, and approval checkpoint.
-    skills: [agents, tool calling, RAG, observability]
+    summary: Planner-executor agent with tool registry, citations, approval checkpoint, SQLite traces, and trace evaluation.
+    skills: [agents, tool calling, RAG, observability, trace evaluation]
     status: flagship
     mock_mode_supported: true
     readme_path: projects/agentic-research-ops-assistant/README.md
@@ -172,13 +172,13 @@ projects:
     slug: llm-evals-guardrails-platform
     category: General AI Engineering
     skill_area: LLMOps and responsible AI
-    flagship: true
+    flagship: false
     demo_command: streamlit run projects/llm-evals-guardrails-platform/app.py
     test_command: pytest tests/test_general_ai_projects.py
     tech_stack: [Python, Streamlit, FastAPI]
     summary: Prompt-injection, citation, and structured-output evaluation checks.
     skills: [evals, guardrails, LLMOps]
-    status: flagship
+    status: solid
     mock_mode_supported: true
     readme_path: projects/llm-evals-guardrails-platform/README.md
   - name: MLOps Model Serving and Monitoring Platform

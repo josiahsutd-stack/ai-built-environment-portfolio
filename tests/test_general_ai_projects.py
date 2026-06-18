@@ -1,7 +1,7 @@
 import json
 
 import pytest
-from agentic_research_ops_assistant import ResearchAgent
+from agentic_research_ops_assistant import ResearchAgent, evaluate_trace
 from deep_learning_vision_lab import (
     ThresholdVisionModel,
     evaluate_predictions,
@@ -64,7 +64,8 @@ def test_agent_planning_tool_execution_and_citations(tmp_path) -> None:
     (docs / "deployment.md").write_text(
         "# Deployment\nOnline model deployment needs monitoring and rollback.", encoding="utf-8"
     )
-    agent = ResearchAgent(docs)
+    trace_db = tmp_path / "traces.sqlite"
+    agent = ResearchAgent(docs, trace_db_path=trace_db)
 
     trace = agent.run("Compare AI model deployment strategies")
 
@@ -72,6 +73,27 @@ def test_agent_planning_tool_execution_and_citations(tmp_path) -> None:
     assert trace.tool_calls
     assert trace.citations == ["deployment.md"]
     assert "Research Brief" in trace.final_report
+    assert trace.evaluation["passed"]
+    assert agent.recent_traces(limit=1)[0]["trace_id"] == trace.trace_id
+    assert trace_db.exists()
+
+
+def test_agent_tool_permissions_and_trace_eval(tmp_path) -> None:
+    docs = tmp_path / "docs"
+    docs.mkdir()
+    (docs / "ops.md").write_text("# Ops\nMonitoring requires logs and alerts.", encoding="utf-8")
+    agent = ResearchAgent(
+        docs,
+        trace_db_path=tmp_path / "limited.sqlite",
+        allowed_tools={"search_local_docs", "create_report", "ask_human_approval", "save_memory"},
+    )
+
+    trace = agent.run("Summarize monitoring requirements")
+    evaluation = evaluate_trace(trace.model_dump())
+
+    assert "summarize_document" not in trace.plan
+    assert trace.citations == ["ops.md"]
+    assert evaluation["passed"]
 
 
 def test_vla_environment_transitions_and_safety() -> None:

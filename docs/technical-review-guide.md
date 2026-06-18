@@ -4,23 +4,14 @@ This document is written for recruiters and technical reviewers. It summarizes w
 
 ## Flagship Projects
 
-### AEC Code Compliance RAG Assistant
-
-- Review signal: built-environment document assistant with retrieval, citations, and cautious incomplete-evidence handling.
-- Architecture evidence: markdown guidance -> chunking -> local vector-style retrieval -> grounded answer -> source citations.
-- Engineering rationale: source grounding is more important than answer fluency in compliance-adjacent workflows.
-- Limitations to note: synthetic guidance and TF-IDF retrieval; this is not legal, code, or professional compliance advice.
-- Technical question supported: "How is hallucination risk reduced?" Evidence includes citations, retrieved snippets, source scores, and no-evidence fallback behavior.
-- Production extension: public-code/planning document ingestion, embedding retrieval, retrieval evals, and expert review workflow.
-
 ### Agentic Research Operations Assistant
 
-- Review signal: planner-executor agent with local document retrieval, tool calls, citations, memory, and approval checkpoints.
-- Architecture evidence: task -> plan -> tools -> retrieved evidence -> report -> human approval -> trace.
-- Engineering rationale: deterministic tools make the agent inspectable and testable.
+- Review signal: planner-executor agent with local document retrieval, tool registry, per-tool traces, citations, memory, approval checkpoints, SQLite trace persistence, and trace evaluation.
+- Architecture evidence: task -> plan -> tool registry/permissions -> retrieved evidence -> report -> human approval -> persisted trace -> trace eval.
+- Engineering rationale: the agent keeps every step inspectable, permissioned, retryable, and auditable.
 - Limitations to note: local documents only; no live web search or production workflow engine.
-- Technical question supported: "How are hallucinations controlled?" Evidence in the project includes citations, retrieved context, approval checkpoints, and eval traces.
-- Production extension: PDF ingestion, richer memory, retries, and SQLite trace storage.
+- Technical question supported: "How are hallucinations controlled?" Evidence in the project includes citations, retrieved context, approval checkpoints, tool traces, persisted runs, and eval findings.
+- Production extension: PDF ingestion, web/search connectors, richer memory, role-based tool permissions, and richer eval suites.
 
 ### Multimodal VLM Visual QA Assistant
 
@@ -51,6 +42,8 @@ This document is written for recruiters and technical reviewers. It summarizes w
 
 ## Secondary Project Review Signals
 
+- AEC RAG Assistant: chunking, retrieval, citations, incomplete-evidence handling, and TF-IDF limitations versus embedding retrieval.
+- LLM Evals Guardrails: prompt-injection checks, structured-output validation, citation checks, and eval-result schema.
 - Reinforcement Learning Portfolio: environment design, reward shaping, policy baselines, and the distinction between simulation and optimization claims.
 - Deep Learning Vision Lab: synthetic dataset generation, metrics, model-card discipline, and the path from baseline to PyTorch CNN/U-Net.
 - Recommender Ranking Engine: popularity versus content-based recommendations, ranking metrics, and product-facing explanations.

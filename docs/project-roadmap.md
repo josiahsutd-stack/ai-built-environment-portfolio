@@ -2,9 +2,9 @@
 
 ## Flagship Depth
 
-1. Screenshots and short demo recordings for the 5 flagship projects.
-2. Add SQLite trace persistence to Agentic Research Ops and LLM Evals.
-3. Add retrieval evaluation examples to AEC RAG.
+1. Screenshots and short demo recordings for the 3 flagship projects.
+2. Add richer document ingestion and retrieval evaluation to Agentic Research Ops.
+3. Add retrieval evaluation examples to AEC RAG as supporting evidence.
 4. Add screenshots/GIF evidence from real local runs.
 5. Add Gymnasium compatibility to the VLA/RL projects.
 
@@ -20,6 +20,7 @@
 
 - Added optional OpenAI-compatible hosted provider support to the VLM project while preserving mock mode.
 - Added model artifact saving, SQLite prediction logging, and drift-history persistence to the MLOps project.
+- Added SQLite trace persistence, tool metadata, permission-aware planning, and trace evaluation to Agentic Research Ops.
 - Added cross-platform `scripts/setup.py`, `scripts/verify.py`, and `make verify`.
 
 ## Portfolio Polish

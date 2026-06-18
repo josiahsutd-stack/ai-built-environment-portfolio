@@ -4,7 +4,7 @@
 
 1. Read the top of `README.md`.
 2. Inspect the flagship project section.
-3. Open `projects/aec-code-compliance-rag/README.md`.
+3. Open `projects/agentic-research-ops-assistant/README.md`.
 4. Open `projects/mlops-model-serving-monitoring/README.md`.
 5. Skim `docs/technical-review-guide.md`.
 
@@ -20,9 +20,9 @@
 
 | Role | Best projects to inspect |
 | --- | --- |
-| AI Engineer | Agentic Research Ops, MLOps Platform, LLM Evals Guardrails |
+| AI Engineer | Agentic Research Ops, MLOps Platform, VLM Visual QA |
 | ML Engineer | MLOps Platform, Building Energy ML, Time-Series Forecasting |
-| LLM / Agent Engineer | Agentic Research Ops, LLM Evals Guardrails, AEC RAG |
+| LLM / Agent Engineer | Agentic Research Ops, LLM Evals Guardrails, AEC RAG as supporting evidence |
 | Computer Vision / VLM | Multimodal VLM Visual QA, Deep Vision Lab, Construction Progress CV |
 | MLOps | MLOps Platform, LLM Evals Guardrails, Deep Vision Lab |
 | Robotics / VLA | Construction Robot Task Planner, Site Robot Safety Monitor, VLA Simulator as experimental simulation |
