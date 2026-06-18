@@ -8,13 +8,13 @@ This repository is intentionally local-first: projects run with synthetic data o
 
 Verdict: this repo can support a junior/applied AI engineering interview, especially for teams that value RAG, agent workflows, MLOps basics, and built-environment domain thinking. It should not be read as evidence of senior production ownership, real compliance validation, real robot deployment, or real customer adoption.
 
-Top 3 projects to inspect:
+Top 3 reviewer targets:
 
 1. [AEC Code Compliance RAG](projects/aec-code-compliance-rag/README.md) - primary project with retrieval evaluation, citations, architecture docs, demo outputs, and tests.
 2. [Agentic Research Ops Assistant](projects/agentic-research-ops-assistant/README.md) - supporting agent workflow with tool traces, citations, approval checkpoints, SQLite persistence, and trace eval.
 3. [MLOps Model Serving Monitoring](projects/mlops-model-serving-monitoring/README.md) - supporting MLOps workflow with model metadata, schema checks, prediction logs, drift reports, and monitoring docs.
 
-Run evidence quickly:
+Runnable verification commands:
 
 ```bash
 python projects/aec-code-compliance-rag/scripts/evaluate_retrieval.py
@@ -30,7 +30,7 @@ Proof beyond claims:
 
 Hard boundaries: all datasets are synthetic unless stated otherwise; mock LLM/VLM paths test workflow behavior, not model intelligence; AEC outputs are not legal, code, engineering, architectural, or professional compliance advice.
 
-## Top Projects To Review First
+## Highest-Signal Projects
 
 | Project | Evidence to inspect | What is real | What is mocked or synthetic |
 | --- | --- | --- | --- |
@@ -40,15 +40,19 @@ Hard boundaries: all datasets are synthetic unless stated otherwise; mock LLM/VL
 | [Fine-Tuning LoRA Lab](projects/fine-tuning-lora-lab/README.md) | Honest adaptation workflow and dataset discipline. | Dataset generation, validation, split checks, LoRA config, eval template. | Training is mocked; no model weights are updated. |
 | [Multimodal VLM Visual QA](projects/multimodal-vlm-visual-qa/README.md) | Multimodal product boundary and structured outputs. | Image validation, prompt contract, schema parsing, mock provider, optional OpenAI-compatible path. | Mock mode does not perform real visual reasoning. |
 
-## Hiring-Manager Review Path
+## Recruiter Evidence Map
 
-1. Read this README and the limitations below.
-2. Open the primary AEC project: [projects/aec-code-compliance-rag](projects/aec-code-compliance-rag/README.md).
-3. Inspect [AEC EVAL.md](projects/aec-code-compliance-rag/EVAL.md), [AEC ARCHITECTURE.md](projects/aec-code-compliance-rag/ARCHITECTURE.md), and [tests/test_rag.py](tests/test_rag.py).
-4. Review one supporting system depending on role: agent, MLOps, fine-tuning, or VLM.
-5. Run `python scripts/verify.py`.
+For a short screen, the strongest evidence is concentrated in the primary AEC project, its evaluation docs, and one supporting system depending on role: agent workflows, MLOps, fine-tuning workflow, or VLM product boundary.
 
-## 15-Minute Review Guide
+Key evidence files:
+
+- Primary project: [projects/aec-code-compliance-rag](projects/aec-code-compliance-rag/README.md)
+- AEC evaluation: [AEC EVAL.md](projects/aec-code-compliance-rag/EVAL.md)
+- AEC architecture: [AEC ARCHITECTURE.md](projects/aec-code-compliance-rag/ARCHITECTURE.md)
+- Focused tests: [tests/test_rag.py](tests/test_rag.py)
+- Full local verification: `python scripts/verify.py`
+
+## 15-Minute Verification Commands
 
 ```bash
 python scripts/generate_sample_data.py
@@ -57,13 +61,13 @@ python -m pytest tests/test_rag.py
 streamlit run projects/aec-code-compliance-rag/app.py
 ```
 
-What to inspect:
+Evidence produced by those commands:
 
 - AEC citations and no-answer behavior.
 - `demo_outputs/` artifacts for generated evidence.
 - The root files `PORTFOLIO_BASELINE_AUDIT.md`, `PORTFOLIO_REVIEW_ROUNDS.md`, and `FINAL_HIRING_MANAGER_REVIEW.md`.
 
-## 60-Minute Technical Review Guide
+## 60-Minute Technical Verification
 
 ```bash
 python scripts/verify.py
@@ -75,7 +79,7 @@ python scripts/run_smoke_tests.py
 python scripts/check_project_docs.py
 ```
 
-Then inspect:
+Code areas with the clearest signal:
 
 - RAG: `projects/aec-code-compliance-rag/src/aec_code_compliance_rag/`
 - Agent traces: `projects/agentic-research-ops-assistant/src/agentic_research_ops_assistant/`
@@ -110,7 +114,7 @@ python scripts/setup.py
 python scripts/verify.py
 ```
 
-`scripts/setup.py` creates `.venv` using the correct Windows/macOS/Linux path. Use `python scripts/setup.py --no-venv` to install into the current environment.
+`scripts/setup.py` creates `.venv` using the correct Windows/macOS/Linux path. Current-environment installation is also available through `python scripts/setup.py --no-venv`.
 
 ## Testing
 
@@ -173,7 +177,9 @@ These broaden the portfolio but should not be treated as equally deep:
 
 ## Portfolio Site
 
-Open [portfolio-site/index.html](portfolio-site/index.html), or run:
+Portfolio site: [portfolio-site/index.html](portfolio-site/index.html)
+
+Local static preview command:
 
 ```bash
 python -m http.server 8080 --directory portfolio-site

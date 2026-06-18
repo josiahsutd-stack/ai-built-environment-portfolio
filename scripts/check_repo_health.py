@@ -29,11 +29,20 @@ REQUIRED_README_PATTERNS = {
 }
 REQUIRED_ROOT_README_PATTERNS = {
     "15-minute recruiter screen": r"## 15-Minute Recruiter Screen",
-    "top 3 projects": r"Top 3 projects to inspect",
+    "top 3 reviewer targets": r"Top 3 reviewer targets",
     "quick evidence command": r"python projects/aec-code-compliance-rag/scripts/evaluate_retrieval\.py",
+    "runnable verification commands": r"Runnable verification commands",
     "proof beyond claims": r"Proof beyond claims",
     "hard boundaries": r"Hard boundaries",
 }
+ROOT_README_DIRECT_ADDRESS_PHRASES = [
+    "Top 3 projects to inspect",
+    "Run evidence quickly",
+    "What to inspect:",
+    "Then inspect:",
+    "Read this README",
+    "Open the primary AEC project",
+]
 GENERIC_PHRASES = [
     "leveraging cutting-edge",
     "revolutionizing",
@@ -56,11 +65,16 @@ def check_required_docs() -> list[str]:
 def check_root_readme() -> list[str]:
     readme = ROOT / "README.md"
     text = readme.read_text(encoding="utf-8") if readme.exists() else ""
-    return [
+    issues = [
         f"README.md: missing {label}"
         for label, pattern in REQUIRED_ROOT_README_PATTERNS.items()
         if not re.search(pattern, text, flags=re.IGNORECASE)
     ]
+    lowered = text.lower()
+    for phrase in ROOT_README_DIRECT_ADDRESS_PHRASES:
+        if phrase.lower() in lowered:
+            issues.append(f"README.md: recruiter-facing wording should replace `{phrase}`")
+    return issues
 
 
 def check_project_readmes() -> list[str]:
