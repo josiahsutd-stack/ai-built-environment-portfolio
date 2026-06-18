@@ -1,51 +1,59 @@
-# AI Engineer | Applied & Embodied AI for the Built Environment
+# AI Engineer | Applied AI, Agents, Multimodal AI, and MLOps
 
-AI Engineer focused on applied AI, embodied AI, LLM systems, computer vision, and automation for real-world built-environment workflows.
+I build applied AI systems across LLM agents, multimodal/VLM workflows, machine learning, computer vision, MLOps, recommender systems, time-series ML, and embodied AI simulation.
 
-I combine a master's background in AI, architecture, and embodied AI with hands-on experience in building, architecture, and construction workflows. My portfolio focuses on practical AI systems for document intelligence, BIM QA, construction progress tracking, construction robotics, energy prediction, and spatial design decision support.
+My differentiator is a master's background in AI, architecture, and embodied AI, plus building-industry experience. That gives me a practical lens for real-world AI workflows, while my general AI projects show that I can work beyond AEC and construction.
+
+## Current Focus
+
+- LLM agents, tool calling, local RAG, citations, and human-in-the-loop workflows
+- Multimodal AI and VLM product patterns
+- MLOps, model serving, drift detection, and evaluation
+- VLA-inspired embodied AI simulation and robotics reasoning
+- Deep learning, computer vision, RL, recommenders, time-series ML, and fine-tuning workflows
 
 ## Technical Skills
 
-- LLM systems: RAG, retrieval, prompt design, source-grounded responses, mock/provider abstractions
-- Machine learning: scikit-learn, feature engineering, evaluation, model cards
-- Computer vision workflows: image metadata pipelines, progress classification, reporting automation
-- Embodied AI: robot task planning, safety monitoring, construction robotics constraints, human-robot work zones
-- Backend/API: Python, FastAPI, Streamlit, Docker, pytest
-- Data: pandas, CSV/JSON pipelines, structured validation, synthetic data generation
-- Product engineering: dashboards, local demos, business-value documentation
-
-## Domain Expertise
-
-- Architecture, AEC, BIM, construction coordination
-- Design QA and drawing issue detection
-- Building performance and energy-risk framing
-- Spatial planning, layout constraints, design automation
-- PropTech, construction tech, digital twins, and built-environment AI workflows
-- Construction robotics, site autonomy, robot telemetry, and human-robot interaction concepts
+- AI systems: RAG, agents, tool use, prompt/eval workflows, structured outputs
+- ML/DL: scikit-learn, NumPy, pandas, PyTorch-ready project structure, evaluation metrics
+- Multimodal: VLM provider abstractions, visual QA schemas, uncertainty handling
+- MLOps/LLMOps: FastAPI, Streamlit, drift detection, guardrails, CI tests, Docker
+- Robotics/VLA: grid-world simulation, action planning, safety constraints, telemetry monitoring
+- Product engineering: local demos, clean READMEs, model/system cards, synthetic data discipline
 
 ## Featured Projects
 
-| Project | Focus | Stack |
-| --- | --- | --- |
-| AEC Code Compliance RAG Assistant | Source-grounded answers over synthetic design standards | Python, Streamlit, TF-IDF retrieval |
-| Construction Progress CV Tracker | Site progress classification and reporting | Python, scikit-learn, FastAPI |
-| BIM Issue Detection Agent | Room schedule QA and explainable issue reporting | Python, pandas, Streamlit |
-| AI + AEC Job Fit Analyzer | NLP role classification and application strategy | Python, Streamlit |
-| Building Energy ML Pipeline | Energy-use prediction from building features | Python, scikit-learn, FastAPI |
-| Spatial Design Recommender | Explainable design/layout recommendations | Python, FastAPI, Streamlit |
-| Construction Robot Task Planner | Embodied AI planning for construction robots | Python, FastAPI, Streamlit |
-| Site Robot Safety Monitor | Robot telemetry safety analysis for site autonomy | Python, pandas, FastAPI |
+| Project | Role signal |
+| --- | --- |
+| Agentic Research Operations Assistant | Agentic AI Engineer, LLM Engineer |
+| LLM Evals and Guardrails Platform | LLMOps Engineer, Responsible AI Engineer |
+| MLOps Model Serving and Monitoring Platform | MLOps Engineer, ML Engineer |
+| Multimodal VLM Visual QA Assistant | Multimodal AI Engineer, VLM Engineer |
+| Deep Learning Vision Lab | Computer Vision Engineer, Deep Learning Engineer |
+| VLA Embodied Agent Simulator | Robotics/VLA Engineer |
+| AEC Code Compliance RAG Assistant | Applied AI Engineer with domain depth |
 
-## Currently Learning
+## Role-Based Project Map
 
-- Production-grade RAG evaluation and observability
-- Multimodal AI workflows for site imagery and drawings
-- Embodied AI systems for construction robotics and site autonomy
-- BIM/digital twin data pipelines
-- LLM agent safety patterns for domain-specific tools
+- AI Engineer: Agentic Research Ops, MLOps Platform, VLM Visual QA
+- ML Engineer: Building Energy ML, Deep Vision Lab, Time-Series Forecasting
+- LLM Engineer: AEC RAG, Agentic Research Ops, LLM Evals Guardrails
+- Agentic AI Engineer: Agentic Research Ops, BIM Issue Agent, LLM Evals Guardrails
+- Computer Vision Engineer: Deep Vision Lab, Construction Progress CV, VLM Visual QA
+- Multimodal AI Engineer: VLM Visual QA, VLA Simulator, Construction Progress CV
+- MLOps Engineer: MLOps Platform, Deep Vision Lab, LLM Evals Guardrails
+- RL Engineer: Reinforcement Learning Portfolio, VLA Simulator
+- Robotics/VLA Engineer: VLA Simulator, Construction Robot Task Planner, Site Robot Safety Monitor
+- Data Scientist: Time-Series Forecasting, Recommender Ranking Engine, Energy ML
 
-## Contact
+## AI + Architecture Differentiator
+
+I can speak both AI engineering and built-environment workflows: documents, drawings, BIM exports, site progress, robotics, energy modeling, and spatial design. That makes me useful for applied AI teams that need engineers who understand messy domain workflows, not just model APIs.
+
+## Links
 
 - Portfolio: `https://your-portfolio-url.example`
+- GitHub: `https://github.com/your-username`
 - LinkedIn: `https://linkedin.com/in/your-name`
 - Email: `your.email@example.com`
+

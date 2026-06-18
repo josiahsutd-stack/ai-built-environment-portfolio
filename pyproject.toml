@@ -9,7 +9,17 @@ pythonpath = [
   "projects/building-energy-ml-pipeline/src",
   "projects/spatial-design-recommender/src",
   "projects/construction-robot-task-planner/src",
-  "projects/site-robot-safety-monitor/src"
+  "projects/site-robot-safety-monitor/src",
+  "projects/multimodal-vlm-visual-qa/src",
+  "projects/agentic-research-ops-assistant/src",
+  "projects/vla-embodied-agent-simulator/src",
+  "projects/reinforcement-learning-portfolio/src",
+  "projects/deep-learning-vision-lab/src",
+  "projects/llm-evals-guardrails-platform/src",
+  "projects/mlops-model-serving-monitoring/src",
+  "projects/recommender-system-ranking-engine/src",
+  "projects/time-series-anomaly-forecasting/src",
+  "projects/fine-tuning-lora-lab/src"
 ]
 
 [tool.ruff]

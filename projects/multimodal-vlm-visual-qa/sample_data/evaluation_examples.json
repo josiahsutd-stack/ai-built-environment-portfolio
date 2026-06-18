@@ -1,0 +1,20 @@
+[
+  {
+    "image_name": "synthetic_product_panel.png",
+    "question": "Extract defects as JSON.",
+    "expected_fields": [
+      "answer",
+      "structured_json",
+      "confidence",
+      "uncertainty"
+    ]
+  },
+  {
+    "image_name": "synthetic_chart_screen.png",
+    "question": "Explain the main trend in the chart.",
+    "expected_fields": [
+      "answer",
+      "observations"
+    ]
+  }
+]
