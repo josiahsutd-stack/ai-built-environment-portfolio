@@ -4,7 +4,33 @@ Applied AI engineer focused on source-grounded LLM systems, agent workflows, loc
 
 This repository is intentionally local-first: projects run with synthetic data or mock providers so reviewers can inspect engineering structure without private datasets, paid APIs, or hidden services.
 
-## Best Projects To Review First
+## 15-Minute Recruiter Screen
+
+Verdict: this repo can support a junior/applied AI engineering interview, especially for teams that value RAG, agent workflows, MLOps basics, and built-environment domain thinking. It should not be read as evidence of senior production ownership, real compliance validation, real robot deployment, or real customer adoption.
+
+Top 3 projects to inspect:
+
+1. [AEC Code Compliance RAG](projects/aec-code-compliance-rag/README.md) - primary project with retrieval evaluation, citations, architecture docs, demo outputs, and tests.
+2. [Agentic Research Ops Assistant](projects/agentic-research-ops-assistant/README.md) - supporting agent workflow with tool traces, citations, approval checkpoints, SQLite persistence, and trace eval.
+3. [MLOps Model Serving Monitoring](projects/mlops-model-serving-monitoring/README.md) - supporting MLOps workflow with model metadata, schema checks, prediction logs, drift reports, and monitoring docs.
+
+Run evidence quickly:
+
+```bash
+python projects/aec-code-compliance-rag/scripts/evaluate_retrieval.py
+python -m pytest tests/test_rag.py tests/test_general_ai_projects.py
+```
+
+Proof beyond claims:
+
+- AEC eval and generated demo outputs: [EVAL.md](projects/aec-code-compliance-rag/EVAL.md), [demo_outputs/](projects/aec-code-compliance-rag/demo_outputs/)
+- Architecture docs close to the code: [AEC ARCHITECTURE.md](projects/aec-code-compliance-rag/ARCHITECTURE.md), [technical review guide](docs/technical-review-guide.md)
+- Test coverage for retrieval, citations, no-answer handling, agent traces, MLOps metadata, LoRA validation, and VLM prompt contracts.
+- Self-review files that state the weaknesses plainly: [PORTFOLIO_REVIEW_ROUNDS.md](PORTFOLIO_REVIEW_ROUNDS.md), [FINAL_HIRING_MANAGER_REVIEW.md](FINAL_HIRING_MANAGER_REVIEW.md)
+
+Hard boundaries: all datasets are synthetic unless stated otherwise; mock LLM/VLM paths test workflow behavior, not model intelligence; AEC outputs are not legal, code, engineering, architectural, or professional compliance advice.
+
+## Top Projects To Review First
 
 | Project | Evidence to inspect | What is real | What is mocked or synthetic |
 | --- | --- | --- | --- |

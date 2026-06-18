@@ -27,6 +27,13 @@ REQUIRED_README_PATTERNS = {
     "engineering notes": r"## Engineering Notes",
     "technical review discussion points": r"## Technical Review Discussion Points",
 }
+REQUIRED_ROOT_README_PATTERNS = {
+    "15-minute recruiter screen": r"## 15-Minute Recruiter Screen",
+    "top 3 projects": r"Top 3 projects to inspect",
+    "quick evidence command": r"python projects/aec-code-compliance-rag/scripts/evaluate_retrieval\.py",
+    "proof beyond claims": r"Proof beyond claims",
+    "hard boundaries": r"Hard boundaries",
+}
 GENERIC_PHRASES = [
     "leveraging cutting-edge",
     "revolutionizing",
@@ -44,6 +51,16 @@ def project_dirs() -> list[Path]:
 
 def check_required_docs() -> list[str]:
     return [f"missing required doc: {doc}" for doc in REQUIRED_DOCS if not (ROOT / doc).exists()]
+
+
+def check_root_readme() -> list[str]:
+    readme = ROOT / "README.md"
+    text = readme.read_text(encoding="utf-8") if readme.exists() else ""
+    return [
+        f"README.md: missing {label}"
+        for label, pattern in REQUIRED_ROOT_README_PATTERNS.items()
+        if not re.search(pattern, text, flags=re.IGNORECASE)
+    ]
 
 
 def check_project_readmes() -> list[str]:
@@ -79,7 +96,12 @@ def check_generic_language() -> list[str]:
 
 
 def main() -> None:
-    issues = check_required_docs() + check_project_readmes() + check_generic_language()
+    issues = (
+        check_required_docs()
+        + check_root_readme()
+        + check_project_readmes()
+        + check_generic_language()
+    )
     if issues:
         print("Repo health check failed:")
         for issue in issues:

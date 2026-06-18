@@ -83,11 +83,28 @@ After the first upgrade: clearer five-project review path, deeper AEC evaluation
 
 After the skeptical second pass: AEC is the only project labeled as flagship in metadata; the other review-path projects are supporting evidence; stale eval docs were fixed; research notes are explicitly not SOTA implementation claims; and the final score was lowered to avoid overclaiming.
 
-## 10. Final Scores
+After the recruiter screen pass: the README first screen now answers the fast screening questions directly: verdict, top 3 projects, commands to run, proof artifacts, and hard synthetic/mock boundaries.
+
+## 10. Final Recruiter Screen
+
+| Question | Answer |
+| --- | --- |
+| Is the first screen compelling? | Yes for junior/applied AI roles now: it gives a direct verdict, top 3 projects, quick commands, proof, and boundaries. |
+| Are the top 3 projects obvious? | Yes: AEC RAG, Agentic Research Ops, and MLOps Model Serving Monitoring. |
+| Can the reviewer run something quickly? | Yes: AEC eval and focused pytest commands are in the first screen. |
+| Is there proof beyond claims? | Partly: tests, eval outputs, architecture docs, trace/log artifacts, and final review docs exist; screenshots/video are still missing. |
+| Are limitations honest? | Yes: production, compliance, real-user, real-data, hardware, VLM, and LoRA limitations are explicit. |
+| Are mocked/synthetic parts unmistakably labeled? | Yes: mock providers and synthetic data are named in the root README and project docs. |
+| Are the flagship projects deeper than the rest? | Mostly: AEC is clearly deeper; agent and MLOps are solid supporting projects; many secondary projects remain lightweight. |
+| Are there tests and evals? | Yes: 40 local tests plus AEC retrieval eval, trace eval, drift checks, LoRA validation, and VLM prompt-contract tests. |
+| Are research references relevant and not decorative? | Yes, with caveat: the notes are explicitly marked as research context and not SOTA implementation claims. |
+| Would this repo earn an interview? | Yes for junior/applied AI or AI solutions roles; no for senior production AI, compliance-AI ownership, or robotics hardware roles. |
+
+## 11. Final Scores
 
 | Category | Baseline | Final | Rationale |
 | --- | ---: | ---: | --- |
-| Recruiter clarity | 7 | 8 | Root README now gives 15-minute and 60-minute review paths and labels the AEC project as the primary review target. |
+| Recruiter clarity | 7 | 8.5 | Root README now gives a first-screen recruiter verdict, top 3 projects, quick commands, proof artifacts, and hard boundaries. |
 | Hiring-manager credibility | 7 | 7.5 | More artifacts and limitations, but still local/synthetic with no external usage evidence. |
 | Technical depth | 6 | 7 | Added AEC eval metrics, MLOps PSI/reporting, stricter LoRA validation, VLM prompt contract. |
 | Production realism | 5 | 6 | Better metadata/logging/monitoring, still local and synthetic. |
@@ -96,6 +113,6 @@ After the skeptical second pass: AEC is the only project labeled as flagship in 
 | Code quality | 7 | 7 | Maintains simple local modules; no unnecessary heavy framework. |
 | Documentation quality | 7 | 8 | Added audit, benchmark, research notes, final review, and project docs while reducing inflated wording. |
 | Originality / differentiation | 8 | 8 | Built-environment AI angle remains the strongest differentiator. |
-| Interview conversion likelihood | 6 | 7.5 | Stronger chance for junior/applied interviews if reviewers start with AEC, but lack of real usage evidence still caps the signal. |
+| Interview conversion likelihood | 6 | 7.6 | Stronger chance for junior/applied interviews because the README now routes a rushed reviewer clearly, but lack of real usage evidence still caps the signal. |
 
-Final overall hiring signal: 7.4 / 10 for junior/applied AI engineering, 4.5 / 10 for senior AI engineering.
+Final brutally honest hiring signal: 7.6 / 10 for junior/applied AI engineering, 4.5 / 10 for senior AI engineering.

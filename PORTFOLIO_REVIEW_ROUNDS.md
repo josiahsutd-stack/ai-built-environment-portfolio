@@ -75,3 +75,12 @@
 - Projects moved down in reviewer priority: VLA Embodied Agent Simulator and Reinforcement Learning Portfolio remain experimental; the supporting AI projects are no longer presented as co-flagships.
 - Remaining weaknesses: no real users, no deployment screenshots/video, no real hosted VLM eval, no real LoRA run, no real AEC/legal corpus, no hardware robotics evidence.
 - Next priorities: add visual proof of demos running, expand AEC corpus/evaluation before deepening other projects, and only raise the score after real external evidence or larger eval artifacts exist.
+
+## Round 7 - Final Recruiter Screen
+
+- Hiring-manager score after recruiter-screen polish: 7.6 / 10 for junior/applied roles; 4.5 / 10 for senior AI engineering.
+- Major weaknesses found: the README was honest but still required a rushed recruiter to piece together the verdict, top projects, proof artifacts, commands, and boundaries from several sections.
+- Changes made: added a first-screen `15-Minute Recruiter Screen` to `README.md`; made the top 3 projects explicit; added quick evidence commands, proof artifacts, and hard synthetic/mock boundaries near the top; updated the review guide and final hiring-manager review.
+- Tests/checks added: `scripts/check_repo_health.py` now enforces the root README recruiter-screen structure so the repo cannot drift back to a vague first page without failing local verification.
+- Remaining weaknesses: screenshots/video proof, real usage evidence, larger AEC eval corpus, hosted VLM evidence, real LoRA training, and hardware robotics evidence are still missing.
+- Final interview verdict: interview for junior/applied AI and AI solutions roles; reject for senior production AI, production compliance-AI ownership, or robotics hardware roles based on this repo alone.

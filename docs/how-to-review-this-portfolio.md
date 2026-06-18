@@ -5,7 +5,7 @@
 1. Read the top of `README.md`.
 2. Open `projects/aec-code-compliance-rag/README.md`.
 3. Review `projects/aec-code-compliance-rag/EVAL.md`.
-4. Skim one supporting review project: agent, MLOps, fine-tuning, or VLM.
+4. Skim one supporting review project: Agentic Research Ops or MLOps Model Serving Monitoring.
 5. Skim `docs/technical-review-guide.md`.
 
 ## 15-Minute Review Path
@@ -15,6 +15,14 @@
 3. Run the primary eval: `python projects/aec-code-compliance-rag/scripts/evaluate_retrieval.py`.
 4. Review `projects/projects.yml`.
 5. Inspect `tests/test_rag.py`.
+
+## Top 3 For A General AI Recruiter
+
+1. `projects/aec-code-compliance-rag` - best evidence of domain RAG, citations, evals, limitations, and runnable local artifacts.
+2. `projects/agentic-research-ops-assistant` - best evidence of agent workflow design, tool traces, citations, approval checkpoints, and trace persistence.
+3. `projects/mlops-model-serving-monitoring` - best evidence of model-serving hygiene, metadata, schema validation, prediction logging, and drift reports.
+
+The fine-tuning and VLM projects are useful supporting evidence, but they should not be inspected before the top 3 unless the role is specifically adaptation or multimodal.
 
 ## Best Projects By Role
 
