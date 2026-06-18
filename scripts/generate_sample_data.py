@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import random
+import textwrap
 from pathlib import Path
 
 import pandas as pd
@@ -27,6 +28,7 @@ def generate_aec_docs() -> None:
     This mock document is synthetic demo data. It is not a legal code, planning
     rule, accessibility standard, or professional design instruction.
 
+    <!-- page: 1 -->
     ## Accessible Routes
 
     Primary public routes should provide a clear width of at least 1200 mm in
@@ -34,6 +36,7 @@ def generate_aec_docs() -> None:
     opening of at least 850 mm. Threshold changes greater than 12 mm should be
     ramped or otherwise resolved in the design.
 
+    <!-- page: 2 -->
     ## Fire Compartment Notes
 
     Residential corridors longer than 30 m should include documented
@@ -41,6 +44,7 @@ def generate_aec_docs() -> None:
     schedules. Any door on a fire-rated line should include a rating note in the
     drawing or room schedule.
 
+    <!-- page: 3 -->
     ## Daylight and Glazing Guidance
 
     Frequently occupied rooms should receive useful daylight where feasible.
@@ -48,36 +52,66 @@ def generate_aec_docs() -> None:
     cooling impact. Deep floor plates should include a daylight mitigation
     strategy such as atria, light wells, borrowed light, or program zoning.
 
+    <!-- page: 4 -->
     ## Planning Review Checklist
 
     Planning packages should explain setbacks, massing intent, public realm
     interfaces, servicing strategy, accessible parking, and waste collection.
     Missing assumptions should be logged before submission.
 
+    <!-- page: 5 -->
     ## Internal QA Standard
 
     Every issued room schedule should include a unique room ID, room name,
     modeled area, scheduled area, finish material, door clearance, accessibility
     note where relevant, and unresolved coordination comments.
     """
-    write_text(ROOT / "projects/aec-code-compliance-rag/sample_data/mock_aec_guidance.md", text)
+    write_text(
+        ROOT / "projects/aec-code-compliance-rag/sample_data/mock_aec_guidance.md",
+        textwrap.dedent(text),
+    )
     write_json(
         ROOT / "projects/aec-code-compliance-rag/sample_data/evaluation_questions.json",
         [
             {
                 "question": "What clear width should be checked for high traffic accessible routes?",
                 "expected_source": "mock_aec_guidance.md",
+                "expected_section": "Accessible Routes",
                 "expected_terms": ["1200 mm", "clear width", "accessible routes"],
+                "notes": "Checks whether retrieval finds the accessibility clause and preserves numeric criteria.",
+            },
+            {
+                "question": "What doorway and threshold checks apply to accessible rooms?",
+                "expected_source": "mock_aec_guidance.md",
+                "expected_section": "Accessible Routes",
+                "expected_terms": ["850 mm", "12 mm", "threshold"],
+                "notes": "Checks retrieval of multiple accessibility details from the same section.",
             },
             {
                 "question": "What should be included for long residential corridors?",
                 "expected_source": "mock_aec_guidance.md",
+                "expected_section": "Fire Compartment Notes",
                 "expected_terms": ["compartmentation", "smoke control", "fire-rated door"],
+                "notes": "Checks fire-safety retrieval with design-intent wording rather than exact clause phrasing.",
             },
             {
                 "question": "What daylight risks should west glazing trigger?",
                 "expected_source": "mock_aec_guidance.md",
+                "expected_section": "Daylight and Glazing Guidance",
                 "expected_terms": ["solar gain", "glare", "cooling impact"],
+                "notes": "Checks whether envelope and daylight concerns are retrieved together.",
+            },
+            {
+                "question": "Which assumptions should be logged before a planning submission?",
+                "expected_source": "mock_aec_guidance.md",
+                "expected_section": "Planning Review Checklist",
+                "expected_terms": [
+                    "setbacks",
+                    "servicing strategy",
+                    "waste collection",
+                    "Missing assumptions",
+                ],
+                "notes": "Checks planning-review retrieval and citation of missing-assumption handling.",
             },
         ],
     )

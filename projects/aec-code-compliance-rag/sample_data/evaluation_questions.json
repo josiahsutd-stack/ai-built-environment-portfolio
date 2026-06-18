@@ -2,28 +2,57 @@
   {
     "question": "What clear width should be checked for high traffic accessible routes?",
     "expected_source": "mock_aec_guidance.md",
+    "expected_section": "Accessible Routes",
     "expected_terms": [
       "1200 mm",
       "clear width",
       "accessible routes"
-    ]
+    ],
+    "notes": "Checks whether retrieval finds the accessibility clause and preserves numeric criteria."
+  },
+  {
+    "question": "What doorway and threshold checks apply to accessible rooms?",
+    "expected_source": "mock_aec_guidance.md",
+    "expected_section": "Accessible Routes",
+    "expected_terms": [
+      "850 mm",
+      "12 mm",
+      "threshold"
+    ],
+    "notes": "Checks retrieval of multiple accessibility details from the same section."
   },
   {
     "question": "What should be included for long residential corridors?",
     "expected_source": "mock_aec_guidance.md",
+    "expected_section": "Fire Compartment Notes",
     "expected_terms": [
       "compartmentation",
       "smoke control",
       "fire-rated door"
-    ]
+    ],
+    "notes": "Checks fire-safety retrieval with design-intent wording rather than exact clause phrasing."
   },
   {
     "question": "What daylight risks should west glazing trigger?",
     "expected_source": "mock_aec_guidance.md",
+    "expected_section": "Daylight and Glazing Guidance",
     "expected_terms": [
       "solar gain",
       "glare",
       "cooling impact"
-    ]
+    ],
+    "notes": "Checks whether envelope and daylight concerns are retrieved together."
+  },
+  {
+    "question": "Which assumptions should be logged before a planning submission?",
+    "expected_source": "mock_aec_guidance.md",
+    "expected_section": "Planning Review Checklist",
+    "expected_terms": [
+      "setbacks",
+      "servicing strategy",
+      "waste collection",
+      "Missing assumptions"
+    ],
+    "notes": "Checks planning-review retrieval and citation of missing-assumption handling."
   }
 ]

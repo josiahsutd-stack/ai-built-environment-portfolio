@@ -3,13 +3,13 @@ projects:
     slug: aec-code-compliance-rag
     category: AI for the Built Environment
     skill_area: RAG and LLM engineering
-    flagship: false
+    flagship: true
     demo_command: streamlit run projects/aec-code-compliance-rag/app.py
     test_command: pytest tests/test_rag.py
     tech_stack: [Python, Streamlit, scikit-learn]
-    summary: Source-grounded retrieval assistant over synthetic AEC guidance with citations and incomplete-evidence handling.
-    skills: [RAG, retrieval, citations, mock LLM]
-    status: solid
+    summary: Flagship source-grounded AEC RAG assistant with chunk metadata, citation formatting, retrieval evaluation, demo outputs, architecture docs, and no-result handling.
+    skills: [RAG, retrieval evaluation, citations, chunk metadata, AEC workflows]
+    status: flagship
     mock_mode_supported: true
     readme_path: projects/aec-code-compliance-rag/README.md
   - name: Construction Progress CV Tracker
@@ -107,26 +107,26 @@ projects:
     slug: multimodal-vlm-visual-qa
     category: General AI Engineering
     skill_area: VLM and multimodal AI
-    flagship: true
+    flagship: false
     demo_command: streamlit run projects/multimodal-vlm-visual-qa/app.py
     test_command: pytest tests/test_general_ai_projects.py
     tech_stack: [Python, Streamlit, FastAPI, Pydantic]
     summary: Image QA workflow with structured JSON extraction, mock mode, and optional OpenAI-compatible hosted provider.
     skills: [VLM, multimodal AI, structured outputs, provider integration]
-    status: flagship
+    status: supporting
     mock_mode_supported: true
     readme_path: projects/multimodal-vlm-visual-qa/README.md
   - name: Agentic Research Operations Assistant
     slug: agentic-research-ops-assistant
     category: General AI Engineering
     skill_area: Agentic AI and RAG
-    flagship: true
+    flagship: false
     demo_command: streamlit run projects/agentic-research-ops-assistant/app.py
     test_command: pytest tests/test_general_ai_projects.py
     tech_stack: [Python, Streamlit, Pydantic, scikit-learn]
     summary: Planner-executor agent with tool registry, citations, approval checkpoint, SQLite traces, and trace evaluation.
     skills: [agents, tool calling, RAG, observability, trace evaluation]
-    status: flagship
+    status: supporting
     mock_mode_supported: true
     readme_path: projects/agentic-research-ops-assistant/README.md
   - name: VLA Embodied Agent Simulator
@@ -185,13 +185,13 @@ projects:
     slug: mlops-model-serving-monitoring
     category: General AI Engineering
     skill_area: MLOps
-    flagship: true
+    flagship: false
     demo_command: streamlit run projects/mlops-model-serving-monitoring/app.py
     test_command: pytest tests/test_general_ai_projects.py
     tech_stack: [Python, pandas, scikit-learn, FastAPI, SQLite, Docker]
     summary: Training, serving, schema validation, model artifacts, inference logging, and drift history over synthetic churn data.
     skills: [MLOps, model serving, drift detection, inference logging]
-    status: flagship
+    status: supporting
     mock_mode_supported: true
     readme_path: projects/mlops-model-serving-monitoring/README.md
   - name: Recommender System Ranking Engine

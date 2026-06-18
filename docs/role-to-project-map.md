@@ -2,9 +2,9 @@
 
 ## AI Engineer
 
+- AEC Code Compliance RAG Assistant: shows source-grounded RAG, retrieval evaluation, citations, metadata, and no-result handling.
 - Agentic Research Operations Assistant: shows agent orchestration, local RAG, citations, and traces.
 - MLOps Model Serving and Monitoring Platform: shows model serving, artifact metadata, inference logging, and monitoring.
-- Multimodal VLM Visual QA Assistant: shows multimodal product workflow.
 
 Reviewer focus: local testability, mock-safe design, and evidence that the demos are honest engineering prototypes.
 

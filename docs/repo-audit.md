@@ -13,15 +13,15 @@ Shared code lives under `shared/`, setup scripts under `scripts/`, docs under `d
 
 ## Projects Found
 
-Flagship projects:
+Flagship project:
+
+- AEC Code Compliance RAG Assistant
+
+Strong supporting projects:
 
 - Agentic Research Operations Assistant
 - Multimodal VLM Visual QA Assistant
 - MLOps Model Serving and Monitoring Platform
-
-Secondary projects:
-
-- AEC Code Compliance RAG Assistant
 - LLM Evals and Guardrails Platform
 - Reinforcement Learning Portfolio
 - Deep Learning Vision Lab
@@ -93,7 +93,7 @@ Secondary projects:
 
 ## Remaining Recommendations
 
-- Add screenshot or short GIF evidence for the 3 flagship projects.
-- Deepen flagship project internals over time rather than making all projects equally complex.
-- Add richer eval suites to LLM evals and Agentic Research Ops.
+- Add screenshot or short GIF evidence for the AEC RAG flagship.
+- Deepen AEC RAG internals over time rather than making all projects equally complex.
+- Add richer eval suites to AEC RAG, LLM evals, and Agentic Research Ops.
 - Add local model provider implementations where hardware allows.

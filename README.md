@@ -6,7 +6,11 @@ This portfolio combines domain-specific AI for the built environment with genera
 
 ## Recommended Review Path For Recruiters
 
-If you are reviewing my portfolio, I recommend starting with these three projects. They are the strongest signals of applied AI engineering depth; the remaining projects are useful supporting evidence rather than equal flagship claims.
+If you are reviewing my portfolio, I recommend starting with the AEC Code Compliance RAG Assistant. It is the primary flagship because it best combines my AI engineering skills with my built-environment background.
+
+- [AEC Code Compliance RAG Assistant](projects/aec-code-compliance-rag/README.md) - source-grounded AEC RAG with chunk metadata, retrieval evaluation, citation quality, demo outputs, architecture docs, tests, and explicit limitations.
+
+Strong supporting systems:
 
 - [Agentic Research Operations Assistant](projects/agentic-research-ops-assistant/README.md) - planner/executor agent, tool registry, local RAG, citations, approval checkpoints, SQLite trace persistence, and trace evaluation.
 - [MLOps Model Serving and Monitoring Platform](projects/mlops-model-serving-monitoring/README.md) - training, model artifacts, FastAPI serving, SQLite inference logs, drift history, Docker, and tests.
@@ -16,33 +20,31 @@ If you are reviewing my portfolio, I recommend starting with these three project
 
 I designed this repository for two kinds of hiring review:
 
-- If you are hiring for general AI engineering, I recommend reviewing the agent, MLOps, and VLM projects first.
-- If you are hiring for built-environment, robotics, or embodied AI work, I recommend also reviewing the AEC document, BIM QA, construction progress, energy modeling, spatial design, and construction robotics projects.
+- If you are hiring for applied AI or LLM engineering, start with the AEC RAG project, then review the agent, MLOps, and VLM projects as supporting range.
+- If you are hiring for built-environment, robotics, or embodied AI work, review the AEC document system first, then BIM QA, construction progress, energy modeling, spatial design, and construction robotics projects.
 - I kept every project runnable locally with synthetic data or mock providers so you can inspect the engineering without needing private datasets, paid APIs, or hidden infrastructure.
 
-## Flagship Projects
+## Flagship Project
 
 | Project | Why it is featured | Evidence to inspect |
 | --- | --- | --- |
-| [Agentic Research Ops](projects/agentic-research-ops-assistant/README.md) | Practical agent orchestration rather than a generic chatbot. | Planner, tool registry, permissions, local document retrieval, citations, approval checkpoint, persistent traces, trace eval. |
-| [MLOps Serving Monitoring](projects/mlops-model-serving-monitoring/README.md) | Shows operational ML beyond notebook modeling. | Model artifact, FastAPI schema, SQLite inference log, drift-history table, Docker path, tests. |
-| [Multimodal VLM Visual QA](projects/multimodal-vlm-visual-qa/README.md) | Shows multimodal product workflow and provider boundary. | Image validation, structured VQA schema, mock mode, optional OpenAI-compatible hosted provider. |
+| [AEC Code Compliance RAG](projects/aec-code-compliance-rag/README.md) | Best match between applied AI engineering and built-environment domain knowledge. | Chunk metadata, citations, retrieval eval, sample questions, demo outputs, architecture docs, tests, no-result handling, limitations. |
 
 ## Secondary Experiments
 
-These projects are intentionally presented as supporting experiments. They broaden the portfolio but are not meant to claim specialist-level depth by themselves.
+These projects broaden the portfolio and support the main AEC RAG signal.
 
 | Area | Projects |
 | --- | --- |
-| Built-environment AI | AEC Code Compliance RAG, Construction Progress CV, BIM Issue Detection Agent, Building Energy ML, Spatial Design Recommender, AI + AEC Job Fit Analyzer |
+| Built-environment AI | Construction Progress CV, BIM Issue Detection Agent, Building Energy ML, Spatial Design Recommender, AI + AEC Job Fit Analyzer |
 | Construction robotics / embodied AI | Construction Robot Task Planner, Site Robot Safety Monitor, VLA Embodied Agent Simulator |
-| General AI/ML experiments | LLM Evals Guardrails, Reinforcement Learning Portfolio, Deep Learning Vision Lab, Recommender Ranking Engine, Time-Series Anomaly Forecasting, Fine-Tuning LoRA Lab |
+| General AI/ML systems | Agentic Research Ops, MLOps Serving Monitoring, Multimodal VLM Visual QA, LLM Evals Guardrails, Reinforcement Learning Portfolio, Deep Learning Vision Lab, Recommender Ranking Engine, Time-Series Anomaly Forecasting, Fine-Tuning LoRA Lab |
 
 ## AI For The Built Environment
 
 These projects preserve the differentiator: AI plus architecture, AEC, construction, BIM, energy, spatial design, and construction robotics.
 
-- AEC Code Compliance RAG Assistant
+- AEC Code Compliance RAG Assistant (primary flagship)
 - Construction Progress Computer Vision Tracker
 - BIM / Drawing Issue Detection Agent
 - AI + AEC Job Fit Analyzer

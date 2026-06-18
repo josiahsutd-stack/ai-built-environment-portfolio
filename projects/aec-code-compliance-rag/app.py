@@ -21,7 +21,7 @@ assistant = build_assistant_from_paths(docs)
 
 question = st.text_input(
     "Ask a design-standard question",
-    value="What should I check for accessible door clearances and routes?",
+    value="What clear width should be checked for high traffic accessible routes?",
 )
 k = st.slider("Retrieved sources", min_value=1, max_value=6, value=4)
 
@@ -29,7 +29,19 @@ if st.button("Answer", type="primary") or question:
     result = assistant.answer(question, k=k)
     st.subheader("Grounded answer")
     st.write(result["answer"])
+    st.caption(
+        f"Retrieved {result['retrieval']['result_count']} chunks "
+        f"(top score {result['retrieval'].get('top_score', 0)})."
+    )
     st.subheader("Sources")
     for source in result["sources"]:
-        with st.expander(f"{source['source']} - score {source['score']}"):
+        title = (
+            f"{source['citation_id']} | {source['heading']} | "
+            f"{source['clause_id']} | score {source['score']}"
+        )
+        with st.expander(title):
+            st.write(source["reference"])
+            st.write(f"Chunk: `{source['chunk_id']}`")
+            if source["page"]:
+                st.write(f"Demo page marker: {source['page']}")
             st.write(source["excerpt"])

@@ -1,8 +1,19 @@
 # Technical Review Guide
 
-This document is written for recruiters and technical reviewers. It summarizes what the flagship projects demonstrate, what is intentionally mocked or synthetic, and which implementation details are worth inspecting. The intended interpretation is: these are local, testable demos of engineering shape with clear production next steps, not inflated production claims.
+This document is written for recruiters and technical reviewers. It summarizes what the flagship project demonstrates, what is intentionally mocked or synthetic, and which implementation details are worth inspecting. The intended interpretation is: these are local, testable demos of engineering shape with clear production next steps, not inflated production claims.
 
-## Flagship Projects
+## Flagship Project
+
+### AEC Code Compliance RAG Assistant
+
+- Review signal: source-grounded AEC RAG with section-aware chunking, chunk metadata, citation formatting, retrieval evaluation, demo outputs, tests, and explicit limitations.
+- Architecture evidence: synthetic markdown guidance -> section-aware chunks -> local TF-IDF retrieval -> citation-bearing answer -> retrieval eval -> demo outputs.
+- Engineering rationale: compliance-oriented AI should expose evidence, metadata, uncertainty, and no-result behavior before answer polish.
+- Limitations to note: synthetic corpus, markdown page markers, local TF-IDF baseline, no live building-code validation, and no professional compliance advice.
+- Technical question supported: "How do you evaluate and cite an AEC RAG system?" Evidence includes `EVAL.md`, `ARCHITECTURE.md`, `evaluate_retrieval.py`, `demo_outputs/`, and `tests/test_rag.py`.
+- Production extension: PDF ingestion, clause/version metadata, hybrid retrieval, reranking, answer-faithfulness checks, jurisdiction filters, and expert approval workflow.
+
+## Supporting Strong Projects
 
 ### Agentic Research Operations Assistant
 
@@ -42,7 +53,6 @@ This document is written for recruiters and technical reviewers. It summarizes w
 
 ## Secondary Project Review Signals
 
-- AEC RAG Assistant: chunking, retrieval, citations, incomplete-evidence handling, and TF-IDF limitations versus embedding retrieval.
 - LLM Evals Guardrails: prompt-injection checks, structured-output validation, citation checks, and eval-result schema.
 - Reinforcement Learning Portfolio: environment design, reward shaping, policy baselines, and the distinction between simulation and optimization claims.
 - Deep Learning Vision Lab: synthetic dataset generation, metrics, model-card discipline, and the path from baseline to PyTorch CNN/U-Net.

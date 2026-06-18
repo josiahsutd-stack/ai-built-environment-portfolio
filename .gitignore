@@ -8,6 +8,7 @@ __pycache__/
 htmlcov/
 .env
 .artifacts/
+tmp/
 *.sqlite
 *.db
 *.pkl
