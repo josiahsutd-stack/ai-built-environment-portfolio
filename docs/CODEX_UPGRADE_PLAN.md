@@ -15,7 +15,7 @@ The repository is organized and honest, but the breadth can look like a keyword 
 ## Implementation Checklist
 
 - Add hybrid TF-IDF/BM25 retrieval and citation checks for AEC.
-- Add 50 synthetic AEC eval cases and multiple synthetic documents.
+- Add 51 synthetic AEC eval cases and multiple synthetic documents, including a PDF-backed case.
 - Add agent retry/error trace fields and eval artifact generation.
 - Add MLOps schema validation, richer metrics, and eval artifact generation.
 - Add claims policy, reviewer guide, authenticity note, depth scorecard, ADRs, and artifact-generation script.
@@ -39,7 +39,7 @@ The repository is organized and honest, but the breadth can look like a keyword 
 
 ## Commands Run
 
-- `python scripts/check_claims.py` - passed for 72 markdown files.
+- `python scripts/check_claims.py` - passed in the last recorded full verification run.
 - `python scripts/check_repo_health.py` - passed for 18 projects.
 - `python scripts/run_smoke_tests.py` - passed for 18 importable project modules.
 - `python -m pytest -q` - 49 passed.
@@ -49,7 +49,7 @@ The repository is organized and honest, but the breadth can look like a keyword 
 
 ## Generated Evidence Snapshot
 
-- AEC synthetic eval: 50 cases, recall@4 `0.92`, retrieval hit@3 `1.0`, status accuracy `1.0`, citation-check pass rate `1.0`.
+- AEC synthetic eval: 51 cases, recall@4 `0.922`, retrieval hit@3 `1.0`, status accuracy `1.0`, citation-check pass rate `1.0`.
 - Agent eval: 6 tasks, approval gate rate `1.0`, unsupported/no-evidence/tool-error handling passed.
 - MLOps eval: schema validation and drift report artifacts generated; perfect classification metrics are from deterministic synthetic churn data and should not be read as real-world model quality.
 

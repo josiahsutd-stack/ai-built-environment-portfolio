@@ -5,7 +5,7 @@ from pathlib import Path
 from shared.ai import SearchResult, get_llm_provider
 from shared.ai.providers import LLMProvider
 
-from .chunking import DocumentChunk, load_markdown_chunks
+from .chunking import DocumentChunk, load_document_chunks
 from .faithfulness import check_citation_faithfulness
 from .retrieval import HybridRetriever, TfidfRetriever, tokenize
 
@@ -316,5 +316,5 @@ class RAGAssistant:
 def build_assistant_from_paths(paths: list[str | Path]) -> RAGAssistant:
     chunks: list[DocumentChunk] = []
     for path in paths:
-        chunks.extend(load_markdown_chunks(path))
+        chunks.extend(load_document_chunks(path))
     return RAGAssistant(chunks)

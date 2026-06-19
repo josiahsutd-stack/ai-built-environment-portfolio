@@ -21,6 +21,65 @@ def write_json(path: Path, payload: object) -> None:
     path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
 
 
+def write_aec_pdf(path: Path) -> None:
+    from reportlab.lib.pagesizes import letter
+    from reportlab.lib.units import inch
+    from reportlab.pdfgen import canvas
+
+    path.parent.mkdir(parents=True, exist_ok=True)
+    pdf = canvas.Canvas(str(path), pagesize=letter)
+    pdf.setTitle("Synthetic AEC PDF Accessibility Addendum")
+    pdf.setAuthor("AI Portfolio Synthetic Data Generator")
+    pdf.setSubject("Synthetic PDF fixture for page-aware AEC RAG ingestion")
+
+    metadata_lines = [
+        "document_id: synthetic_pdf_accessibility_addendum",
+        "jurisdiction: synthetic-demo",
+        "code_year: synthetic",
+        "document_version: pdf-demo-v1",
+        "superseded: false",
+    ]
+    pages = [
+        {
+            "heading": "Accessible Parking PDF Addendum",
+            "paragraphs": [
+                "This synthetic PDF addendum is generated to exercise page-aware document ingestion.",
+                "PDF extracted accessible parking notes should record the wet-weather transfer path, gradient assumptions, bollard clearance, and signposting continuity before review.",
+                "Where an accessible bay depends on a lift or kerb transition, the assumption should remain visible in the access review log.",
+            ],
+        },
+        {
+            "heading": "Stair Discharge PDF Addendum",
+            "paragraphs": [
+                "Stair discharge diagrams in PDF appendices should identify final exits, protected lobby interfaces, smoke separation assumptions, and any pressure-relief note needing specialist review.",
+                "The extracted page number should be preserved in citations so reviewers can jump back to the source page.",
+            ],
+        },
+    ]
+
+    for page_number, page in enumerate(pages, start=1):
+        y = letter[1] - 0.85 * inch
+        pdf.setFont("Helvetica-Bold", 15)
+        pdf.drawString(inch, y, page["heading"])
+        y -= 0.32 * inch
+        if page_number == 1:
+            pdf.setFont("Helvetica", 8)
+            for line in metadata_lines:
+                pdf.drawString(inch, y, line)
+                y -= 0.16 * inch
+            y -= 0.12 * inch
+        pdf.setFont("Helvetica", 10)
+        for paragraph in page["paragraphs"]:
+            for line in textwrap.wrap(paragraph, width=88):
+                pdf.drawString(inch, y, line)
+                y -= 0.19 * inch
+            y -= 0.08 * inch
+        pdf.setFont("Helvetica-Oblique", 8)
+        pdf.drawString(inch, 0.55 * inch, f"Synthetic demo PDF - page {page_number}")
+        pdf.showPage()
+    pdf.save()
+
+
 def generate_aec_docs() -> None:
     text = """
     # Synthetic AEC Code and Design Guidance
@@ -122,6 +181,10 @@ def generate_aec_docs() -> None:
                 "notes": "Checks that the demo corpus does not invent an aviation requirement absent from the synthetic guidance.",
             },
         ],
+    )
+    write_aec_pdf(
+        ROOT
+        / "projects/aec-code-compliance-rag/sample_data/synthetic_pdf_accessibility_addendum.pdf"
     )
 
 

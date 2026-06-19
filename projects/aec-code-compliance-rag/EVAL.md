@@ -1,6 +1,6 @@
 # Retrieval Evaluation
 
-This project includes a 50-case synthetic retrieval and abstention evaluation set for reviewer inspection. The goal is not to claim production accuracy. The goal is to show how retrieval quality, citation coverage, no-evidence handling, and unsupported-scope handling are measured before real use.
+This project includes a 51-case synthetic retrieval and abstention evaluation set for reviewer inspection. The goal is not to claim production accuracy. The goal is to show how retrieval quality, citation coverage, PDF-backed citation behavior, no-evidence handling, and unsupported-scope handling are measured before real use.
 
 ## Run The Evaluation
 
@@ -67,6 +67,7 @@ Because the corpus is synthetic and contains overlapping topics, `precision_at_k
 - Numeric criteria retrieval, such as `1200 mm`, `850 mm`, and `12 mm`.
 - Section targeting for accessibility, fire compartment, daylight, planning, and drawing QA questions.
 - Whether citations preserve chunk IDs and section metadata.
+- Whether PDF extraction preserves source filename, section heading, and page-aware citation metadata.
 - Whether retrieval can support answer generation without paid APIs.
 - Whether no-answer, unsupported-scope, prompt-injection, and professional-review questions avoid invented compliance requirements.
 
@@ -76,13 +77,13 @@ Because the corpus is synthetic and contains overlapping topics, `precision_at_k
 - TF-IDF can miss semantically related wording if key terms are absent from the query.
 - Citation coverage only checks expected terms in retrieved evidence; it is not full answer faithfulness.
 - The grounding check is lexical and section-based; it is not a semantic entailment model.
-- The demo corpus has synthetic page markers rather than PDF-derived pages.
+- PDF ingestion is text-based and page-aware, but it does not reconstruct tables, OCR scanned pages, or reason over layout geometry.
 
 ## Better Evaluation Next
 
 - Add negative questions where the correct behavior is no answer.
 - Add paraphrased questions to stress semantic retrieval.
-- Add multi-document cases where precision matters.
+- Add multi-document and multi-PDF cases where precision matters.
 - Add citation-faithfulness checks from answer sentence to supporting chunk.
 - Add jurisdiction and version metadata cases.
 - Track no-result rate and low-confidence answer rate over a larger eval set.

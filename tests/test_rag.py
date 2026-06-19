@@ -1,12 +1,56 @@
+from pathlib import Path
+
 from aec_code_compliance_rag import (
     BM25Retriever,
     HybridRetriever,
     RAGAssistant,
     RetrievalEvalCase,
+    build_assistant_from_paths,
     check_citation_faithfulness,
     chunk_text,
     evaluate_retrieval,
+    load_document_chunks,
 )
+
+
+def _write_pdf_fixture(path: Path) -> None:
+    from reportlab.lib.pagesizes import letter
+    from reportlab.lib.units import inch
+    from reportlab.pdfgen import canvas
+
+    pdf = canvas.Canvas(str(path), pagesize=letter)
+    pdf.setTitle("Test PDF Accessibility Addendum")
+    pages = [
+        (
+            "PDF Parking Access Notes",
+            [
+                "document_id: test_pdf_access",
+                "jurisdiction: test-city",
+                "code_year: 2025",
+                "document_version: pdf-test-v1",
+                "superseded: false",
+                "PDF parking access notes should record wet-weather transfer path, gradient assumptions, and bollard clearance before review.",
+            ],
+        ),
+        (
+            "PDF Stair Discharge Notes",
+            [
+                "PDF stair notes should preserve the second page citation and identify protected lobby assumptions.",
+            ],
+        ),
+    ]
+    for page_number, (heading, lines) in enumerate(pages, start=1):
+        y = letter[1] - inch
+        pdf.setFont("Helvetica-Bold", 14)
+        pdf.drawString(inch, y, heading)
+        y -= 0.3 * inch
+        pdf.setFont("Helvetica", 10)
+        for line in lines:
+            pdf.drawString(inch, y, line)
+            y -= 0.22 * inch
+        pdf.drawString(inch, 0.55 * inch, f"Page {page_number}")
+        pdf.showPage()
+    pdf.save()
 
 
 def test_chunking_preserves_review_metadata() -> None:
@@ -53,6 +97,41 @@ def test_chunking_preserves_document_status_metadata() -> None:
     assert metadata["code_year"] == "2024"
     assert metadata["document_version"] == "v1"
     assert metadata["superseded"] == "true"
+
+
+def test_pdf_ingestion_preserves_page_numbers_and_metadata(tmp_path: Path) -> None:
+    pdf_path = tmp_path / "fixture.pdf"
+    _write_pdf_fixture(pdf_path)
+
+    chunks = load_document_chunks(pdf_path, max_words=36)
+    parking_chunk = next(chunk for chunk in chunks if chunk.heading == "PDF Parking Access Notes")
+    stair_chunk = next(chunk for chunk in chunks if chunk.heading == "PDF Stair Discharge Notes")
+    metadata = parking_chunk.metadata()
+
+    assert {chunk.page for chunk in chunks} == {1, 2}
+    assert metadata["source"] == "fixture.pdf"
+    assert metadata["document_id"] == "test_pdf_access"
+    assert metadata["jurisdiction"] == "test-city"
+    assert metadata["code_year"] == "2025"
+    assert metadata["document_version"] == "pdf-test-v1"
+    assert metadata["page"] == "1"
+    assert metadata["chunk_id"].startswith("fixture-pdf-parking-access-notes-p1-")
+    assert stair_chunk.metadata()["page"] == "2"
+
+
+def test_rag_answers_with_page_aware_pdf_citation(tmp_path: Path) -> None:
+    pdf_path = tmp_path / "fixture.pdf"
+    _write_pdf_fixture(pdf_path)
+    assistant = build_assistant_from_paths([pdf_path])
+
+    response = assistant.answer("Which wet-weather transfer path assumptions are in the PDF?", k=2)
+
+    assert response["status"] == "answered"
+    assert "wet-weather transfer path" in response["answer"].lower()
+    assert response["sources"][0]["source"] == "fixture.pdf"
+    assert response["sources"][0]["page"] == "1"
+    assert response["sources"][0]["chunk_id"].startswith("fixture-pdf-parking-access-notes-p1-")
+    assert response["citation_check"]["passed"]
 
 
 def test_chunking_and_retrieval_returns_accessibility_source() -> None:

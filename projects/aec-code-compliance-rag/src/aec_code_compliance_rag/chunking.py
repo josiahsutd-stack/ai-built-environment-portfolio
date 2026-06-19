@@ -4,6 +4,14 @@ import re
 from dataclasses import dataclass
 from pathlib import Path
 
+DOCUMENT_METADATA_FIELDS = {
+    "document_id",
+    "jurisdiction",
+    "code_year",
+    "document_version",
+    "superseded",
+}
+
 
 @dataclass(frozen=True)
 class DocumentChunk:
@@ -52,12 +60,20 @@ def _slug(value: str) -> str:
     return slug or "section"
 
 
+def _metadata_key(raw_key: str) -> str:
+    return raw_key.strip().lower().replace(" ", "_").replace("-", "_")
+
+
+def _is_document_metadata_line(line: str) -> bool:
+    match = re.match(r"\s*([a-zA-Z_ -]+):\s*(.+?)\s*$", line)
+    return bool(match and _metadata_key(match.group(1)) in DOCUMENT_METADATA_FIELDS)
+
+
 def _iter_markdown_sections(text: str, *, source: str) -> list[tuple[str, str, int | None, str]]:
     """Return `(section, heading, page, body)` sections from a markdown document.
 
-    The demo documents are markdown, not PDFs. `page` is therefore inferred only
-    from optional HTML-style comments such as `<!-- page: 2 -->`; otherwise it is
-    kept as `None` rather than pretending a real PDF page exists.
+    Markdown page values come from optional HTML-style comments such as
+    `<!-- page: 2 -->`; otherwise the page is kept as `None`.
     """
 
     fallback = Path(source).stem
@@ -93,15 +109,18 @@ def _iter_markdown_sections(text: str, *, source: str) -> list[tuple[str, str, i
     return sections
 
 
-def chunk_text(
-    text: str, *, source: str, max_words: int = 110, overlap: int = 25
+def _chunks_from_sections(
+    sections: list[tuple[str, str, int | None, str]],
+    *,
+    source: str,
+    metadata: dict[str, str],
+    max_words: int = 110,
+    overlap: int = 25,
+    include_page_in_chunk_id: bool = False,
 ) -> list[DocumentChunk]:
-    if not text.strip():
-        return []
     chunks: list[DocumentChunk] = []
-    metadata = _extract_document_metadata(text, source=source)
     step = max(1, max_words - overlap)
-    for section, heading, page, body in _iter_markdown_sections(text, source=source):
+    for section, heading, page, body in sections:
         words = body.split()
         if not words:
             continue
@@ -112,7 +131,8 @@ def chunk_text(
             chunk_words = words[start:end]
             if chunk_words:
                 clause_id = f"AEC-{_slug(heading).upper()}"
-                chunk_id = f"{Path(source).stem}-{_slug(heading)}-{index:03d}"
+                page_part = f"-p{page}" if include_page_in_chunk_id and page is not None else ""
+                chunk_id = f"{Path(source).stem}-{_slug(heading)}{page_part}-{index:03d}"
                 chunks.append(
                     DocumentChunk(
                         text=f"{heading}. {' '.join(chunk_words)}",
@@ -138,6 +158,61 @@ def chunk_text(
     return chunks
 
 
+def chunk_text(
+    text: str, *, source: str, max_words: int = 110, overlap: int = 25
+) -> list[DocumentChunk]:
+    if not text.strip():
+        return []
+    metadata = _extract_document_metadata(text, source=source)
+    return _chunks_from_sections(
+        _iter_markdown_sections(text, source=source),
+        source=source,
+        metadata=metadata,
+        max_words=max_words,
+        overlap=overlap,
+    )
+
+
+def _split_pdf_page_heading_and_body(lines: list[str], *, fallback: str) -> tuple[str, str]:
+    for index, raw_line in enumerate(lines):
+        stripped = raw_line.strip()
+        if stripped:
+            heading = stripped.lstrip("#").strip() or fallback
+            body = "\n".join(lines[index + 1 :]).strip() or heading
+            return heading, body
+    return fallback, ""
+
+
+def chunk_pdf_pages(
+    pages: list[tuple[int, str]], *, source: str, max_words: int = 110, overlap: int = 25
+) -> list[DocumentChunk]:
+    page_texts = [(page_number, text) for page_number, text in pages if text.strip()]
+    if not page_texts:
+        return []
+    combined_text = "\n".join(text for _page_number, text in page_texts)
+    metadata = _extract_document_metadata(combined_text, source=source)
+    fallback = Path(source).stem
+    sections: list[tuple[str, str, int | None, str]] = []
+    for page_number, page_text in page_texts:
+        content_lines = [
+            line for line in page_text.splitlines() if not _is_document_metadata_line(line)
+        ]
+        heading, body = _split_pdf_page_heading_and_body(
+            content_lines,
+            fallback=f"{fallback} page {page_number}",
+        )
+        if body:
+            sections.append((heading, heading, page_number, body))
+    return _chunks_from_sections(
+        sections,
+        source=source,
+        metadata=metadata,
+        max_words=max_words,
+        overlap=overlap,
+        include_page_in_chunk_id=True,
+    )
+
+
 def _extract_document_metadata(text: str, *, source: str) -> dict[str, str]:
     metadata = {
         "document_id": Path(source).stem,
@@ -150,7 +225,7 @@ def _extract_document_metadata(text: str, *, source: str) -> dict[str, str]:
         match = re.match(r"\s*([a-zA-Z_ -]+):\s*(.+?)\s*$", line)
         if not match:
             continue
-        key = match.group(1).strip().lower().replace(" ", "_").replace("-", "_")
+        key = _metadata_key(match.group(1))
         value = match.group(2).strip()
         if key in metadata:
             metadata[key] = value
@@ -160,3 +235,15 @@ def _extract_document_metadata(text: str, *, source: str) -> dict[str, str]:
 def load_markdown_chunks(path: str | Path, *, max_words: int = 110) -> list[DocumentChunk]:
     target = Path(path)
     return chunk_text(target.read_text(encoding="utf-8"), source=target.name, max_words=max_words)
+
+
+def load_document_chunks(path: str | Path, *, max_words: int = 110) -> list[DocumentChunk]:
+    target = Path(path)
+    suffix = target.suffix.lower()
+    if suffix in {".md", ".markdown"}:
+        return load_markdown_chunks(target, max_words=max_words)
+    if suffix == ".pdf":
+        from .pdf_ingestion import load_pdf_chunks
+
+        return load_pdf_chunks(target, max_words=max_words)
+    raise ValueError(f"Unsupported AEC document type: {target.suffix or target.name}")

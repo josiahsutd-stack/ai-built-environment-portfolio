@@ -19,7 +19,7 @@ The project connects AI engineering with the built environment. It shows how a j
 Key reviewer signals:
 
 - Evidence-first retrieval over synthetic AEC guidance.
-- Chunk metadata for section, heading, clause ID, page marker, chunk ID, and word offsets.
+- Chunk metadata for section, heading, clause ID, PDF page or markdown page marker, chunk ID, and word offsets.
 - Citation objects that include readable references, scores, excerpts, and traceable chunk IDs.
 - Source-status warnings for superseded, mixed-version, mixed-jurisdiction, or mixed-year evidence.
 - Retrieval evaluation with sample questions and repeatable metrics.
@@ -54,6 +54,7 @@ Try these questions:
 - What should be included for long residential corridors?
 - What daylight risks should west glazing trigger?
 - Which assumptions should be logged before a planning submission?
+- What should PDF extracted accessible parking notes record for wet-weather transfers?
 
 Generated reviewer artifacts are in [`demo_outputs/`](demo_outputs/):
 
@@ -70,9 +71,9 @@ python projects/aec-code-compliance-rag/scripts/evaluate_retrieval.py
 
 ## Features
 
-- Markdown document ingestion from `sample_data/`.
+- Markdown and text-based PDF document ingestion from `sample_data/`.
 - Section-aware chunking with overlap.
-- Metadata fields for heading, clause ID, page marker, chunk ID, and word offsets.
+- Metadata fields for heading, clause ID, PDF page or markdown page marker, chunk ID, and word offsets.
 - Local hybrid TF-IDF/BM25 retrieval as an inspectable lexical retrieval baseline.
 - Deterministic no-API answer mode plus optional OpenAI-compatible provider through shared portfolio utilities.
 - Citation formatting with references like `[C1] mock_aec_guidance.md > Accessible Routes`.
@@ -90,9 +91,9 @@ python projects/aec-code-compliance-rag/scripts/evaluate_retrieval.py
 
 ## How It Works
 
-1. Synthetic markdown guidance is loaded from `sample_data/`.
-2. The chunker splits by markdown headings and optional page markers such as `<!-- page: 2 -->`.
-3. Each chunk receives traceable metadata: source, section, heading, clause ID, page marker, chunk ID, start word, end word, document version, jurisdiction, code year, and superseded status.
+1. Synthetic markdown guidance and a generated PDF addendum are loaded from `sample_data/`.
+2. Markdown files are split by headings and optional page markers such as `<!-- page: 2 -->`; PDFs are extracted page by page with `pypdf`.
+3. Each chunk receives traceable metadata: source, section, heading, clause ID, page value, chunk ID, start word, end word, document version, jurisdiction, code year, and superseded status.
 4. A local hybrid retriever combines TF-IDF and BM25 results for a question.
 5. The assistant returns an answer only from retrieved evidence, exposes structured citations, and warns when retrieved sources need version or jurisdiction review.
 6. The evaluation script runs sample questions and writes metrics plus demo outputs.
@@ -115,7 +116,7 @@ The tests cover:
 ## Limitations
 
 - The corpus is synthetic and intentionally small.
-- The page values are demo markdown markers, not parsed PDF page numbers.
+- PDF ingestion is text-based and page-aware, but it does not handle scanned PDFs, OCR, table reconstruction, or layout geometry.
 - TF-IDF and BM25 are transparent and local, but weaker than embedding retrieval or neural reranking.
 - The local answer mode is deterministic and extractive; it is not a real expert model.
 - The project does not validate against live jurisdictions, current building codes, amendments, or professional review requirements.
@@ -123,7 +124,7 @@ The tests cover:
 
 ## Next Steps
 
-- Add PDF ingestion with real page extraction and clause-level parsing.
+- Improve PDF ingestion with layout-aware table extraction, OCR fallback, and clause-level parsing.
 - Add embedding retrieval and stronger reranking if local hardware or hosted providers are appropriate.
 - Strengthen citation-faithfulness checks beyond the current deterministic lexical coverage check.
 - Expand the evaluation set with negative questions, ambiguous jurisdiction cases, and adversarial wording.
@@ -141,7 +142,7 @@ The tests cover:
 ## Engineering Notes
 
 - The system uses deterministic chunk IDs and metadata so retrieval results can be inspected and tested.
-- Synthetic page markers are preserved to show the metadata contract that a PDF parser would fill in later.
+- Markdown page markers and extracted PDF page numbers use the same citation metadata contract.
 - The assistant refuses empty questions and returns a no-evidence response when retrieval has no matching chunks.
 - The local hybrid retriever is chosen for portability and transparency; it is a baseline, not the final retrieval method for a real compliance product.
 

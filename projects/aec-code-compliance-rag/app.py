@@ -16,7 +16,12 @@ st.set_page_config(page_title="AEC Code Compliance RAG", page_icon="AI", layout=
 st.title("AEC Code Compliance RAG Assistant")
 st.caption("Synthetic demo data. Not legal, code, or professional compliance advice.")
 
-docs = sorted((PROJECT_ROOT / "sample_data").glob("*.md"))
+docs = sorted(
+    [
+        *(PROJECT_ROOT / "sample_data").glob("*.md"),
+        *(PROJECT_ROOT / "sample_data").glob("*.pdf"),
+    ]
+)
 assistant = build_assistant_from_paths(docs)
 
 question = st.text_input(
@@ -55,5 +60,5 @@ if st.button("Answer", type="primary") or question:
                 f"superseded `{source.get('superseded', False)}`"
             )
             if source["page"]:
-                st.write(f"Demo page marker: {source['page']}")
+                st.write(f"Page: {source['page']}")
             st.write(source["excerpt"])

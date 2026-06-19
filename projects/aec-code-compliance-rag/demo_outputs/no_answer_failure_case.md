@@ -14,5 +14,5 @@ I could not find grounded evidence in the demo documents.
 
 ## Retrieval Metadata
 
-- Retrieved chunks: 1
+- Retrieved chunks: 3
 - Sources: []

@@ -28,7 +28,7 @@ python scripts/verify.py
 
 ## Interview Questions
 
-- Explain the AEC RAG path from markdown document to cited answer.
+- Explain the AEC RAG path from Markdown/PDF document to cited answer.
 - Explain why TF-IDF and BM25 are used as local baselines instead of a hosted embedding service.
 - Show an unsupported-scope or no-evidence AEC question.
 - Explain agent retry behavior and how failed tools appear in the trace.

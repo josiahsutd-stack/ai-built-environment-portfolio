@@ -6,7 +6,7 @@ AEC teams often need source-grounded answers across guidance, drawing assumption
 
 ## Local System
 
-The project ingests synthetic markdown documents, creates section-aware chunks, preserves metadata, retrieves with hybrid TF-IDF/BM25, formats citations, applies deterministic abstention rules, and writes evaluation artifacts.
+The project ingests synthetic markdown documents and a generated text-based PDF addendum, creates section/page-aware chunks, preserves metadata, retrieves with hybrid TF-IDF/BM25, formats citations, applies deterministic abstention rules, and writes evaluation artifacts.
 
 ## Retrieval Strategy
 
@@ -14,7 +14,7 @@ TF-IDF remains as a transparent baseline. BM25 adds lexical ranking with documen
 
 ## Citation Strategy
 
-Answers include citation markers such as `[C1]`, and citations expose source, section, clause ID, page marker, chunk ID, score, and excerpt.
+Answers include citation markers such as `[C1]`, and citations expose source, section, clause ID, PDF page or markdown page marker, chunk ID, score, and excerpt.
 
 ## Abstention Policy
 
@@ -22,8 +22,8 @@ The assistant returns `no_evidence`, `unsupported_scope`, or `needs_professional
 
 ## Evaluation
 
-`python projects/aec-code-compliance-rag/scripts/evaluate_retrieval.py` runs 50 synthetic cases and writes summary metrics, failure analysis, and sample answers under `demo_outputs/`.
+`python projects/aec-code-compliance-rag/scripts/evaluate_retrieval.py` runs 51 synthetic cases and writes summary metrics, failure analysis, and sample answers under `demo_outputs/`.
 
 ## Production Extension
 
-A production version would need real source authorization, PDF/page parsing, jurisdiction and code-year metadata, human expert review, monitoring, and stronger answer faithfulness evaluation.
+A production version would need real source authorization, layout-aware PDF/OCR parsing, jurisdiction and code-year controls, human expert review, monitoring, and stronger answer faithfulness evaluation.

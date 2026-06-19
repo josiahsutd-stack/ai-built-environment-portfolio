@@ -165,7 +165,12 @@ def _write_failure_demo(assistant, output_path: Path) -> None:
 
 
 def main() -> None:
-    docs = sorted((PROJECT_ROOT / "sample_data").glob("*.md"))
+    docs = sorted(
+        [
+            *(PROJECT_ROOT / "sample_data").glob("*.md"),
+            *(PROJECT_ROOT / "sample_data").glob("*.pdf"),
+        ]
+    )
     eval_path = PROJECT_ROOT / "eval" / "eval_cases.jsonl"
     if not eval_path.exists():
         eval_path = PROJECT_ROOT / "sample_data" / "evaluation_questions.json"

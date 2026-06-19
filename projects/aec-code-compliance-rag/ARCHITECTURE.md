@@ -6,7 +6,7 @@ This project is a local, synthetic-data RAG assistant for AEC guidance. It is de
 
 ```mermaid
 flowchart LR
-  A["Synthetic markdown guidance"] --> B["Section-aware chunker"]
+  A["Synthetic Markdown and PDF guidance"] --> B["Section/page-aware chunker"]
   B --> C["Chunk metadata contract"]
   C --> D["Local hybrid lexical retriever"]
   Q["Reviewer question"] --> D
@@ -25,7 +25,8 @@ flowchart LR
 
 | Area | File | Responsibility |
 | --- | --- | --- |
-| Chunking | `src/aec_code_compliance_rag/chunking.py` | Splits markdown by headings, preserves page markers, and emits chunk metadata. |
+| Chunking | `src/aec_code_compliance_rag/chunking.py` | Splits markdown by headings, preserves page markers, converts PDF page text into chunks, and emits chunk metadata. |
+| PDF ingestion | `src/aec_code_compliance_rag/pdf_ingestion.py` | Extracts text page by page from PDFs with `pypdf` and passes real page numbers into the chunk metadata contract. |
 | Retrieval | `src/aec_code_compliance_rag/retrieval.py` | Provides TF-IDF, BM25, and hybrid lexical retrieval over local chunks. |
 | Assistant | `src/aec_code_compliance_rag/assistant.py` | Builds the retrieval boundary, handles questions, formats citations, checks source status, checks support, and returns abstention statuses. |
 | Faithfulness | `src/aec_code_compliance_rag/faithfulness.py` | Applies deterministic citation-marker and lexical-support checks for demo answers. |
@@ -48,11 +49,11 @@ Every retrieved chunk carries this metadata:
 | `section` | Markdown section title used for retrieval grouping. |
 | `heading` | Human-readable heading shown in citations. |
 | `clause_id` | Deterministic synthetic clause identifier derived from the heading. |
-| `page` | Optional demo page marker from markdown comments. |
+| `page` | PDF page number or optional demo page marker from markdown comments. |
 | `chunk_id` | Stable chunk identifier for tests, evals, and citations. |
 | `start_word` / `end_word` | Word offsets within the section body. |
 
-The current corpus is markdown, so page values come from comments such as `<!-- page: 2 -->`. A production extension would replace this with PDF parser output and versioned source metadata.
+The sample corpus includes markdown files and a generated text-based PDF addendum. Markdown page values come from comments such as `<!-- page: 2 -->`; PDF page values come from page-by-page extraction with `pypdf`. A production extension would add source manifests, layout-aware table parsing, OCR fallback, and stronger source-version controls.
 
 ## Retrieval Design
 
@@ -99,7 +100,7 @@ For compliance-oriented workflows, this behavior is more important than always g
 
 The current project is intentionally local and synthetic. A serious applied extension would add:
 
-- PDF ingestion with page extraction and clause parsing.
+- Layout-aware PDF parsing for tables, scanned documents, OCR fallback, and clause segmentation.
 - Stronger source conflict detection for contradictory clauses and superseded guidance.
 - Embedding retrieval, reranking, and filterable search.
 - Stronger answer-faithfulness evaluation against retrieved chunks.
