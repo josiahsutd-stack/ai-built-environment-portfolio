@@ -91,7 +91,8 @@ python projects/aec-code-compliance-rag/scripts/evaluate_retrieval.py
 - Source manifest loading from `sample_data/source_manifest.json`.
 - Section-aware chunking with overlap.
 - Metadata fields for title, source type, allowed use, heading, clause ID, PDF page or markdown page marker, chunk ID, and word offsets.
-- Per-query source filters for jurisdiction, source type, and superseded-source exclusion.
+- Per-query source filters for jurisdiction, authority/publisher, document family, source type, and superseded-source exclusion.
+- Conservative authority/document inference so BCA, PUB, NParks, URA, NEA, SCDF, and LTA questions stay within the named agency or document family where possible.
 - Local TF-IDF, BM25, dense LSA, and hybrid retrieval modes, with optional sentence-transformer embedding and cross-encoder reranking modes.
 - Retrieval ablation report comparing modes over the same synthetic eval set.
 - Deterministic no-API answer mode plus optional OpenAI-compatible provider through shared portfolio utilities.

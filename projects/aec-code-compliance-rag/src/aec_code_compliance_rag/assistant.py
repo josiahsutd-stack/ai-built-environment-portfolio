@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 from pathlib import Path
 
 from shared.ai import SearchResult, get_llm_provider
@@ -35,6 +36,91 @@ UNSUPPORTED_SCOPE_TERMS = {
 SourceFilterValue = str | bool | list[str] | tuple[str, ...] | set[str]
 SourceFilters = dict[str, SourceFilterValue]
 
+AUTHORITY_PUBLISHER_ALIASES: tuple[tuple[str, tuple[str, ...], tuple[str, ...]], ...] = (
+    (
+        "BCA",
+        ("bca", "building and construction authority", "code on accessibility", "green mark"),
+        ("Building and Construction Authority, Singapore",),
+    ),
+    (
+        "URA",
+        ("ura", "urban redevelopment authority", "gross floor area", "gfa"),
+        ("Urban Redevelopment Authority, Singapore",),
+    ),
+    (
+        "NEA",
+        ("nea", "national environment agency", "environmental health", "copeh"),
+        ("National Environment Agency, Singapore",),
+    ),
+    (
+        "SCDF",
+        ("scdf", "singapore civil defence force", "fire code", "fire precautions"),
+        ("Singapore Civil Defence Force",),
+    ),
+    (
+        "LTA",
+        ("lta", "land transport authority", "public streets", "railway protection"),
+        ("Land Transport Authority, Singapore",),
+    ),
+    (
+        "PUB",
+        (
+            "pub",
+            "public utilities board",
+            "surface water drainage",
+            "sewerage",
+            "sanitary works",
+            "coastal protection",
+            "public sewer",
+        ),
+        ("PUB, Singapore's National Water Agency",),
+    ),
+    (
+        "NParks",
+        (
+            "nparks",
+            "national parks board",
+            "greenery provision",
+            "tree conservation",
+            "tree planting",
+            "green buffer",
+        ),
+        ("National Parks Board, Singapore",),
+    ),
+)
+
+DOCUMENT_ID_ALIASES: tuple[tuple[tuple[str, ...], str], ...] = (
+    (("code on accessibility", "bca accessibility"), "bca_code_on_accessibility_2025"),
+    (("approved document",), "bca_approved_document_v7_07"),
+    (
+        ("green mark 2021 certification", "green mark certification standard"),
+        "bca_green_mark_2021_certification_standard_2nd_ed",
+    ),
+    (("scdf fire code", "fire precautions in buildings"), "scdf_fire_code_2023"),
+    (
+        ("gross floor area handbook", "gfa handbook", "advisory notes"),
+        "ura_gfa_handbook_advisory_notes",
+    ),
+    (("gfa glance", "guidelines at a glance", "items excluded"), "ura_gfa_guidelines_at_a_glance"),
+    (
+        ("nea copeh", "code of practice on environmental health"),
+        "nea_code_of_practice_environmental_health_2025",
+    ),
+    (("works on public streets",), "lta_code_of_practice_works_on_public_streets_2025"),
+    (("railway protection",), "lta_code_of_practice_railway_protection_2024"),
+    (("surface water drainage",), "pub_surface_water_drainage_cop_2025"),
+    (
+        ("sewerage and sanitary works", "sewerage information plan"),
+        "pub_sewerage_sanitary_works_2025",
+    ),
+    (("coastal protection",), "pub_codes_of_practice_and_standard_drawings"),
+    (
+        ("greenery provision and tree conservation", "tree conservation guidelines"),
+        "nparks_greenery_tree_conservation_2025",
+    ),
+    (("development plan submission",), "nparks_development_plan_submission"),
+)
+
 
 class RAGAssistant:
     def __init__(
@@ -62,10 +148,11 @@ class RAGAssistant:
         source_filters: SourceFilters | None = None,
     ) -> list[SearchResult]:
         threshold = self.min_score if min_score == 0.01 else min_score
-        chunks = self._filtered_chunks(source_filters)
+        effective_filters = self._effective_source_filters(question, source_filters)
+        chunks = self._filtered_chunks(effective_filters)
         if not chunks:
             return []
-        retriever = self.retriever if not source_filters else self._retriever_for(chunks)
+        retriever = self.retriever if not effective_filters else self._retriever_for(chunks)
         return retriever.search(question, k=k, min_score=threshold)
 
     def source_catalog(self) -> list[dict[str, str]]:
@@ -96,6 +183,64 @@ class RAGAssistant:
             for chunk in self.chunks
             if self._matches_source_filters(chunk.metadata(), source_filters)
         ]
+
+    def _effective_source_filters(
+        self,
+        question: str,
+        source_filters: SourceFilters | None,
+    ) -> SourceFilters | None:
+        base_filters: SourceFilters = dict(source_filters or {})
+        inferred_filters = self._infer_document_source_filters(
+            question
+        ) or self._infer_authority_source_filters(question)
+        if not inferred_filters or self._has_explicit_authority_filter(base_filters):
+            return base_filters or None
+        candidate_filters = {**base_filters, **inferred_filters}
+        if self._filtered_chunks(candidate_filters):
+            return candidate_filters
+        return base_filters or None
+
+    def _has_explicit_authority_filter(self, source_filters: SourceFilters) -> bool:
+        authority_keys = {"publisher", "source", "document_id"}
+        return any(
+            key.strip().lower().replace(" ", "_").replace("-", "_") in authority_keys
+            for key in source_filters
+        )
+
+    def _infer_authority_source_filters(self, question: str) -> SourceFilters | None:
+        lowered = question.lower()
+        publishers: list[str] = []
+        for _authority, aliases, authority_publishers in AUTHORITY_PUBLISHER_ALIASES:
+            if any(self._question_mentions_alias(lowered, alias) for alias in aliases):
+                publishers.extend(authority_publishers)
+        unique_publishers = sorted(dict.fromkeys(publishers))
+        if not unique_publishers:
+            return None
+        if len(unique_publishers) == 1:
+            return {"publisher": unique_publishers[0]}
+        return {"publisher": unique_publishers}
+
+    def _infer_document_source_filters(self, question: str) -> SourceFilters | None:
+        lowered = question.lower()
+        document_ids = [
+            document_id
+            for aliases, document_id in DOCUMENT_ID_ALIASES
+            if any(self._question_mentions_alias(lowered, alias) for alias in aliases)
+        ]
+        unique_document_ids = sorted(dict.fromkeys(document_ids))
+        if not unique_document_ids:
+            return None
+        if len(unique_document_ids) == 1:
+            return {"document_id": unique_document_ids[0]}
+        return {"document_id": unique_document_ids}
+
+    def _question_mentions_alias(self, lowered_question: str, alias: str) -> bool:
+        lowered_alias = alias.lower()
+        if " " in lowered_alias:
+            return lowered_alias in lowered_question
+        return bool(
+            re.search(rf"(?<![a-z0-9]){re.escape(lowered_alias)}(?![a-z0-9])", lowered_question)
+        )
 
     def _retriever_for(self, chunks: list[DocumentChunk]):
         if self.retrieval_mode == "tfidf":
@@ -202,7 +347,14 @@ class RAGAssistant:
                 "retrieval": {"k": k, "result_count": 0, "source_filters": source_filters or {}},
                 "limitations": ["requires_current_jurisdiction_or_professional_review"],
             }
-        results = self.retrieve(question, k=k, source_filters=source_filters)
+        requested_source_filters = source_filters or {}
+        effective_source_filters = self._effective_source_filters(question, source_filters)
+        inferred_source_filters = {
+            key: value
+            for key, value in (effective_source_filters or {}).items()
+            if requested_source_filters.get(key) != value
+        }
+        results = self.retrieve(question, k=k, source_filters=effective_source_filters)
         weak_coverage = self._weak_lexical_coverage(question, results)
         if not results or weak_coverage:
             return {
@@ -214,8 +366,9 @@ class RAGAssistant:
                     "k": k,
                     "result_count": len(results),
                     "reason": "no_results" if not results else "weak_lexical_coverage",
-                    "source_filters": source_filters or {},
-                    "filtered_corpus_size": len(self._filtered_chunks(source_filters)),
+                    "source_filters": effective_source_filters or {},
+                    "inferred_source_filters": inferred_source_filters,
+                    "filtered_corpus_size": len(self._filtered_chunks(effective_source_filters)),
                 },
                 "limitations": ["synthetic_corpus_does_not_support_question"],
             }
@@ -268,8 +421,9 @@ class RAGAssistant:
                 "result_count": len(results),
                 "top_score": citations[0]["score"] if citations else 0,
                 "mode": self.retrieval_mode,
-                "source_filters": source_filters or {},
-                "filtered_corpus_size": len(self._filtered_chunks(source_filters)),
+                "source_filters": effective_source_filters or {},
+                "inferred_source_filters": inferred_source_filters,
+                "filtered_corpus_size": len(self._filtered_chunks(effective_source_filters)),
             },
             "citation_check": faithfulness,
             "limitations": limitations,

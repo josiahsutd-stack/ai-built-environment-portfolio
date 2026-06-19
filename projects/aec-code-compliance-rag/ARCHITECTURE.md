@@ -32,7 +32,7 @@ flowchart LR
 | Source manifest | `src/aec_code_compliance_rag/source_manifest.py` | Loads `source_manifest.json` and applies source title, type, allowed-use, jurisdiction, version, and superseded metadata. |
 | Public sources | `src/aec_code_compliance_rag/public_sources.py` | Downloads official public Singapore source documents to an ignored local folder and generates source metadata for retrieval. |
 | Retrieval | `src/aec_code_compliance_rag/retrieval.py` | Provides TF-IDF, BM25, dense LSA, hybrid retrieval, and optional sentence-transformer/cross-encoder modes over local chunks. |
-| Assistant | `src/aec_code_compliance_rag/assistant.py` | Builds the retrieval boundary, applies source filters, handles questions, formats citations, checks source status, checks support, and returns abstention statuses. |
+| Assistant | `src/aec_code_compliance_rag/assistant.py` | Builds the retrieval boundary, applies explicit and inferred authority/document source filters, handles questions, formats citations, checks source status, checks support, and returns abstention statuses. |
 | Faithfulness | `src/aec_code_compliance_rag/faithfulness.py` | Applies deterministic citation-marker and lexical-support checks for demo answers. |
 | Observability | `src/aec_code_compliance_rag/observability.py` | Persists local query metadata to SQLite for review and debugging. |
 | Evaluation | `src/aec_code_compliance_rag/evaluation.py` | Loads evaluation cases and computes retrieval metrics. |
@@ -77,7 +77,9 @@ The default retriever combines local TF-IDF and BM25 scores, then applies a smal
 
 Optional `semantic` and `hybrid_cross_encoder` modes use `sentence-transformers` for embedding retrieval and cross-encoder reranking. They are useful extension points, but the default review path does not require downloading model weights.
 
-The assistant can rebuild a temporary retriever over a filtered source subset for a query. Supported local filters include jurisdiction, source type, and superseded status. In a deployment-oriented extension, the same assistant boundary could support:
+The assistant can rebuild a temporary retriever over a filtered source subset for a query. Supported local filters include jurisdiction, source type, and superseded status. For the Singapore public-source corpus, the assistant also applies conservative authority and document-family inference. A question that names BCA, PUB, NParks, URA, NEA, SCDF, or LTA is restricted to that publisher when matching sources exist. A question that names a specific document family, such as BCA Code on Accessibility, PUB Surface Water Drainage, or NParks Greenery Provision and Tree Conservation, is restricted to that document ID. Manual source filters still take precedence.
+
+In a deployment-oriented extension, the same assistant boundary could support:
 
 - Hosted or local embedding retrieval combined with the current portable baselines.
 - Cross-encoder or LLM reranking.

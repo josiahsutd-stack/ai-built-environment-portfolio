@@ -102,6 +102,7 @@ Optional modes `semantic` and `hybrid_cross_encoder` are exposed in the app and 
 - Whether citations preserve chunk IDs and section metadata.
 - Whether PDF extraction preserves source filename, section heading, and page-aware citation metadata.
 - Whether source manifest metadata and source filters are covered by regression tests.
+- Whether authority/document inference keeps named-agency questions inside the intended BCA, URA, NEA, SCDF, LTA, PUB, or NParks source family.
 - Whether retrieval-mode changes improve or degrade recall, hit@3, MRR, and status accuracy.
 - Whether retrieval can support answer generation without paid APIs.
 - Whether no-answer, unsupported-scope, prompt-injection, and professional-review questions avoid invented compliance requirements.

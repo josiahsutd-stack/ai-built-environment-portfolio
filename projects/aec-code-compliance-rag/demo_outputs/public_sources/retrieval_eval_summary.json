@@ -4,9 +4,9 @@
     "answerable_case_count": 15,
     "k": 4,
     "recall_at_k": 1.0,
-    "precision_at_k": 0.833,
+    "precision_at_k": 0.933,
     "hit_rate": 1.0,
-    "mean_reciprocal_rank": 0.922,
+    "mean_reciprocal_rank": 1.0,
     "section_hit_rate": 1.0,
     "citation_coverage": 1.0,
     "grounding_check_rate": 1.0,
@@ -15,8 +15,8 @@
     "answer_sentence_support_rate": 1.0,
     "unsupported_sentence_rate": 0.0,
     "citation_warning_count": 0,
-    "average_latency_ms": 46.12,
-    "retrieval_hit_at_1": 0.867,
+    "average_latency_ms": 72.25,
+    "retrieval_hit_at_1": 1.0,
     "retrieval_hit_at_3": 1.0,
     "no_answer_accuracy": null,
     "unsupported_scope_accuracy": 1.0
@@ -30,22 +30,22 @@
         "bca_code_on_accessibility_2025-code-on-accessibility-in-the-built-environment-2025-p9-000",
         "bca_code_on_accessibility_2025-8-i-n-t-r-o-d-u-c-t-i-o-n-p8-000",
         "bca_code_on_accessibility_2025-8-i-n-t-r-o-d-u-c-t-i-o-n-p8-001",
-        "nea_code_of_practice_environmental_health_2025-code-of-practice-on-environmental-health-2025-edition-p38-002"
+        "bca_code_on_accessibility_2025-code-on-accessibility-in-the-built-environment-2025-p61-000"
       ],
       "retrieved_sources": [
         "bca_code_on_accessibility_2025.pdf",
         "bca_code_on_accessibility_2025.pdf",
         "bca_code_on_accessibility_2025.pdf",
-        "nea_code_of_practice_environmental_health_2025.pdf"
+        "bca_code_on_accessibility_2025.pdf"
       ],
       "retrieved_sections": [
         "Code on Accessibility in the Built Environment 2025",
         "8  I N T R O D U C T I O N",
         "8  I N T R O D U C T I O N",
-        "Code of Practice on Environmental Health (2025 Edition)"
+        "Code on Accessibility in the Built Environment 2025"
       ],
       "recall_at_k": 1.0,
-      "precision_at_k": 0.75,
+      "precision_at_k": 1.0,
       "hit_rate": 1.0,
       "reciprocal_rank": 1.0,
       "section_hit": true,
@@ -55,11 +55,11 @@
       "actual_status": "answered",
       "status_correct": true,
       "citation_check_passed": true,
-      "answer_sentence_count": 14,
+      "answer_sentence_count": 12,
       "answer_sentence_support_rate": 1.0,
       "unsupported_sentence_count": 0,
       "citation_warning_count": 0,
-      "latency_ms": 56,
+      "latency_ms": 81,
       "simple_grounding_check": true,
       "missing_terms": []
     },
@@ -70,20 +70,20 @@
       "retrieved_chunk_ids": [
         "bca_code_on_accessibility_2025-8-i-n-t-r-o-d-u-c-t-i-o-n-p8-001",
         "bca_code_on_accessibility_2025-8-i-n-t-r-o-d-u-c-t-i-o-n-p8-000",
-        "nparks_greenery_tree_conservation_2025-6-p122-002",
-        "bca_green_mark_2021_certification_standard_2nd_ed-page-12-of-33-p12-000"
+        "bca_green_mark_2021_certification_standard_2nd_ed-page-12-of-33-p12-000",
+        "bca_green_mark_2021_certification_standard_2nd_ed-page-11-of-33-p11-002"
       ],
       "retrieved_sources": [
         "bca_code_on_accessibility_2025.pdf",
         "bca_code_on_accessibility_2025.pdf",
-        "nparks_greenery_tree_conservation_2025.pdf",
+        "bca_green_mark_2021_certification_standard_2nd_ed.pdf",
         "bca_green_mark_2021_certification_standard_2nd_ed.pdf"
       ],
       "retrieved_sections": [
         "8  I N T R O D U C T I O N",
         "8  I N T R O D U C T I O N",
-        "6",
-        "Page 12 of 33"
+        "Page 12 of 33",
+        "Page 11 of 33"
       ],
       "recall_at_k": 1.0,
       "precision_at_k": 0.5,
@@ -100,7 +100,7 @@
       "answer_sentence_support_rate": 1.0,
       "unsupported_sentence_count": 0,
       "citation_warning_count": 0,
-      "latency_ms": 41,
+      "latency_ms": 114,
       "simple_grounding_check": true,
       "missing_terms": []
     },
@@ -112,7 +112,7 @@
         "bca_approved_document_v7_07-building-and-construction-authority-page-1-of-65-p24-001",
         "bca_approved_document_v7_07-building-and-construction-authority-page-1-of-65-p24-000",
         "bca_approved_document_v7_07-building-and-construction-authority-page-1-of-65-p24-002",
-        "bca_approved_document_v7_07-building-and-construction-authority-page-2-of-65-p25-000"
+        "bca_approved_document_v7_07-building-and-construction-authority-page-52-of-62-p75-001"
       ],
       "retrieved_sources": [
         "bca_approved_document_v7_07.pdf",
@@ -124,7 +124,7 @@
         "Building and Construction Authority  Page 1 of 65",
         "Building and Construction Authority  Page 1 of 65",
         "Building and Construction Authority  Page 1 of 65",
-        "Building and Construction Authority  Page 2 of 65"
+        "Building and Construction Authority  Page 52 of 62"
       ],
       "recall_at_k": 1.0,
       "precision_at_k": 1.0,
@@ -141,7 +141,7 @@
       "answer_sentence_support_rate": 1.0,
       "unsupported_sentence_count": 0,
       "citation_warning_count": 0,
-      "latency_ms": 39,
+      "latency_ms": 53,
       "simple_grounding_check": true,
       "missing_terms": []
     },
@@ -153,7 +153,7 @@
         "bca_green_mark_2021_certification_standard_2nd_ed-page-10-of-33-p10-003",
         "bca_green_mark_2021_certification_standard_2nd_ed-page-10-of-33-p10-002",
         "bca_green_mark_2021_certification_standard_2nd_ed-page-2-of-33-p2-000",
-        "bca_green_mark_2021_certification_standard_2nd_ed-page-3-of-33-p3-000"
+        "bca_green_mark_2021_certification_standard_2nd_ed-certification-standard-p1-000"
       ],
       "retrieved_sources": [
         "bca_green_mark_2021_certification_standard_2nd_ed.pdf",
@@ -165,7 +165,7 @@
         "Page 10 of 33",
         "Page 10 of 33",
         "Page 2 of 33",
-        "Page 3 of 33"
+        "CERTIFICATION STANDARD"
       ],
       "recall_at_k": 1.0,
       "precision_at_k": 1.0,
@@ -182,7 +182,7 @@
       "answer_sentence_support_rate": 1.0,
       "unsupported_sentence_count": 0,
       "citation_warning_count": 0,
-      "latency_ms": 39,
+      "latency_ms": 35,
       "simple_grounding_check": true,
       "missing_terms": []
     },
@@ -191,10 +191,10 @@
       "expected_source": "scdf_fire_code_2023.pdf",
       "expected_section": null,
       "retrieved_chunk_ids": [
+        "scdf_fire_code_2023-code-of-practice-for-fire-p1-000",
         "scdf_fire_code_2023-amendment-history-chapter-3-structural-fire-precautions-p109-005",
-        "scdf_fire_code_2023-clause-11-3-assessment-and-validation-p253-004",
         "scdf_fire_code_2023-amendment-history-chapter-1-general-p31-000",
-        "scdf_fire_code_2023-code-of-practice-for-fire-p1-000"
+        "scdf_fire_code_2023-clause-11-3-assessment-and-validation-p253-004"
       ],
       "retrieved_sources": [
         "scdf_fire_code_2023.pdf",
@@ -203,10 +203,10 @@
         "scdf_fire_code_2023.pdf"
       ],
       "retrieved_sections": [
+        "CODE OF PRACTICE FOR FIRE",
         "Amendment History - Chapter 3 - Structural Fire Precautions",
-        "CLAUSE 11.3 ASSESSMENT AND VALIDATION",
         "Amendment History - Chapter 1 - General",
-        "CODE OF PRACTICE FOR FIRE"
+        "CLAUSE 11.3 ASSESSMENT AND VALIDATION"
       ],
       "recall_at_k": 1.0,
       "precision_at_k": 1.0,
@@ -219,11 +219,11 @@
       "actual_status": "answered",
       "status_correct": true,
       "citation_check_passed": true,
-      "answer_sentence_count": 11,
+      "answer_sentence_count": 9,
       "answer_sentence_support_rate": 1.0,
       "unsupported_sentence_count": 0,
       "citation_warning_count": 0,
-      "latency_ms": 70,
+      "latency_ms": 339,
       "simple_grounding_check": true,
       "missing_terms": []
     },
@@ -258,10 +258,10 @@
       "expected_source": "ura_gfa_handbook_advisory_notes.md",
       "expected_section": null,
       "retrieved_chunk_ids": [
-        "ura_gfa_handbook_advisory_notes-ura-gross-floor-area-handbook-advisory-notes-006",
-        "ura_gfa_handbook_advisory_notes-ura-gfa-handbook-advisory-notes-000",
         "ura_gfa_handbook_advisory_notes-advisory-notes-000",
-        "ura_gfa_handbook_advisory_notes-ura-gross-floor-area-handbook-advisory-notes-000"
+        "ura_gfa_handbook_advisory_notes-ura-gross-floor-area-handbook-advisory-notes-006",
+        "ura_gfa_handbook_advisory_notes-ura-gross-floor-area-handbook-advisory-notes-000",
+        "ura_gfa_handbook_advisory_notes-ura-gfa-handbook-advisory-notes-000"
       ],
       "retrieved_sources": [
         "ura_gfa_handbook_advisory_notes.md",
@@ -270,10 +270,10 @@
         "ura_gfa_handbook_advisory_notes.md"
       ],
       "retrieved_sections": [
-        "URA Gross Floor Area Handbook - Advisory Notes",
-        "ura_gfa_handbook_advisory_notes",
         "Advisory Notes",
-        "URA Gross Floor Area Handbook - Advisory Notes"
+        "URA Gross Floor Area Handbook - Advisory Notes",
+        "URA Gross Floor Area Handbook - Advisory Notes",
+        "ura_gfa_handbook_advisory_notes"
       ],
       "recall_at_k": 1.0,
       "precision_at_k": 1.0,
@@ -286,11 +286,11 @@
       "actual_status": "answered",
       "status_correct": true,
       "citation_check_passed": true,
-      "answer_sentence_count": 11,
+      "answer_sentence_count": 13,
       "answer_sentence_support_rate": 1.0,
       "unsupported_sentence_count": 0,
       "citation_warning_count": 0,
-      "latency_ms": 65,
+      "latency_ms": 28,
       "simple_grounding_check": true,
       "missing_terms": []
     },
@@ -300,24 +300,24 @@
       "expected_section": null,
       "retrieved_chunk_ids": [
         "ura_gfa_guidelines_at_a_glance-guidelines-at-a-glance-gross-floor-area-p1-000",
-        "ura_gfa_guidelines_at_a_glance-items-excluded-from-p3-000",
         "ura_gfa_guidelines_at_a_glance-items-excluded-from-p2-000",
-        "ura_gfa_handbook_advisory_notes-ura-gross-floor-area-handbook-advisory-notes-000"
+        "ura_gfa_guidelines_at_a_glance-items-excluded-from-p3-000",
+        "ura_gfa_guidelines_at_a_glance-items-excluded-from-p2-001"
       ],
       "retrieved_sources": [
         "ura_gfa_guidelines_at_a_glance.pdf",
         "ura_gfa_guidelines_at_a_glance.pdf",
         "ura_gfa_guidelines_at_a_glance.pdf",
-        "ura_gfa_handbook_advisory_notes.md"
+        "ura_gfa_guidelines_at_a_glance.pdf"
       ],
       "retrieved_sections": [
         "Guidelines at a Glance: Gross Floor Area",
         "Items  Excluded from",
         "Items  Excluded from",
-        "URA Gross Floor Area Handbook - Advisory Notes"
+        "Items  Excluded from"
       ],
       "recall_at_k": 1.0,
-      "precision_at_k": 0.75,
+      "precision_at_k": 1.0,
       "hit_rate": 1.0,
       "reciprocal_rank": 1.0,
       "section_hit": true,
@@ -331,7 +331,7 @@
       "answer_sentence_support_rate": 1.0,
       "unsupported_sentence_count": 0,
       "citation_warning_count": 0,
-      "latency_ms": 34,
+      "latency_ms": 20,
       "simple_grounding_check": true,
       "missing_terms": []
     },
@@ -372,7 +372,7 @@
       "answer_sentence_support_rate": 1.0,
       "unsupported_sentence_count": 0,
       "citation_warning_count": 0,
-      "latency_ms": 36,
+      "latency_ms": 40,
       "simple_grounding_check": true,
       "missing_terms": []
     },
@@ -382,9 +382,9 @@
       "expected_section": null,
       "retrieved_chunk_ids": [
         "lta_code_of_practice_works_on_public_streets_2025-code-of-practice-for-works-on-public-streets-12-p12-001",
+        "lta_code_of_practice_works_on_public_streets_2025-code-of-practice-for-works-on-public-streets-54-p54-000",
         "lta_code_of_practice_works_on_public_streets_2025-code-of-practice-for-works-on-public-streets-7-p7-001",
-        "lta_code_of_practice_works_on_public_streets_2025-code-of-practice-for-works-on-public-streets-40-p40-000",
-        "lta_code_of_practice_works_on_public_streets_2025-code-of-practice-for-works-on-public-streets-77-p77-000"
+        "lta_code_of_practice_works_on_public_streets_2025-code-of-practice-for-works-on-public-streets-40-p40-000"
       ],
       "retrieved_sources": [
         "lta_code_of_practice_works_on_public_streets_2025.pdf",
@@ -394,9 +394,9 @@
       ],
       "retrieved_sections": [
         "Code of Practice for Works on Public Streets  12",
+        "Code of Practice for Works on Public Streets  54",
         "Code of Practice for Works on Public Streets  7",
-        "Code of Practice for Works on Public Streets  40",
-        "Code of Practice for Works on Public Streets  77"
+        "Code of Practice for Works on Public Streets  40"
       ],
       "recall_at_k": 1.0,
       "precision_at_k": 1.0,
@@ -413,7 +413,7 @@
       "answer_sentence_support_rate": 1.0,
       "unsupported_sentence_count": 0,
       "citation_warning_count": 0,
-      "latency_ms": 38,
+      "latency_ms": 61,
       "simple_grounding_check": true,
       "missing_terms": []
     },
@@ -423,24 +423,24 @@
       "expected_section": null,
       "retrieved_chunk_ids": [
         "lta_code_of_practice_railway_protection_2024-21-p-a-g-e-p22-000",
-        "lta_code_of_practice_works_on_public_streets_2025-code-of-practice-for-works-on-public-streets-38-p38-001",
-        "lta_code_of_practice_railway_protection_2024-2024-edition-p1-000",
-        "lta_code_of_practice_railway_protection_2024-64-p-a-g-e-p65-000"
+        "lta_code_of_practice_railway_protection_2024-64-p-a-g-e-p65-000",
+        "lta_code_of_practice_railway_protection_2024-4-p-a-g-e-p5-000",
+        "lta_code_of_practice_railway_protection_2024-2024-edition-p1-000"
       ],
       "retrieved_sources": [
         "lta_code_of_practice_railway_protection_2024.pdf",
-        "lta_code_of_practice_works_on_public_streets_2025.pdf",
+        "lta_code_of_practice_railway_protection_2024.pdf",
         "lta_code_of_practice_railway_protection_2024.pdf",
         "lta_code_of_practice_railway_protection_2024.pdf"
       ],
       "retrieved_sections": [
         "21 | P a g e",
-        "Code of Practice for Works on Public Streets  38",
-        "2024 EDITION",
-        "64 | P a g e"
+        "64 | P a g e",
+        "4 | P a g e",
+        "2024 EDITION"
       ],
       "recall_at_k": 1.0,
-      "precision_at_k": 0.75,
+      "precision_at_k": 1.0,
       "hit_rate": 1.0,
       "reciprocal_rank": 1.0,
       "section_hit": true,
@@ -454,7 +454,7 @@
       "answer_sentence_support_rate": 1.0,
       "unsupported_sentence_count": 0,
       "citation_warning_count": 0,
-      "latency_ms": 40,
+      "latency_ms": 54,
       "simple_grounding_check": true,
       "missing_terms": []
     },
@@ -466,7 +466,7 @@
         "pub_codes_of_practice_and_standard_drawings-codes-of-practice-and-standard-drawings-003",
         "pub_codes_of_practice_and_standard_drawings-codes-of-practice-and-standard-drawings-005",
         "pub_codes_of_practice_and_standard_drawings-codes-of-practice-and-standard-drawings-001",
-        "pub_codes_of_practice_and_standard_drawings-codes-of-practice-and-standard-drawings-002"
+        "pub_codes_of_practice_and_standard_drawings-pub-codes-of-practice-and-standard-drawings-000"
       ],
       "retrieved_sources": [
         "pub_codes_of_practice_and_standard_drawings.md",
@@ -478,7 +478,7 @@
         "Codes of Practice and Standard Drawings",
         "Codes of Practice and Standard Drawings",
         "Codes of Practice and Standard Drawings",
-        "Codes of Practice and Standard Drawings"
+        "PUB Codes of Practice and Standard Drawings"
       ],
       "recall_at_k": 1.0,
       "precision_at_k": 1.0,
@@ -495,7 +495,7 @@
       "answer_sentence_support_rate": 1.0,
       "unsupported_sentence_count": 0,
       "citation_warning_count": 0,
-      "latency_ms": 75,
+      "latency_ms": 35,
       "simple_grounding_check": true,
       "missing_terms": []
     },
@@ -505,62 +505,21 @@
       "expected_section": null,
       "retrieved_chunk_ids": [
         "pub_surface_water_drainage_cop_2025-1-p12-002",
+        "pub_surface_water_drainage_cop_2025-ii-p2-000",
         "pub_surface_water_drainage_cop_2025-26-p37-000",
-        "pub_codes_of_practice_and_standard_drawings-codes-of-practice-and-standard-drawings-002",
-        "pub_surface_water_drainage_cop_2025-ii-p2-000"
+        "pub_surface_water_drainage_cop_2025-code-of-practice-p1-000"
       ],
       "retrieved_sources": [
         "pub_surface_water_drainage_cop_2025.pdf",
         "pub_surface_water_drainage_cop_2025.pdf",
-        "pub_codes_of_practice_and_standard_drawings.md",
+        "pub_surface_water_drainage_cop_2025.pdf",
         "pub_surface_water_drainage_cop_2025.pdf"
       ],
       "retrieved_sections": [
         "1",
+        "II",
         "26",
-        "Codes of Practice and Standard Drawings",
-        "II"
-      ],
-      "recall_at_k": 1.0,
-      "precision_at_k": 0.75,
-      "hit_rate": 1.0,
-      "reciprocal_rank": 1.0,
-      "section_hit": true,
-      "citation_coverage": 1.0,
-      "no_answer_correct": false,
-      "expected_status": "answered",
-      "actual_status": "answered",
-      "status_correct": true,
-      "citation_check_passed": true,
-      "answer_sentence_count": 10,
-      "answer_sentence_support_rate": 1.0,
-      "unsupported_sentence_count": 0,
-      "citation_warning_count": 0,
-      "latency_ms": 61,
-      "simple_grounding_check": true,
-      "missing_terms": []
-    },
-    {
-      "question": "Before design starts, what PUB sewerage information must be obtained for sewers and pumping mains?",
-      "expected_source": "pub_sewerage_sanitary_works_2025.pdf",
-      "expected_section": null,
-      "retrieved_chunk_ids": [
-        "pub_sewerage_sanitary_works_2025-1-p-a-g-e-p9-000",
-        "pub_sewerage_sanitary_works_2025-42-p-a-g-e-p50-000",
-        "pub_sewerage_sanitary_works_2025-42-p-a-g-e-p50-001",
-        "pub_sewerage_sanitary_works_2025-14-p-a-g-e-p22-002"
-      ],
-      "retrieved_sources": [
-        "pub_sewerage_sanitary_works_2025.pdf",
-        "pub_sewerage_sanitary_works_2025.pdf",
-        "pub_sewerage_sanitary_works_2025.pdf",
-        "pub_sewerage_sanitary_works_2025.pdf"
-      ],
-      "retrieved_sections": [
-        "1 | P a g e",
-        "42 | P a g e",
-        "42 | P a g e",
-        "14 | P a g e"
+        "CODE OF PRACTICE"
       ],
       "recall_at_k": 1.0,
       "precision_at_k": 1.0,
@@ -573,11 +532,52 @@
       "actual_status": "answered",
       "status_correct": true,
       "citation_check_passed": true,
-      "answer_sentence_count": 14,
+      "answer_sentence_count": 9,
       "answer_sentence_support_rate": 1.0,
       "unsupported_sentence_count": 0,
       "citation_warning_count": 0,
-      "latency_ms": 68,
+      "latency_ms": 50,
+      "simple_grounding_check": true,
+      "missing_terms": []
+    },
+    {
+      "question": "Before design starts, what PUB sewerage information must be obtained for sewers and pumping mains?",
+      "expected_source": "pub_sewerage_sanitary_works_2025.pdf",
+      "expected_section": null,
+      "retrieved_chunk_ids": [
+        "pub_sewerage_sanitary_works_2025-1-p-a-g-e-p9-000",
+        "pub_sewerage_sanitary_works_2025-42-p-a-g-e-p50-000",
+        "pub_sewerage_sanitary_works_2025-14-p-a-g-e-p22-002",
+        "pub_sewerage_sanitary_works_2025-42-p-a-g-e-p50-001"
+      ],
+      "retrieved_sources": [
+        "pub_sewerage_sanitary_works_2025.pdf",
+        "pub_sewerage_sanitary_works_2025.pdf",
+        "pub_sewerage_sanitary_works_2025.pdf",
+        "pub_sewerage_sanitary_works_2025.pdf"
+      ],
+      "retrieved_sections": [
+        "1 | P a g e",
+        "42 | P a g e",
+        "14 | P a g e",
+        "42 | P a g e"
+      ],
+      "recall_at_k": 1.0,
+      "precision_at_k": 1.0,
+      "hit_rate": 1.0,
+      "reciprocal_rank": 1.0,
+      "section_hit": true,
+      "citation_coverage": 1.0,
+      "no_answer_correct": false,
+      "expected_status": "answered",
+      "actual_status": "answered",
+      "status_correct": true,
+      "citation_check_passed": true,
+      "answer_sentence_count": 16,
+      "answer_sentence_support_rate": 1.0,
+      "unsupported_sentence_count": 0,
+      "citation_warning_count": 0,
+      "latency_ms": 82,
       "simple_grounding_check": true,
       "missing_terms": []
     },
@@ -586,27 +586,68 @@
       "expected_source": "nparks_greenery_tree_conservation_2025.pdf",
       "expected_section": null,
       "retrieved_chunk_ids": [
-        "nparks_development_plan_submission-latest-resources-view-all-resources-000",
-        "bca_green_mark_2021_certification_standard_2nd_ed-page-32-of-33-p32-000",
+        "nparks_greenery_tree_conservation_2025-1-p9-000",
         "nparks_greenery_tree_conservation_2025-80-p80-000",
+        "nparks_greenery_tree_conservation_2025-152-p152-000",
         "nparks_greenery_tree_conservation_2025-iguidelines-on-greenery-provision-and-tree-conservation-for-developments-p4-000"
       ],
       "retrieved_sources": [
-        "nparks_development_plan_submission.md",
-        "bca_green_mark_2021_certification_standard_2nd_ed.pdf",
+        "nparks_greenery_tree_conservation_2025.pdf",
+        "nparks_greenery_tree_conservation_2025.pdf",
         "nparks_greenery_tree_conservation_2025.pdf",
         "nparks_greenery_tree_conservation_2025.pdf"
       ],
       "retrieved_sections": [
-        "Latest resources View all resources",
-        "Page 32 of 33",
+        "1",
         "80",
+        "152",
         "iGuidelines on Greenery Provision and Tree Conservation for Developments"
+      ],
+      "recall_at_k": 1.0,
+      "precision_at_k": 1.0,
+      "hit_rate": 1.0,
+      "reciprocal_rank": 1.0,
+      "section_hit": true,
+      "citation_coverage": 1.0,
+      "no_answer_correct": false,
+      "expected_status": "answered",
+      "actual_status": "answered",
+      "status_correct": true,
+      "citation_check_passed": true,
+      "answer_sentence_count": 7,
+      "answer_sentence_support_rate": 1.0,
+      "unsupported_sentence_count": 0,
+      "citation_warning_count": 0,
+      "latency_ms": 72,
+      "simple_grounding_check": true,
+      "missing_terms": []
+    },
+    {
+      "question": "Which project stages does the NParks Greenery and Development Planning Branch work with developers and QPs on?",
+      "expected_source": "nparks_development_plan_submission.md",
+      "expected_section": null,
+      "retrieved_chunk_ids": [
+        "nparks_development_plan_submission-development-plan-submission-000",
+        "nparks_greenery_tree_conservation_2025-1-p9-000",
+        "nparks_greenery_tree_conservation_2025-154-p154-000",
+        "nparks_development_plan_submission-nparks-development-plan-submission-000"
+      ],
+      "retrieved_sources": [
+        "nparks_development_plan_submission.md",
+        "nparks_greenery_tree_conservation_2025.pdf",
+        "nparks_greenery_tree_conservation_2025.pdf",
+        "nparks_development_plan_submission.md"
+      ],
+      "retrieved_sections": [
+        "Development plan submission",
+        "1",
+        "154",
+        "nparks_development_plan_submission"
       ],
       "recall_at_k": 1.0,
       "precision_at_k": 0.5,
       "hit_rate": 1.0,
-      "reciprocal_rank": 0.333,
+      "reciprocal_rank": 1.0,
       "section_hit": true,
       "citation_coverage": 1.0,
       "no_answer_correct": false,
@@ -618,48 +659,7 @@
       "answer_sentence_support_rate": 1.0,
       "unsupported_sentence_count": 0,
       "citation_warning_count": 0,
-      "latency_ms": 37,
-      "simple_grounding_check": true,
-      "missing_terms": []
-    },
-    {
-      "question": "Which project stages does the NParks Greenery and Development Planning Branch work with developers and QPs on?",
-      "expected_source": "nparks_development_plan_submission.md",
-      "expected_section": null,
-      "retrieved_chunk_ids": [
-        "nparks_greenery_tree_conservation_2025-1-p9-000",
-        "nparks_development_plan_submission-development-plan-submission-000",
-        "nparks_development_plan_submission-nparks-development-plan-submission-000",
-        "nparks_greenery_tree_conservation_2025-154-p154-000"
-      ],
-      "retrieved_sources": [
-        "nparks_greenery_tree_conservation_2025.pdf",
-        "nparks_development_plan_submission.md",
-        "nparks_development_plan_submission.md",
-        "nparks_greenery_tree_conservation_2025.pdf"
-      ],
-      "retrieved_sections": [
-        "1",
-        "Development plan submission",
-        "nparks_development_plan_submission",
-        "154"
-      ],
-      "recall_at_k": 1.0,
-      "precision_at_k": 0.5,
-      "hit_rate": 1.0,
-      "reciprocal_rank": 0.5,
-      "section_hit": true,
-      "citation_coverage": 1.0,
-      "no_answer_correct": false,
-      "expected_status": "answered",
-      "actual_status": "answered",
-      "status_correct": true,
-      "citation_check_passed": true,
-      "answer_sentence_count": 10,
-      "answer_sentence_support_rate": 1.0,
-      "unsupported_sentence_count": 0,
-      "citation_warning_count": 0,
-      "latency_ms": 39,
+      "latency_ms": 92,
       "simple_grounding_check": true,
       "missing_terms": []
     }

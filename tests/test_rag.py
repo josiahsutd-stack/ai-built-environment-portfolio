@@ -326,6 +326,63 @@ def test_source_filters_limit_retrieval_and_answer_citations() -> None:
     }
 
 
+def test_authority_aware_filter_limits_named_agency_questions() -> None:
+    bca_chunks = chunk_text(
+        """
+        ## Code on Accessibility
+
+        The BCA Code on Accessibility sets minimum design requirements for accessible and inclusive buildings.
+        """,
+        source="bca_accessibility.pdf",
+        metadata_overrides={
+            "document_id": "bca_code_on_accessibility_2025",
+            "publisher": "Building and Construction Authority, Singapore",
+            "allowed_use": "official_public_download_for_local_reference_only",
+        },
+    )
+    nea_chunks = chunk_text(
+        """
+        ## Sanitary Facilities
+
+        NEA sanitary guidance mentions BCA accessibility provisions for toilets and family facilities.
+        """,
+        source="nea_environmental_health.pdf",
+        metadata_overrides={
+            "publisher": "National Environment Agency, Singapore",
+            "allowed_use": "official_public_download_for_local_reference_only",
+        },
+    )
+    assistant = RAGAssistant(bca_chunks + nea_chunks, min_score=0)
+
+    document_response = assistant.answer("What does the BCA Code on Accessibility set out?", k=4)
+
+    assert document_response["status"] == "answered"
+    assert document_response["retrieval"]["source_filters"] == {
+        "document_id": "bca_code_on_accessibility_2025"
+    }
+    assert document_response["retrieval"]["inferred_source_filters"] == {
+        "document_id": "bca_code_on_accessibility_2025"
+    }
+    assert document_response["sources"]
+    assert {source["publisher"] for source in document_response["sources"]} == {
+        "Building and Construction Authority, Singapore"
+    }
+
+    authority_response = assistant.answer("What does BCA say about accessible buildings?", k=4)
+
+    assert authority_response["status"] == "answered"
+    assert authority_response["retrieval"]["source_filters"] == {
+        "publisher": "Building and Construction Authority, Singapore"
+    }
+    assert authority_response["retrieval"]["inferred_source_filters"] == {
+        "publisher": "Building and Construction Authority, Singapore"
+    }
+    assert authority_response["sources"]
+    assert {source["publisher"] for source in authority_response["sources"]} == {
+        "Building and Construction Authority, Singapore"
+    }
+
+
 def test_rag_answers_with_page_aware_pdf_citation(tmp_path: Path) -> None:
     pdf_path = tmp_path / "fixture.pdf"
     _write_pdf_fixture(pdf_path)
