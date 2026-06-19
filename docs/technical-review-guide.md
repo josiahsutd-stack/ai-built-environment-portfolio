@@ -6,12 +6,12 @@ This document is written for recruiters and technical reviewers. It summarizes w
 
 ### AEC Code Compliance RAG Assistant
 
-- Review signal: source-grounded AEC RAG with Markdown/PDF ingestion, source manifests, metadata-filtered retrieval, page-aware chunking, retrieval-mode ablation, citation formatting, retrieval evaluation, demo outputs, tests, and explicit limitations.
-- Architecture evidence: synthetic Markdown/PDF guidance -> source manifest -> section/page-aware chunks -> filtered TF-IDF/BM25/dense LSA/hybrid retrieval -> citation-bearing answer -> retrieval eval and ablation -> demo outputs.
+- Review signal: source-grounded AEC RAG with Markdown/PDF ingestion, Singapore public-source downloading, source manifests, metadata-filtered retrieval, page-aware chunking, retrieval-mode ablation, citation formatting, retrieval evaluation, demo outputs, tests, and explicit limitations.
+- Architecture evidence: synthetic Markdown/PDF guidance or downloaded Singapore BCA/URA/NEA/SCDF/LTA public sources -> source manifest -> section/page-aware chunks -> filtered TF-IDF/BM25/dense LSA/hybrid retrieval -> citation-bearing answer -> retrieval eval and ablation -> demo outputs.
 - Engineering rationale: compliance-oriented AI should expose evidence, metadata, uncertainty, and no-result behavior before answer polish.
-- Limitations to note: synthetic corpus, text-based PDF extraction only, portable local retrieval baselines, no live building-code validation, and no professional compliance advice.
+- Limitations to note: synthetic corpus by default, public PDFs downloaded locally and not redistributed, text-based PDF extraction only, portable local retrieval baselines, no authority approval or live amendment validation, and no professional compliance advice.
 - Technical question supported: "How do you evaluate and cite an AEC RAG system?" Evidence includes `EVAL.md`, `ARCHITECTURE.md`, `evaluate_retrieval.py`, `demo_outputs/`, and `tests/test_rag.py`.
-- Next extension: layout-aware PDF/OCR/table parsing, authorized source inventory validation, embedding retrieval, reranking, stronger answer-faithfulness checks, and expert approval workflow.
+- Next extension: layout-aware PDF/OCR/table parsing, Singapore amendment/source refresh validation, embedding retrieval, reranking, stronger answer-faithfulness checks, and expert approval workflow.
 
 ## Supporting Review Projects
 

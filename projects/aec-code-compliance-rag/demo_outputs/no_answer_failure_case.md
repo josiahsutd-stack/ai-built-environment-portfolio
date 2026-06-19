@@ -1,6 +1,6 @@
-# Demo Failure Case: Missing Evidence
+# Demo Abstention Case
 
-Synthetic demo output. Not legal, code, or professional compliance advice.
+Synthetic demo demo output. Not legal, code, engineering, architectural, or professional compliance advice.
 
 **Question:** What drone landing pad radius applies to rooftop aircraft operations?
 
@@ -10,9 +10,13 @@ The synthetic corpus does not contain aviation or rooftop aircraft requirements,
 
 ## Actual Local Response
 
-I could not find grounded evidence in the demo documents.
+I could not find grounded evidence in the local corpus.
 
 ## Retrieval Metadata
 
 - Retrieved chunks: 3
-- Sources: []
+- Status: no_evidence
+
+## Sources
+
+- No sources returned.

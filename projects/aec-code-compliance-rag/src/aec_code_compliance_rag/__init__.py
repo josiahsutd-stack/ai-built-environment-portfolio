@@ -7,16 +7,28 @@ from .evaluation import (
     load_eval_cases,
 )
 from .faithfulness import check_citation_faithfulness
+from .observability import QueryLogger
 from .pdf_ingestion import load_pdf_chunks
-from .retrieval import BM25Retriever, DenseLsaRetriever, HybridRetriever, TfidfRetriever
+from .public_sources import download_public_sources, downloaded_public_paths
+from .retrieval import (
+    BM25Retriever,
+    CrossEncoderRerankedRetriever,
+    DenseLsaRetriever,
+    HybridRetriever,
+    SentenceTransformerRetriever,
+    TfidfRetriever,
+)
 from .source_manifest import load_source_manifest
 
 __all__ = [
     "DocumentChunk",
     "RAGAssistant",
+    "QueryLogger",
     "BM25Retriever",
     "DenseLsaRetriever",
     "HybridRetriever",
+    "SentenceTransformerRetriever",
+    "CrossEncoderRerankedRetriever",
     "RetrievalEvalCase",
     "TfidfRetriever",
     "build_assistant_from_paths",
@@ -25,6 +37,8 @@ __all__ = [
     "chunk_text",
     "evaluate_retrieval",
     "evaluate_retrieval_modes",
+    "download_public_sources",
+    "downloaded_public_paths",
     "load_document_chunks",
     "load_eval_cases",
     "load_pdf_chunks",

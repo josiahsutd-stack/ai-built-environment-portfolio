@@ -2,9 +2,9 @@
 
 Primary review project for this AI engineering portfolio.
 
-This is a local, source-grounded retrieval assistant for synthetic AEC guidance. It demonstrates the engineering shape behind a compliance-oriented RAG workflow: document chunking, source manifests, metadata-filtered retrieval, citation formatting, evaluation questions, demo outputs, and failure handling.
+This is a local, source-grounded retrieval assistant for AEC guidance. It demonstrates the engineering shape behind a compliance-oriented RAG workflow: document chunking, source manifests, metadata-filtered retrieval, citation formatting, evaluation questions, demo outputs, and failure handling.
 
-It does not use real project data, customer data, or live building codes. The included documents are synthetic demo data and the outputs are not legal, code, engineering, or professional compliance advice.
+The default corpus is synthetic demo data so the project runs without private data. An optional Singapore public-source workflow downloads official public BCA, URA, NEA, SCDF, and LTA documents locally for retrieval evaluation. Outputs are not legal, code, engineering, architectural, or professional compliance advice.
 
 ## Problem
 
@@ -18,7 +18,8 @@ The project connects AI engineering with the built environment. It shows how a j
 
 Key reviewer signals:
 
-- Evidence-first retrieval over synthetic AEC guidance.
+- Evidence-first retrieval over synthetic AEC guidance and optional Singapore public-source documents.
+- Singapore source inventory for BCA Accessibility, BCA Approved Document, BCA Green Mark, URA GFA, NEA COPEH, SCDF Fire Code, and LTA interface codes.
 - Source manifest metadata for title, document type, allowed use, jurisdiction, version, and superseded status.
 - Chunk metadata for section, heading, clause ID, PDF page or markdown page marker, chunk ID, and word offsets.
 - Citation objects that include readable references, scores, excerpts, and traceable chunk IDs.
@@ -40,6 +41,15 @@ streamlit run projects/aec-code-compliance-rag/app.py
 ```
 
 The app runs locally without paid APIs. If `OPENAI_API_KEY` is not set, the assistant uses a deterministic local mock provider and still returns citation-bearing answers.
+
+Optional Singapore public-source corpus:
+
+```bash
+python projects/aec-code-compliance-rag/scripts/download_public_sources.py
+python projects/aec-code-compliance-rag/scripts/evaluate_retrieval.py --corpus public
+```
+
+The downloaded PDFs/HTML text and generated manifest stay in `public_sources/downloaded/`, which is ignored by Git. The repository commits the source inventory and eval cases, not redistributed government PDFs.
 
 ## Demo
 
@@ -66,6 +76,7 @@ Generated reviewer artifacts are in [`demo_outputs/`](demo_outputs/):
 - [`retrieval_ablation_report.md`](demo_outputs/retrieval_ablation_report.md)
 - [`accessible_route_answer.md`](demo_outputs/accessible_route_answer.md)
 - [`no_answer_failure_case.md`](demo_outputs/no_answer_failure_case.md)
+- [`public_sources/`](demo_outputs/public_sources/) for optional Singapore public-source eval outputs after running the public corpus command.
 
 Regenerate them with:
 
@@ -76,11 +87,12 @@ python projects/aec-code-compliance-rag/scripts/evaluate_retrieval.py
 ## Features
 
 - Markdown and text-based PDF document ingestion from `sample_data/`.
+- Optional Singapore public-source downloader for BCA, URA, NEA, SCDF, and LTA reference documents.
 - Source manifest loading from `sample_data/source_manifest.json`.
 - Section-aware chunking with overlap.
 - Metadata fields for title, source type, allowed use, heading, clause ID, PDF page or markdown page marker, chunk ID, and word offsets.
 - Per-query source filters for jurisdiction, source type, and superseded-source exclusion.
-- Local TF-IDF, BM25, dense LSA, and hybrid retrieval modes.
+- Local TF-IDF, BM25, dense LSA, and hybrid retrieval modes, with optional sentence-transformer embedding and cross-encoder reranking modes.
 - Retrieval ablation report comparing modes over the same synthetic eval set.
 - Deterministic no-API answer mode plus optional OpenAI-compatible provider through shared portfolio utilities.
 - Citation formatting with references like `[C1] mock_aec_guidance.md > Accessible Routes`.
@@ -88,6 +100,7 @@ python projects/aec-code-compliance-rag/scripts/evaluate_retrieval.py
 - Retrieval evaluation over sample questions.
 - No-answer evaluation for unsupported compliance questions.
 - Demo output generation for reviewers.
+- Streamlit public/synthetic corpus switch and FastAPI query/retrieval endpoints for API-style review.
 - Tests covering chunking, retrieval, citations, no-result handling, and eval scoring.
 
 ## Architecture And Evaluation Docs
@@ -98,7 +111,7 @@ python projects/aec-code-compliance-rag/scripts/evaluate_retrieval.py
 
 ## How It Works
 
-1. Synthetic markdown guidance, a generated PDF addendum, and `source_manifest.json` are loaded from `sample_data/`.
+1. Synthetic markdown guidance, a generated PDF addendum, and `source_manifest.json` are loaded from `sample_data/`; alternatively, the public-source workflow loads downloaded Singapore official documents plus a generated source manifest.
 2. Markdown files are split by headings and optional page markers such as `<!-- page: 2 -->`; PDFs are extracted page by page with `pypdf`.
 3. Manifest records override or enrich document metadata before chunks are indexed.
 4. Each chunk receives traceable metadata: source, title, source type, allowed use, section, heading, clause ID, page value, chunk ID, start word, end word, document version, jurisdiction, code year, and superseded status.
@@ -123,20 +136,42 @@ The tests cover:
 - Empty and no-result handling.
 - Retrieval evaluation metrics.
 
+## Optional Public-Source Review
+
+The public corpus is designed to move the project beyond a toy RAG demo while keeping redistribution boundaries clean. It includes source metadata for:
+
+- BCA Code on Accessibility in the Built Environment 2025.
+- BCA Approved Document and Green Mark 2021 documents.
+- URA Gross Floor Area handbook and GFA guidelines-at-a-glance.
+- NEA Code of Practice on Environmental Health 2025.
+- SCDF Fire Code 2023.
+- LTA works on public streets and railway protection codes.
+
+Run `python projects/aec-code-compliance-rag/scripts/download_public_sources.py` before `--corpus public`. The app then exposes a `Singapore public sources` corpus option.
+
+## API Review
+
+```bash
+uvicorn api:app --app-dir projects/aec-code-compliance-rag --reload
+```
+
+The API exposes `/health`, `/sources`, `/query`, `/retrieve`, and `/logs/recent`. Query logs are local SQLite records under `demo_outputs/` for inspection, not production telemetry.
+
 ## Limitations
 
-- The corpus is synthetic and intentionally small.
+- The default corpus is synthetic and intentionally small.
+- The optional Singapore public corpus downloads official public documents locally, but it is still not a validated compliance engine.
 - PDF ingestion is text-based and page-aware, but it does not handle scanned PDFs, OCR, table reconstruction, or layout geometry.
-- TF-IDF, BM25, dense LSA, and hybrid modes are transparent and local, but weaker than production embedding retrieval or neural reranking.
+- TF-IDF, BM25, dense LSA, and hybrid modes are transparent and local. Optional embedding/reranking modes require `requirements-embeddings.txt` and model downloads.
 - The local answer mode is deterministic and extractive; it is not a real expert model.
-- The project does not validate against live jurisdictions, current building codes, amendments, or professional review requirements.
+- The project does not certify against current building-code amendments, authority interpretations, project submissions, or professional review requirements.
 - No real project, client, or construction data is included.
 
 ## Next Steps
 
 - Improve PDF ingestion with layout-aware table extraction, OCR fallback, and clause-level parsing.
-- Validate manifest entries against an authorized source inventory when using real documents.
-- Add hosted/local embedding models and stronger reranking if local hardware or provider access is appropriate.
+- Improve Singapore source refresh checks, amendment detection, and source inventory validation.
+- Benchmark optional embedding and cross-encoder retrieval against the public-source eval set.
 - Strengthen citation-faithfulness checks beyond the current deterministic lexical coverage check.
 - Expand the evaluation set with negative questions, ambiguous jurisdiction cases, and adversarial wording.
 - Add stronger conflict detection for contradictory source content and superseded clauses.

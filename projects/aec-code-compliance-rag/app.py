@@ -9,30 +9,63 @@ sys.path.extend([str(PROJECT_ROOT / "src"), str(REPO_ROOT)])
 
 import streamlit as st
 
-from aec_code_compliance_rag import build_assistant_from_paths
+from aec_code_compliance_rag import build_assistant_from_paths, downloaded_public_paths
 
 st.set_page_config(page_title="AEC Code Compliance RAG", page_icon="AI", layout="wide")
 
 st.title("AEC Code Compliance RAG Assistant")
-st.caption("Synthetic demo data. Not legal, code, or professional compliance advice.")
+st.caption("Local review tool. Not legal, code, or professional compliance advice.")
 
-docs = sorted(
+corpus = st.selectbox(
+    "Corpus",
+    ["synthetic", "singapore_public"],
+    format_func=lambda value: {
+        "synthetic": "Synthetic regression corpus",
+        "singapore_public": "Singapore public-source corpus",
+    }[value],
+)
+synthetic_docs = sorted(
     [
         *(PROJECT_ROOT / "sample_data").glob("*.md"),
         *(PROJECT_ROOT / "sample_data").glob("*.pdf"),
     ]
 )
+public_docs = downloaded_public_paths(PROJECT_ROOT / "public_sources" / "downloaded")
+if corpus == "singapore_public" and not public_docs:
+    st.warning(
+        "Run `python projects/aec-code-compliance-rag/scripts/download_public_sources.py` "
+        "from the repository root to download the Singapore public-source corpus."
+    )
+docs = public_docs if corpus == "singapore_public" and public_docs else synthetic_docs
+retrieval_options = ["hybrid", "dense_lsa", "tfidf", "bm25"]
+if st.checkbox("Show optional embedding/reranker modes", value=False):
+    retrieval_options.extend(["semantic", "hybrid_cross_encoder"])
 retrieval_mode = st.selectbox(
     "Retrieval mode",
-    ["hybrid", "dense_lsa", "tfidf", "bm25"],
+    retrieval_options,
     format_func=lambda value: {
         "hybrid": "Hybrid TF-IDF/BM25",
         "dense_lsa": "Dense LSA",
         "tfidf": "TF-IDF",
         "bm25": "BM25",
+        "semantic": "Sentence-transformer embeddings",
+        "hybrid_cross_encoder": "Hybrid + cross-encoder reranker",
     }[value],
 )
-assistant = build_assistant_from_paths(docs, retrieval_mode=retrieval_mode)
+manifest_path = (
+    PROJECT_ROOT / "public_sources" / "downloaded" / "source_manifest.json"
+    if corpus == "singapore_public"
+    else None
+)
+try:
+    assistant = build_assistant_from_paths(
+        docs,
+        manifest_path=manifest_path,
+        retrieval_mode=retrieval_mode,
+    )
+except RuntimeError as exc:
+    st.error(str(exc))
+    st.stop()
 source_catalog = assistant.source_catalog()
 
 question = st.text_input(
@@ -84,6 +117,10 @@ if st.button("Answer", type="primary") or question:
             )
             st.write(f"Chunk: `{source['chunk_id']}`")
             st.write(f"Allowed use: `{source.get('allowed_use', '')}`")
+            if source.get("publisher"):
+                st.write(f"Publisher: `{source.get('publisher')}`")
+            if source.get("source_url"):
+                st.write(f"Official URL: {source.get('source_url')}")
             st.write(
                 "Source status: "
                 f"version `{source.get('document_version', '')}`, "

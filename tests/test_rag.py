@@ -1,15 +1,19 @@
 import json
 from pathlib import Path
 
+import aec_code_compliance_rag.public_sources as public_sources
 from aec_code_compliance_rag import (
     BM25Retriever,
     DenseLsaRetriever,
     HybridRetriever,
+    QueryLogger,
     RAGAssistant,
     RetrievalEvalCase,
     build_assistant_from_paths,
     check_citation_faithfulness,
     chunk_text,
+    download_public_sources,
+    downloaded_public_paths,
     evaluate_retrieval,
     evaluate_retrieval_modes,
     load_document_chunks,
@@ -168,6 +172,10 @@ def test_source_manifest_overrides_metadata_and_catalog(tmp_path: Path) -> None:
             "source": "manifested.md",
             "title": "Manifested Access Guide",
             "source_type": "markdown",
+            "publisher": "",
+            "source_url": "",
+            "rights": "",
+            "source_note": "",
             "jurisdiction": "manifest-city",
             "code_year": "2025",
             "document_version": "manifest-v2",
@@ -178,6 +186,98 @@ def test_source_manifest_overrides_metadata_and_catalog(tmp_path: Path) -> None:
     assert metadata["document_id"] == "manifested_access"
     assert metadata["document_version"] == "manifest-v2"
     assert metadata["jurisdiction"] == "manifest-city"
+
+
+def test_public_source_downloader_writes_local_manifest(
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    source_file = tmp_path / "sources.json"
+    source_file.write_text(
+        json.dumps(
+            {
+                "download_dir": "downloaded",
+                "sources": [
+                    {
+                        "source": "ura_gfa_test.md",
+                        "title": "URA GFA Test Page",
+                        "publisher": "Urban Redevelopment Authority, Singapore",
+                        "source_url": "https://example.test/ura-gfa",
+                        "source_type": "html",
+                        "jurisdiction": "singapore",
+                        "code_year": "2026",
+                        "document_version": "test-version",
+                        "superseded": False,
+                        "allowed_use": "official_public_page_for_local_reference_only",
+                        "rights": "Local reference test.",
+                        "source_note": "GFA test source.",
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    class FakeResponse:
+        headers = {"content-type": "text/html"}
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, exc_type, exc, traceback) -> None:
+            return None
+
+        def read(self) -> bytes:
+            return (
+                b"<html><body><h1>Gross Floor Area</h1>"
+                b"<p>Advisory notes are not exhaustive for building designs.</p>"
+                b"</body></html>"
+            )
+
+        def geturl(self) -> str:
+            return "https://example.test/ura-gfa"
+
+    monkeypatch.setattr(
+        public_sources.urllib.request, "urlopen", lambda *_args, **_kwargs: FakeResponse()
+    )
+
+    report = download_public_sources(source_file)
+    download_dir = tmp_path / "downloaded"
+    downloaded = download_dir / "ura_gfa_test.md"
+    manifest = load_source_manifest(download_dir / "source_manifest.json")
+
+    assert report["downloaded_count"] == 1
+    assert report["failure_count"] == 0
+    assert downloaded_public_paths(download_dir) == [downloaded]
+    assert "not exhaustive for building designs" in downloaded.read_text(encoding="utf-8")
+    assert manifest["ura_gfa_test.md"]["publisher"] == "Urban Redevelopment Authority, Singapore"
+    assert manifest["ura_gfa_test.md"]["source_url"] == "https://example.test/ura-gfa"
+
+
+def test_query_logger_persists_recent_query_metadata(tmp_path: Path) -> None:
+    logger = QueryLogger(tmp_path / "queries.sqlite")
+
+    log_id = logger.log_query(
+        corpus="public",
+        retrieval_mode="hybrid",
+        question="What does BCA Accessibility cover?",
+        response={
+            "status": "answered",
+            "confidence": "medium",
+            "retrieval": {"result_count": 2},
+        },
+        latency_ms=17,
+        source_filters={"jurisdiction": "singapore"},
+    )
+
+    rows = logger.recent(limit=1)
+
+    assert log_id == 1
+    assert rows[0]["corpus"] == "public"
+    assert rows[0]["retrieval_mode"] == "hybrid"
+    assert rows[0]["status"] == "answered"
+    assert rows[0]["result_count"] == 2
+    assert rows[0]["source_filters_json"] == '{"jurisdiction": "singapore"}'
 
 
 def test_source_filters_limit_retrieval_and_answer_citations() -> None:

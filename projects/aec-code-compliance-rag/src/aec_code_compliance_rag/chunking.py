@@ -13,6 +13,11 @@ DOCUMENT_METADATA_FIELDS = {
     "title",
     "source_type",
     "allowed_use",
+    "publisher",
+    "source_url",
+    "rights",
+    "downloaded_at",
+    "source_note",
 }
 
 
@@ -35,6 +40,11 @@ class DocumentChunk:
     title: str = ""
     source_type: str = "document"
     allowed_use: str = "synthetic_demo"
+    publisher: str = ""
+    source_url: str = ""
+    rights: str = ""
+    downloaded_at: str = ""
+    source_note: str = ""
 
     def metadata(self) -> dict[str, str]:
         return {
@@ -42,6 +52,11 @@ class DocumentChunk:
             "title": self.title,
             "source_type": self.source_type,
             "allowed_use": self.allowed_use,
+            "publisher": self.publisher,
+            "source_url": self.source_url,
+            "rights": self.rights,
+            "downloaded_at": self.downloaded_at,
+            "source_note": self.source_note,
             "document_id": self.document_id,
             "section": self.section,
             "heading": self.heading,
@@ -178,6 +193,11 @@ def _chunks_from_sections(
                         title=metadata["title"],
                         source_type=metadata["source_type"],
                         allowed_use=metadata["allowed_use"],
+                        publisher=metadata["publisher"],
+                        source_url=metadata["source_url"],
+                        rights=metadata["rights"],
+                        downloaded_at=metadata["downloaded_at"],
+                        source_note=metadata["source_note"],
                     )
                 )
             if end == len(words):
@@ -272,6 +292,11 @@ def _extract_document_metadata(text: str, *, source: str) -> dict[str, str]:
         "title": Path(source).stem.replace("_", " ").replace("-", " ").title(),
         "source_type": source_type,
         "allowed_use": "synthetic_demo",
+        "publisher": "",
+        "source_url": "",
+        "rights": "",
+        "downloaded_at": "",
+        "source_note": "",
     }
     for line in text.splitlines()[:40]:
         match = re.match(r"\s*([a-zA-Z_ -]+):\s*(.+?)\s*$", line)

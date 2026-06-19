@@ -12,7 +12,7 @@ This portfolio focuses on applied AI engineering work that is runnable locally a
 
 | Project | What it demonstrates | Evidence |
 | --- | --- | --- |
-| [AEC Code Compliance RAG](projects/aec-code-compliance-rag/README.md) | Source-grounded retrieval, citation formatting, no-answer handling, and AEC domain translation. | [EVAL.md](projects/aec-code-compliance-rag/EVAL.md), [demo outputs](projects/aec-code-compliance-rag/demo_outputs/), [tests](tests/test_rag.py) |
+| [AEC Code Compliance RAG](projects/aec-code-compliance-rag/README.md) | Source-grounded retrieval, Singapore public-source ingestion, citation formatting, no-answer handling, and AEC domain translation. | [EVAL.md](projects/aec-code-compliance-rag/EVAL.md), [public source notes](projects/aec-code-compliance-rag/public_sources/SOURCE_NOTES.md), [demo outputs](projects/aec-code-compliance-rag/demo_outputs/), [tests](tests/test_rag.py) |
 | [Agentic Research Ops Assistant](projects/agentic-research-ops-assistant/README.md) | Planner-executor workflow, tool traces, approval checkpoints, citations, and local persistence. | [ARCHITECTURE.md](projects/agentic-research-ops-assistant/ARCHITECTURE.md), [demo outputs](projects/agentic-research-ops-assistant/demo_outputs/), trace evaluation |
 | [MLOps Model Serving Monitoring](projects/mlops-model-serving-monitoring/README.md) | Model metadata, schema validation, prediction logging, drift reporting, and monitoring docs. | [MODEL_CARD.md](projects/mlops-model-serving-monitoring/MODEL_CARD.md), [MONITORING.md](projects/mlops-model-serving-monitoring/MONITORING.md), [demo outputs](projects/mlops-model-serving-monitoring/demo_outputs/) |
 
@@ -22,6 +22,8 @@ The projects use synthetic data and mock providers where needed, so the reposito
 
 ```bash
 python projects/aec-code-compliance-rag/scripts/evaluate_retrieval.py
+python projects/aec-code-compliance-rag/scripts/download_public_sources.py
+python projects/aec-code-compliance-rag/scripts/evaluate_retrieval.py --corpus public
 python -m pytest tests/test_rag.py tests/test_general_ai_projects.py
 python scripts/generate_review_artifacts.py
 python scripts/check_portfolio_site.py
@@ -29,7 +31,7 @@ python scripts/check_portfolio_site.py
 
 ## Technical Evidence
 
-- AEC eval and generated demo outputs: [EVAL.md](projects/aec-code-compliance-rag/EVAL.md), [demo_outputs/](projects/aec-code-compliance-rag/demo_outputs/)
+- AEC eval and generated demo outputs: [EVAL.md](projects/aec-code-compliance-rag/EVAL.md), [demo_outputs/](projects/aec-code-compliance-rag/demo_outputs/), [Singapore public-source notes](projects/aec-code-compliance-rag/public_sources/SOURCE_NOTES.md)
 - Architecture docs close to the code: [AEC ARCHITECTURE.md](projects/aec-code-compliance-rag/ARCHITECTURE.md), [technical review guide](docs/technical-review-guide.md)
 - Demo screenshots: [portfolio home](docs/assets/screenshots/portfolio-home.png), [AEC RAG app](docs/assets/screenshots/aec-rag-demo.png)
 - Test coverage for retrieval, citations, no-answer handling, agent traces, MLOps metadata, LoRA validation, and VLM prompt contracts.
@@ -43,7 +45,7 @@ This is a local-first engineering portfolio. It demonstrates implementation stru
 
 | Project | Evidence to inspect | What is real | What is mocked or synthetic |
 | --- | --- | --- | --- |
-| [AEC Code Compliance RAG](projects/aec-code-compliance-rag/README.md) | Primary review project: RAG, citations, eval, and AEC domain fit. | Markdown/PDF ingestion, source manifests, metadata filters, page-aware chunking, TF-IDF/BM25/dense LSA/hybrid retrieval, ablation report, citation formatting, eval script, demo outputs, tests. | Synthetic guidance; no live codes, scanned PDF OCR, or legal/code advice. |
+| [AEC Code Compliance RAG](projects/aec-code-compliance-rag/README.md) | Primary review project: RAG, citations, eval, and AEC domain fit. | Markdown/PDF ingestion, source manifests, metadata filters, page-aware chunking, Singapore public-source downloader for BCA/URA/NEA/SCDF/LTA, TF-IDF/BM25/dense LSA/hybrid retrieval, optional embedding/reranking modes, ablation report, citation formatting, eval script, demo outputs, tests. | Synthetic guidance by default; public PDFs downloaded locally and not committed; no scanned PDF OCR, authority approval, or legal/code advice. |
 | [Agentic Research Ops Assistant](projects/agentic-research-ops-assistant/README.md) | Agent orchestration, tool registry, approval gate, traces. | Planner/executor flow, local search, tool traces, SQLite persistence, trace eval. | Local demo docs; deterministic tools; not autonomous web research. |
 | [MLOps Model Serving Monitoring](projects/mlops-model-serving-monitoring/README.md) | Model lifecycle, serving schema, logging, drift report. | Training pipeline, artifact metadata, FastAPI-compatible functions, SQLite logs, PSI-style drift checks. | Synthetic churn data; local registry; no production alerting. |
 | [Fine-Tuning LoRA Lab](projects/fine-tuning-lora-lab/README.md) | Honest adaptation workflow and dataset discipline. | Dataset generation, validation, split checks, LoRA config, eval template. | Training is mocked; no model weights are updated. |
@@ -66,6 +68,8 @@ Key evidence files:
 ```bash
 python scripts/generate_sample_data.py
 python projects/aec-code-compliance-rag/scripts/evaluate_retrieval.py
+python projects/aec-code-compliance-rag/scripts/download_public_sources.py
+python projects/aec-code-compliance-rag/scripts/evaluate_retrieval.py --corpus public
 python -m pytest tests/test_rag.py
 streamlit run projects/aec-code-compliance-rag/app.py
 ```
@@ -109,7 +113,7 @@ Code areas with the clearest signal:
 
 ## Skills Demonstrated
 
-- RAG: Markdown/PDF ingestion, source manifests, metadata-filtered retrieval, page-aware chunking, retrieval scoring, citations, evaluation, no-answer handling.
+- RAG: Markdown/PDF ingestion, Singapore public-source downloads, source manifests, metadata-filtered retrieval, page-aware chunking, retrieval scoring, citations, evaluation, no-answer handling.
 - LLM applications: provider abstraction, structured outputs, prompt contracts, uncertainty fields.
 - Agents: planning, tool calls, approval gates, traces, persistence, trace evaluation.
 - MLOps: training pipeline, model artifact metadata, inference logging, drift detection, monitoring report.
@@ -171,7 +175,7 @@ These broaden the portfolio but should not be treated as equally deep:
 ## What Not To Infer
 
 - Do not infer production reliability from local demos.
-- Do not infer real-world code-compliance capability from synthetic AEC examples.
+- Do not infer real-world code-compliance capability from synthetic examples or downloaded public-source retrieval demos.
 - Do not infer real visual reasoning from mock VLM outputs.
 - Do not infer real LoRA model improvement from the fine-tuning lab.
 - Do not infer senior-level MLOps ownership from the local MLOps skeleton.

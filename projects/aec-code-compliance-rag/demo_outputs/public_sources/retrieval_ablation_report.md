@@ -1,13 +1,13 @@
 # Retrieval Mode Ablation
 
-Synthetic demo comparison of local retrieval modes over the same AEC eval set.
+Singapore public-source comparison of local retrieval modes over the same AEC eval set.
 
 | Mode | Recall@k | MRR | Hit@3 | Citation coverage | Status accuracy |
 | --- | --- | --- | --- | --- | --- |
-| dense_lsa | 1.0 | 0.927 | 1.0 | 1.0 | 1.0 |
-| tfidf | 1.0 | 0.915 | 1.0 | 1.0 | 1.0 |
-| bm25 | 1.0 | 0.906 | 1.0 | 1.0 | 1.0 |
-| hybrid | 1.0 | 0.906 | 1.0 | 1.0 | 1.0 |
+| tfidf | 1.0 | 1.0 | 1.0 | 1.0 | 1.0 |
+| bm25 | 1.0 | 1.0 | 1.0 | 1.0 | 1.0 |
+| hybrid | 1.0 | 1.0 | 1.0 | 1.0 | 1.0 |
+| dense_lsa | 0.9 | 0.85 | 0.9 | 0.6 | 1.0 |
 
 ## Interpretation
 

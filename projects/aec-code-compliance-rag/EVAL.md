@@ -1,6 +1,6 @@
 # Retrieval Evaluation
 
-This project includes a 51-case synthetic retrieval and abstention evaluation set for reviewer inspection. The goal is not to claim production accuracy. The goal is to show how retrieval quality, citation coverage, PDF-backed citation behavior, source metadata handling, no-evidence handling, and unsupported-scope handling are measured before real use.
+This project includes a 51-case synthetic retrieval and abstention evaluation set plus an optional Singapore public-source evaluation set for reviewer inspection. The goal is not to claim production accuracy. The goal is to show how retrieval quality, citation coverage, PDF-backed citation behavior, source metadata handling, no-evidence handling, and unsupported-scope handling are measured before real use.
 
 ## Run The Evaluation
 
@@ -8,6 +8,13 @@ From the repository root:
 
 ```bash
 python projects/aec-code-compliance-rag/scripts/evaluate_retrieval.py
+```
+
+Optional Singapore public-source evaluation:
+
+```bash
+python projects/aec-code-compliance-rag/scripts/download_public_sources.py
+python projects/aec-code-compliance-rag/scripts/evaluate_retrieval.py --corpus public
 ```
 
 This writes:
@@ -22,12 +29,19 @@ This writes:
 - `demo_outputs/sample_answer_accessible_route.md`
 - `demo_outputs/sample_answer_no_evidence.md`
 
+The public-source command writes the same artifact set under:
+
+```text
+projects/aec-code-compliance-rag/demo_outputs/public_sources/
+```
+
 ## Evaluation Data
 
 Evaluation cases live in:
 
 ```text
 projects/aec-code-compliance-rag/eval/eval_cases.jsonl
+projects/aec-code-compliance-rag/eval/public_eval_cases.jsonl
 ```
 
 Each case includes:
@@ -43,7 +57,7 @@ Each case includes:
 - `expected_no_answer`
 - `notes`
 
-The dataset is synthetic and useful for regression checks and reviewer clarity, not for benchmarking a real compliance product.
+The synthetic dataset is useful for regression checks and reviewer clarity. The public-source dataset checks whether the same pipeline can ingest and retrieve from official Singapore public documents such as BCA Accessibility, URA GFA, NEA COPEH, SCDF Fire Code, and LTA interface references. Neither dataset is a benchmark for a real compliance product.
 
 ## Metrics
 
@@ -58,11 +72,15 @@ The dataset is synthetic and useful for regression checks and reviewer clarity, 
 | `grounding_check_rate` | Lightweight check that retrieved evidence includes expected terms and section. |
 | `status_accuracy` | Whether answer status matches `answered`, `no_evidence`, `unsupported_scope`, or `needs_professional_review`. |
 | `citation_check_pass_rate` | Whether deterministic citation coverage checks pass for generated answers. |
+| `answer_sentence_support_rate` | Share of generated answer sentences that pass deterministic citation-support checks. |
+| `unsupported_sentence_rate` | Share of generated answer sentences flagged as unsupported by the deterministic citation checker. |
 | `retrieval_hit_at_1` / `retrieval_hit_at_3` | Whether the expected source appears early in the retrieved result list. |
 | `no_answer_accuracy` | Whether absent-evidence questions correctly return no retrieved support. |
 | `unsupported_scope_accuracy` | Whether live-code, jurisdiction, or professional-review questions are refused with the expected status. |
 
 Because the corpus is synthetic and contains overlapping topics, `precision_at_k` is less important than status accuracy, hit@3, citation coverage, and failure analysis.
+
+Retrieval metrics are averaged over answerable cases. Status accuracy, no-answer accuracy, and unsupported-scope accuracy are averaged over their relevant case types, so professional-review refusals do not reduce retrieval recall.
 
 ## Retrieval Mode Ablation
 
@@ -75,6 +93,8 @@ The evaluation script also compares four local retrieval modes over the same cas
 
 The ablation artifacts are meant to show retrieval evaluation discipline. They are not a claim that the best synthetic-mode score will transfer to real compliance documents.
 
+Optional modes `semantic` and `hybrid_cross_encoder` are exposed in the app and assistant boundary, but they require `requirements-embeddings.txt` and local model downloads. The committed eval artifacts keep the default portable modes so reviewers can reproduce them without a GPU or model cache.
+
 ## What The Current Eval Catches
 
 - Numeric criteria retrieval, such as `1200 mm`, `850 mm`, and `12 mm`.
@@ -85,10 +105,12 @@ The ablation artifacts are meant to show retrieval evaluation discipline. They a
 - Whether retrieval-mode changes improve or degrade recall, hit@3, MRR, and status accuracy.
 - Whether retrieval can support answer generation without paid APIs.
 - Whether no-answer, unsupported-scope, prompt-injection, and professional-review questions avoid invented compliance requirements.
+- Whether Singapore public-source retrieval can find authority-specific documents across BCA, URA, NEA, SCDF, and LTA without committing the downloaded PDFs to Git.
 
 ## Known Failure Modes
 
 - Questions that require a real jurisdiction, code year, or amendment cannot be answered from the synthetic corpus.
+- The public-source corpus uses official public downloads, but it does not verify amendments, authority interpretations, project-specific applicability, or professional sign-off.
 - TF-IDF can miss semantically related wording if key terms are absent from the query.
 - Citation coverage only checks expected terms in retrieved evidence; it is not full answer faithfulness.
 - The grounding check is lexical and section-based; it is not a semantic entailment model.
@@ -100,5 +122,5 @@ The ablation artifacts are meant to show retrieval evaluation discipline. They a
 - Add paraphrased questions to stress semantic retrieval.
 - Add multi-document and multi-PDF cases where precision matters.
 - Add citation-faithfulness checks from answer sentence to supporting chunk.
-- Add jurisdiction and version metadata cases.
+- Add deeper Singapore jurisdiction and version metadata cases, including amendment refresh checks.
 - Track no-result rate and low-confidence answer rate over a larger eval set.

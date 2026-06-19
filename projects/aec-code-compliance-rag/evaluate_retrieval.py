@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import argparse
 import json
 import sys
 from pathlib import Path
@@ -10,23 +11,27 @@ sys.path.extend([str(PROJECT_ROOT / "src"), str(REPO_ROOT)])
 
 from aec_code_compliance_rag import (  # noqa: E402
     build_assistant_from_paths,
+    downloaded_public_paths,
     evaluate_retrieval,
     evaluate_retrieval_modes,
     load_eval_cases,
 )
 
 
-def _write_markdown_report(payload: dict[str, object], output_path: Path) -> None:
+def _write_markdown_report(
+    payload: dict[str, object], output_path: Path, *, corpus_label: str
+) -> None:
     summary = payload["summary"]
     rows = payload["results"]
     lines = [
         "# Retrieval Evaluation Report",
         "",
-        "Synthetic demo evaluation for the AEC Code Compliance RAG Assistant.",
+        f"{corpus_label} evaluation for the AEC Code Compliance RAG Assistant.",
         "",
         "## Summary",
         "",
         f"- Cases: {summary['case_count']}",
+        f"- Answerable retrieval cases: {summary['answerable_case_count']}",
         f"- Top-k: {summary['k']}",
         f"- Recall@k: {summary['recall_at_k']}",
         f"- Precision@k: {summary['precision_at_k']}",
@@ -37,6 +42,8 @@ def _write_markdown_report(payload: dict[str, object], output_path: Path) -> Non
         f"- Grounding check rate: {summary['grounding_check_rate']}",
         f"- Status accuracy: {summary['status_accuracy']}",
         f"- Citation check pass rate: {summary['citation_check_pass_rate']}",
+        f"- Answer sentence support rate: {summary['answer_sentence_support_rate']}",
+        f"- Unsupported answer sentence rate: {summary['unsupported_sentence_rate']}",
         f"- Hit@1: {summary['retrieval_hit_at_1']}",
         f"- Hit@3: {summary['retrieval_hit_at_3']}",
         f"- Average latency ms: {summary['average_latency_ms']}",
@@ -67,7 +74,9 @@ def _write_markdown_report(payload: dict[str, object], output_path: Path) -> Non
     output_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
-def _write_failure_analysis(payload: dict[str, object], output_path: Path) -> None:
+def _write_failure_analysis(
+    payload: dict[str, object], output_path: Path, *, corpus_label: str
+) -> None:
     failures = [
         row
         for row in payload["results"]
@@ -79,14 +88,17 @@ def _write_failure_analysis(payload: dict[str, object], output_path: Path) -> No
     lines = [
         "# AEC RAG Failure Analysis",
         "",
-        "Synthetic evaluation failures and weak spots. These are not hidden; they are the next engineering work items.",
+        (
+            f"{corpus_label} evaluation failures and weak spots. These are not "
+            "hidden; they are the next engineering work items."
+        ),
         "",
         f"- Total cases: {payload['summary']['case_count']}",
         f"- Flagged cases: {len(failures)}",
         "",
     ]
     if not failures:
-        lines.append("No failures were flagged in the current synthetic eval set.")
+        lines.append(f"No failures were flagged in the current {corpus_label.lower()} eval set.")
     for row in failures[:20]:
         lines.extend(
             [
@@ -104,11 +116,13 @@ def _write_failure_analysis(payload: dict[str, object], output_path: Path) -> No
     output_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
-def _write_ablation_report(payload: dict[str, object], output_path: Path) -> None:
+def _write_ablation_report(
+    payload: dict[str, object], output_path: Path, *, corpus_label: str
+) -> None:
     lines = [
         "# Retrieval Mode Ablation",
         "",
-        "Synthetic comparison of local retrieval modes over the same AEC eval set.",
+        f"{corpus_label} comparison of local retrieval modes over the same AEC eval set.",
         "",
         "| Mode | Recall@k | MRR | Hit@3 | Citation coverage | Status accuracy |",
         "| --- | --- | --- | --- | --- | --- |",
@@ -132,19 +146,47 @@ def _write_ablation_report(payload: dict[str, object], output_path: Path) -> Non
             "- `tfidf` and `bm25` are transparent lexical baselines.",
             "- `dense_lsa` is a local dense baseline using TF-IDF projected into latent semantic analysis space.",
             "- `hybrid` is the default app mode because it combines lexical evidence and a lightweight rerank boost.",
-            "- These numbers are synthetic regression checks, not production compliance accuracy.",
+            "- These numbers are local regression checks, not production compliance accuracy.",
         ]
     )
     output_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
-def _write_answer_demo(assistant, output_path: Path) -> None:
-    question = "What clear width should be checked for high traffic accessible routes?"
+def _append_source_lines(lines: list[str], sources: list[dict[str, object]]) -> None:
+    if not sources:
+        lines.append("- No sources returned.")
+        return
+    for source in sources:
+        page = f", page {source['page']}" if source["page"] else ""
+        publisher = f" ({source['publisher']})" if source.get("publisher") else ""
+        source_url = source.get("source_url")
+        lines.extend(
+            [
+                f"- {source['reference']}{publisher} - score `{source['score']}`",
+                f"  - Chunk: `{source['chunk_id']}`{page}",
+                f"  - Excerpt: {source['excerpt']}",
+            ]
+        )
+        if source_url:
+            lines.append(f"  - Official source: {source_url}")
+
+
+def _write_answer_demo(
+    assistant,
+    output_path: Path,
+    *,
+    question: str,
+    title: str,
+    corpus_label: str,
+) -> None:
     result = assistant.answer(question, k=4)
     lines = [
-        "# Demo Answer: Accessible Route Review",
+        f"# Demo Answer: {title}",
         "",
-        "Synthetic demo output. Not legal, code, or professional compliance advice.",
+        (
+            f"{corpus_label} demo output. Not legal, code, engineering, "
+            "architectural, or professional compliance advice."
+        ),
         "",
         f"**Question:** {question}",
         "",
@@ -161,31 +203,32 @@ def _write_answer_demo(assistant, output_path: Path) -> None:
         "## Citations",
         "",
     ]
-    for source in result["sources"]:
-        page = f", page {source['page']}" if source["page"] else ""
-        lines.extend(
-            [
-                f"- {source['reference']} - score `{source['score']}`",
-                f"  - Chunk: `{source['chunk_id']}`{page}",
-                f"  - Excerpt: {source['excerpt']}",
-            ]
-        )
+    _append_source_lines(lines, result["sources"])
     output_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
-def _write_failure_demo(assistant, output_path: Path) -> None:
-    question = "What drone landing pad radius applies to rooftop aircraft operations?"
+def _write_failure_demo(
+    assistant,
+    output_path: Path,
+    *,
+    question: str,
+    expected_behavior: str,
+    corpus_label: str,
+) -> None:
     result = assistant.answer(question, k=4)
     lines = [
-        "# Demo Failure Case: Missing Evidence",
+        "# Demo Abstention Case",
         "",
-        "Synthetic demo output. Not legal, code, or professional compliance advice.",
+        (
+            f"{corpus_label} demo output. Not legal, code, engineering, "
+            "architectural, or professional compliance advice."
+        ),
         "",
         f"**Question:** {question}",
         "",
         "## Expected Behavior",
         "",
-        "The synthetic corpus does not contain aviation or rooftop aircraft requirements, so the assistant should not invent a numeric answer.",
+        expected_behavior,
         "",
         "## Actual Local Response",
         "",
@@ -194,28 +237,64 @@ def _write_failure_demo(assistant, output_path: Path) -> None:
         "## Retrieval Metadata",
         "",
         f"- Retrieved chunks: {result['retrieval']['result_count']}",
-        f"- Sources: {result['sources']}",
+        f"- Status: {result['status']}",
+        "",
+        "## Sources",
+        "",
     ]
+    _append_source_lines(lines, result.get("sources", []))
     output_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
-def main() -> None:
+def _corpus_paths(corpus: str) -> tuple[list[Path], Path | None, Path, str]:
+    if corpus == "public":
+        docs = downloaded_public_paths(PROJECT_ROOT / "public_sources" / "downloaded")
+        if not docs:
+            raise SystemExit(
+                "Singapore public-source corpus is missing. Run "
+                "`python projects/aec-code-compliance-rag/scripts/download_public_sources.py` first."
+            )
+        return (
+            docs,
+            PROJECT_ROOT / "public_sources" / "downloaded" / "source_manifest.json",
+            PROJECT_ROOT / "eval" / "public_eval_cases.jsonl",
+            "Singapore public-source",
+        )
     docs = sorted(
         [
             *(PROJECT_ROOT / "sample_data").glob("*.md"),
             *(PROJECT_ROOT / "sample_data").glob("*.pdf"),
         ]
     )
-    eval_path = PROJECT_ROOT / "eval" / "eval_cases.jsonl"
+    return docs, None, PROJECT_ROOT / "eval" / "eval_cases.jsonl", "Synthetic demo"
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description="Evaluate the AEC RAG retrieval workflow.")
+    parser.add_argument(
+        "--corpus",
+        choices=["synthetic", "public"],
+        default="synthetic",
+        help="Use synthetic regression docs or downloaded Singapore public sources.",
+    )
+    args = parser.parse_args()
+    docs, manifest_path, eval_path, corpus_label = _corpus_paths(args.corpus)
     if not eval_path.exists():
         eval_path = PROJECT_ROOT / "sample_data" / "evaluation_questions.json"
     output_dir = PROJECT_ROOT / "demo_outputs"
-    output_dir.mkdir(exist_ok=True)
+    if args.corpus == "public":
+        output_dir = output_dir / "public_sources"
+    output_dir.mkdir(parents=True, exist_ok=True)
 
-    assistant = build_assistant_from_paths(docs)
+    assistant = build_assistant_from_paths(docs, manifest_path=manifest_path)
     cases = load_eval_cases(eval_path)
     payload = evaluate_retrieval(assistant, cases, k=4)
-    ablation_payload = evaluate_retrieval_modes(docs, cases, k=4)
+    ablation_payload = evaluate_retrieval_modes(
+        docs,
+        cases,
+        k=4,
+        manifest_path=manifest_path,
+    )
 
     (output_dir / "retrieval_eval_summary.json").write_text(
         json.dumps(payload, indent=2) + "\n",
@@ -225,13 +304,68 @@ def main() -> None:
         json.dumps(ablation_payload, indent=2) + "\n",
         encoding="utf-8",
     )
-    _write_markdown_report(payload, output_dir / "retrieval_eval_report.md")
-    _write_ablation_report(ablation_payload, output_dir / "retrieval_ablation_report.md")
-    _write_failure_analysis(payload, output_dir / "failure_analysis.md")
-    _write_answer_demo(assistant, output_dir / "accessible_route_answer.md")
-    _write_answer_demo(assistant, output_dir / "sample_answer_accessible_route.md")
-    _write_failure_demo(assistant, output_dir / "no_answer_failure_case.md")
-    _write_failure_demo(assistant, output_dir / "sample_answer_no_evidence.md")
+    _write_markdown_report(
+        payload, output_dir / "retrieval_eval_report.md", corpus_label=corpus_label
+    )
+    _write_ablation_report(
+        ablation_payload, output_dir / "retrieval_ablation_report.md", corpus_label=corpus_label
+    )
+    _write_failure_analysis(
+        payload,
+        output_dir / "failure_analysis.md",
+        corpus_label=corpus_label,
+    )
+    if args.corpus == "public":
+        answer_question = (
+            "What does the BCA Code on Accessibility 2025 set out for accessible "
+            "and inclusive buildings?"
+        )
+        abstention_question = (
+            "Can this assistant certify a Singapore building plan for BCA approval?"
+        )
+        abstention_expected = (
+            "The assistant should refuse certification or approval language and route the "
+            "question to professional review instead of implying authority."
+        )
+        title = "BCA Accessibility Source Review"
+    else:
+        answer_question = "What clear width should be checked for high traffic accessible routes?"
+        abstention_question = (
+            "What drone landing pad radius applies to rooftop aircraft operations?"
+        )
+        abstention_expected = (
+            "The synthetic corpus does not contain aviation or rooftop aircraft requirements, "
+            "so the assistant should not invent a numeric answer."
+        )
+        title = "Accessible Route Review"
+    _write_answer_demo(
+        assistant,
+        output_dir / "accessible_route_answer.md",
+        question=answer_question,
+        title=title,
+        corpus_label=corpus_label,
+    )
+    _write_answer_demo(
+        assistant,
+        output_dir / "sample_answer_accessible_route.md",
+        question=answer_question,
+        title=title,
+        corpus_label=corpus_label,
+    )
+    _write_failure_demo(
+        assistant,
+        output_dir / "no_answer_failure_case.md",
+        question=abstention_question,
+        expected_behavior=abstention_expected,
+        corpus_label=corpus_label,
+    )
+    _write_failure_demo(
+        assistant,
+        output_dir / "sample_answer_no_evidence.md",
+        question=abstention_question,
+        expected_behavior=abstention_expected,
+        corpus_label=corpus_label,
+    )
 
     print(json.dumps(payload["summary"], indent=2))
     print(f"Wrote demo outputs to {output_dir}")

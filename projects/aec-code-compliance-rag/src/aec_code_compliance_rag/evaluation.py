@@ -41,6 +41,10 @@ class RetrievalEvalResult:
     actual_status: str
     status_correct: bool
     citation_check_passed: bool
+    answer_sentence_count: int
+    answer_sentence_support_rate: float
+    unsupported_sentence_count: int
+    citation_warning_count: int
     latency_ms: int
     simple_grounding_check: bool
     missing_terms: list[str] = field(default_factory=list)
@@ -64,6 +68,10 @@ class RetrievalEvalResult:
             "actual_status": self.actual_status,
             "status_correct": self.status_correct,
             "citation_check_passed": self.citation_check_passed,
+            "answer_sentence_count": self.answer_sentence_count,
+            "answer_sentence_support_rate": self.answer_sentence_support_rate,
+            "unsupported_sentence_count": self.unsupported_sentence_count,
+            "citation_warning_count": self.citation_warning_count,
             "latency_ms": self.latency_ms,
             "simple_grounding_check": self.simple_grounding_check,
             "missing_terms": self.missing_terms,
@@ -115,12 +123,22 @@ def evaluate_retrieval(
         answer_payload = assistant.answer(case.question, k=k)
         latency_ms = int((perf_counter() - started) * 1000)
         actual_status = str(answer_payload.get("status", "answered"))
-        citation_check_passed = bool(
-            answer_payload.get("citation_check", {"passed": actual_status != "answered"}).get(
-                "passed"
-            )
+        citation_check = answer_payload.get(
+            "citation_check", {"passed": actual_status != "answered"}
         )
-        retrieved = assistant.retrieve(case.question, k=k)
+        citation_check_passed = bool(citation_check.get("passed"))
+        sentence_count = int(citation_check.get("sentence_count", 0))
+        unsupported_sentence_count = len(citation_check.get("unsupported_sentences", []))
+        citation_warning_count = len(citation_check.get("warnings", []))
+        answer_sentence_support_rate = (
+            round((sentence_count - unsupported_sentence_count) / sentence_count, 3)
+            if sentence_count
+            else 1.0
+        )
+        if actual_status in {"unsupported_scope", "needs_professional_review"}:
+            retrieved = []
+        else:
+            retrieved = assistant.retrieve(case.question, k=k)
         if case.expected_no_answer:
             no_answer_correct = actual_status == "no_evidence"
             results.append(
@@ -146,8 +164,43 @@ def evaluate_retrieval(
                     actual_status=actual_status,
                     status_correct=actual_status == expected_status,
                     citation_check_passed=citation_check_passed,
+                    answer_sentence_count=sentence_count,
+                    answer_sentence_support_rate=answer_sentence_support_rate,
+                    unsupported_sentence_count=unsupported_sentence_count,
+                    citation_warning_count=citation_warning_count,
                     latency_ms=latency_ms,
                     simple_grounding_check=no_answer_correct,
+                    missing_terms=[],
+                )
+            )
+            continue
+        if expected_status in {"unsupported_scope", "needs_professional_review"}:
+            status_correct = actual_status == expected_status
+            results.append(
+                RetrievalEvalResult(
+                    question=case.question,
+                    expected_source=case.expected_source,
+                    expected_section=case.expected_section,
+                    retrieved_chunk_ids=[],
+                    retrieved_sources=[],
+                    retrieved_sections=[],
+                    recall_at_k=0.0,
+                    precision_at_k=0.0,
+                    hit_rate=0.0,
+                    reciprocal_rank=0.0,
+                    section_hit=status_correct,
+                    citation_coverage=1.0 if status_correct else 0.0,
+                    no_answer_correct=False,
+                    expected_status=expected_status,
+                    actual_status=actual_status,
+                    status_correct=status_correct,
+                    citation_check_passed=citation_check_passed,
+                    answer_sentence_count=sentence_count,
+                    answer_sentence_support_rate=answer_sentence_support_rate,
+                    unsupported_sentence_count=unsupported_sentence_count,
+                    citation_warning_count=citation_warning_count,
+                    latency_ms=latency_ms,
+                    simple_grounding_check=status_correct,
                     missing_terms=[],
                 )
             )
@@ -196,35 +249,65 @@ def evaluate_retrieval(
                 actual_status=actual_status,
                 status_correct=actual_status == expected_status,
                 citation_check_passed=citation_check_passed,
+                answer_sentence_count=sentence_count,
+                answer_sentence_support_rate=answer_sentence_support_rate,
+                unsupported_sentence_count=unsupported_sentence_count,
+                citation_warning_count=citation_warning_count,
                 latency_ms=latency_ms,
                 simple_grounding_check=simple_grounding_check,
                 missing_terms=missing_terms,
             )
         )
+    answerable_results = [
+        result
+        for result in results
+        if result.expected_status == "answered" and result.expected_source != "__NO_ANSWER__"
+    ]
     summary = {
         "case_count": len(results),
+        "answerable_case_count": len(answerable_results),
         "k": k,
         "recall_at_k": (
-            round(mean([result.recall_at_k for result in results]), 3) if results else 0.0
+            round(mean([result.recall_at_k for result in answerable_results]), 3)
+            if answerable_results
+            else 0.0
         ),
         "precision_at_k": (
-            round(mean([result.precision_at_k for result in results]), 3) if results else 0.0
+            round(mean([result.precision_at_k for result in answerable_results]), 3)
+            if answerable_results
+            else 0.0
         ),
-        "hit_rate": round(mean([result.hit_rate for result in results]), 3) if results else 0.0,
+        "hit_rate": (
+            round(mean([result.hit_rate for result in answerable_results]), 3)
+            if answerable_results
+            else 0.0
+        ),
         "mean_reciprocal_rank": (
-            round(mean([result.reciprocal_rank for result in results]), 3) if results else 0.0
+            round(mean([result.reciprocal_rank for result in answerable_results]), 3)
+            if answerable_results
+            else 0.0
         ),
         "section_hit_rate": (
-            round(mean([1.0 if result.section_hit else 0.0 for result in results]), 3)
-            if results
+            round(
+                mean([1.0 if result.section_hit else 0.0 for result in answerable_results]),
+                3,
+            )
+            if answerable_results
             else 0.0
         ),
         "citation_coverage": (
-            round(mean([result.citation_coverage for result in results]), 3) if results else 0.0
+            round(mean([result.citation_coverage for result in answerable_results]), 3)
+            if answerable_results
+            else 0.0
         ),
         "grounding_check_rate": (
-            round(mean([1.0 if result.simple_grounding_check else 0.0 for result in results]), 3)
-            if results
+            round(
+                mean(
+                    [1.0 if result.simple_grounding_check else 0.0 for result in answerable_results]
+                ),
+                3,
+            )
+            if answerable_results
             else 0.0
         ),
         "status_accuracy": (
@@ -237,6 +320,21 @@ def evaluate_retrieval(
             if results
             else 0.0
         ),
+        "answer_sentence_support_rate": (
+            round(mean([result.answer_sentence_support_rate for result in results]), 3)
+            if results
+            else 0.0
+        ),
+        "unsupported_sentence_rate": (
+            round(
+                sum(result.unsupported_sentence_count for result in results)
+                / max(1, sum(result.answer_sentence_count for result in results)),
+                3,
+            )
+            if results
+            else 0.0
+        ),
+        "citation_warning_count": sum(result.citation_warning_count for result in results),
         "average_latency_ms": (
             round(mean([result.latency_ms for result in results]), 2) if results else 0.0
         ),
@@ -244,36 +342,26 @@ def evaluate_retrieval(
             round(
                 mean(
                     [
-                        (
-                            1.0
-                            if result.expected_source in result.retrieved_sources[:1]
-                            or result.expected_source == "__NO_ANSWER__"
-                            else 0.0
-                        )
-                        for result in results
+                        (1.0 if result.expected_source in result.retrieved_sources[:1] else 0.0)
+                        for result in answerable_results
                     ]
                 ),
                 3,
             )
-            if results
+            if answerable_results
             else 0.0
         ),
         "retrieval_hit_at_3": (
             round(
                 mean(
                     [
-                        (
-                            1.0
-                            if result.expected_source in result.retrieved_sources[:3]
-                            or result.expected_source == "__NO_ANSWER__"
-                            else 0.0
-                        )
-                        for result in results
+                        (1.0 if result.expected_source in result.retrieved_sources[:3] else 0.0)
+                        for result in answerable_results
                     ]
                 ),
                 3,
             )
-            if results
+            if answerable_results
             else 0.0
         ),
         "no_answer_accuracy": (
@@ -318,12 +406,17 @@ def evaluate_retrieval_modes(
     *,
     modes: tuple[str, ...] = ("tfidf", "bm25", "dense_lsa", "hybrid"),
     k: int = 4,
+    manifest_path: str | Path | None = None,
 ) -> dict[str, object]:
     from .assistant import build_assistant_from_paths
 
     mode_payloads: dict[str, dict[str, object]] = {}
     for mode in modes:
-        assistant = build_assistant_from_paths(paths, retrieval_mode=mode)
+        assistant = build_assistant_from_paths(
+            paths,
+            manifest_path=manifest_path,
+            retrieval_mode=mode,
+        )
         payload = evaluate_retrieval(assistant, cases, k=k)
         mode_payloads[mode] = {
             "summary": payload["summary"],

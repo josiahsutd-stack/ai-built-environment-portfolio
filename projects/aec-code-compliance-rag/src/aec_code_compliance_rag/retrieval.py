@@ -6,6 +6,7 @@ from collections import Counter, defaultdict
 from dataclasses import dataclass
 from typing import Protocol
 
+import numpy as np
 from sklearn.decomposition import TruncatedSVD
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
@@ -158,6 +159,113 @@ class DenseLsaRetriever:
                 )
             )
         return results
+
+
+class SentenceTransformerRetriever:
+    """Optional semantic embedding retriever using sentence-transformers."""
+
+    def __init__(
+        self,
+        chunks: list[DocumentChunk],
+        *,
+        model_name: str = "sentence-transformers/all-MiniLM-L6-v2",
+    ) -> None:
+        try:
+            from sentence_transformers import SentenceTransformer
+        except ImportError as exc:  # pragma: no cover - optional dependency
+            raise RuntimeError(
+                "Install optional embeddings with "
+                "`pip install -r projects/aec-code-compliance-rag/requirements-embeddings.txt`."
+            ) from exc
+        self.chunks = chunks
+        self.model_name = model_name
+        self.model = SentenceTransformer(model_name)
+        self.matrix = self.model.encode(
+            [chunk.text for chunk in chunks],
+            normalize_embeddings=True,
+            show_progress_bar=False,
+        )
+
+    def search(self, query: str, *, k: int = 4, min_score: float = 0.0) -> list[SearchResult]:
+        if not self.chunks or not query.strip():
+            return []
+        query_vector = self.model.encode(
+            [query], normalize_embeddings=True, show_progress_bar=False
+        )
+        scores = np.asarray(query_vector @ self.matrix.T)[0]
+        ranked_indices = scores.argsort()[::-1][:k]
+        results: list[SearchResult] = []
+        for index in ranked_indices:
+            score = float(scores[index])
+            if score < min_score:
+                continue
+            chunk = self.chunks[int(index)]
+            results.append(
+                SearchResult(
+                    text=chunk.text,
+                    source=chunk.source,
+                    score=round(score, 6),
+                    metadata={
+                        **chunk.metadata(),
+                        "retriever": "sentence_transformer",
+                        "embedding_model": self.model_name,
+                        "embedding_score": str(round(score, 6)),
+                    },
+                )
+            )
+        return results
+
+
+class CrossEncoderRerankedRetriever:
+    """Optional cross-encoder reranker on top of the local hybrid retriever."""
+
+    def __init__(
+        self,
+        chunks: list[DocumentChunk],
+        *,
+        model_name: str = "cross-encoder/ms-marco-MiniLM-L-6-v2",
+        pool_multiplier: int = 4,
+    ) -> None:
+        try:
+            from sentence_transformers import CrossEncoder
+        except ImportError as exc:  # pragma: no cover - optional dependency
+            raise RuntimeError(
+                "Install optional embeddings with "
+                "`pip install -r projects/aec-code-compliance-rag/requirements-embeddings.txt`."
+            ) from exc
+        self.base = HybridRetriever(chunks)
+        self.model_name = model_name
+        self.model = CrossEncoder(model_name)
+        self.pool_multiplier = pool_multiplier
+
+    def search(self, query: str, *, k: int = 4, min_score: float = 0.0) -> list[SearchResult]:
+        if not query.strip():
+            return []
+        pool = self.base.search(query, k=max(k * self.pool_multiplier, k), min_score=0)
+        if not pool:
+            return []
+        scores = self.model.predict([(query, result.text) for result in pool])
+        reranked: list[SearchResult] = []
+        for result, score in zip(pool, scores, strict=True):
+            normalized_score = float(score)
+            if normalized_score < min_score:
+                continue
+            reranked.append(
+                SearchResult(
+                    text=result.text,
+                    source=result.source,
+                    score=round(normalized_score, 6),
+                    metadata={
+                        **result.metadata,
+                        "retriever": "hybrid_cross_encoder",
+                        "base_retriever": result.metadata.get("retriever", "hybrid"),
+                        "base_score": str(result.score),
+                        "rerank_model": self.model_name,
+                        "rerank_score": str(round(normalized_score, 6)),
+                    },
+                )
+            )
+        return sorted(reranked, key=lambda result: result.score, reverse=True)[:k]
 
 
 class HybridRetriever:

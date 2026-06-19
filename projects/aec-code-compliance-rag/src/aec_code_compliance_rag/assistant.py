@@ -7,7 +7,15 @@ from shared.ai.providers import LLMProvider
 
 from .chunking import DocumentChunk, load_document_chunks
 from .faithfulness import check_citation_faithfulness
-from .retrieval import BM25Retriever, DenseLsaRetriever, HybridRetriever, TfidfRetriever, tokenize
+from .retrieval import (
+    BM25Retriever,
+    CrossEncoderRerankedRetriever,
+    DenseLsaRetriever,
+    HybridRetriever,
+    SentenceTransformerRetriever,
+    TfidfRetriever,
+    tokenize,
+)
 from .source_manifest import default_source_manifest_path, load_source_manifest
 
 UNSUPPORTED_SCOPE_TERMS = {
@@ -68,6 +76,10 @@ class RAGAssistant:
                 "source": chunk.source,
                 "title": metadata.get("title", ""),
                 "source_type": metadata.get("source_type", ""),
+                "publisher": metadata.get("publisher", ""),
+                "source_url": metadata.get("source_url", ""),
+                "rights": metadata.get("rights", ""),
+                "source_note": metadata.get("source_note", ""),
                 "jurisdiction": metadata.get("jurisdiction", ""),
                 "code_year": metadata.get("code_year", ""),
                 "document_version": metadata.get("document_version", ""),
@@ -92,6 +104,10 @@ class RAGAssistant:
             return BM25Retriever(chunks)
         if self.retrieval_mode == "dense_lsa":
             return DenseLsaRetriever(chunks)
+        if self.retrieval_mode == "semantic":
+            return SentenceTransformerRetriever(chunks)
+        if self.retrieval_mode == "hybrid_cross_encoder":
+            return CrossEncoderRerankedRetriever(chunks)
         return HybridRetriever(chunks)
 
     def _matches_source_filters(
@@ -119,6 +135,11 @@ class RAGAssistant:
             "title": result.metadata.get("title", ""),
             "source_type": result.metadata.get("source_type", ""),
             "allowed_use": result.metadata.get("allowed_use", ""),
+            "publisher": result.metadata.get("publisher", ""),
+            "source_url": result.metadata.get("source_url", ""),
+            "rights": result.metadata.get("rights", ""),
+            "downloaded_at": result.metadata.get("downloaded_at", ""),
+            "source_note": result.metadata.get("source_note", ""),
             "document_id": result.metadata.get("document_id", ""),
             "jurisdiction": result.metadata.get("jurisdiction", ""),
             "code_year": result.metadata.get("code_year", ""),
@@ -134,6 +155,9 @@ class RAGAssistant:
             "bm25_score": result.metadata.get("bm25_score"),
             "dense_score": result.metadata.get("dense_score"),
             "embedding_model": result.metadata.get("embedding_model"),
+            "embedding_score": result.metadata.get("embedding_score"),
+            "rerank_model": result.metadata.get("rerank_model"),
+            "rerank_score": result.metadata.get("rerank_score"),
             "query_term_coverage": result.metadata.get("query_term_coverage"),
             "score": round(result.score, 3),
             "excerpt": result.text[:360],
@@ -168,8 +192,9 @@ class RAGAssistant:
         if unsupported_status:
             return {
                 "answer": (
-                    "Unsupported scope: the local synthetic corpus cannot provide live legal, "
-                    "jurisdictional, certification, or professional compliance sign-off."
+                    "Unsupported scope: this local retrieval assistant cannot provide live "
+                    "legal, jurisdictional, certification, approval, or professional "
+                    "compliance sign-off."
                 ),
                 "status": unsupported_status,
                 "confidence": "low",
@@ -181,7 +206,7 @@ class RAGAssistant:
         weak_coverage = self._weak_lexical_coverage(question, results)
         if not results or weak_coverage:
             return {
-                "answer": "I could not find grounded evidence in the demo documents.",
+                "answer": "I could not find grounded evidence in the local corpus.",
                 "status": "no_evidence",
                 "confidence": "low",
                 "sources": [],
@@ -223,9 +248,13 @@ class RAGAssistant:
             answer = f"{answer}\n\n{source_status['note']}"
         faithfulness = check_citation_faithfulness(answer, citations)
         limitations = [
-            "synthetic_demo_corpus",
-            "not_legal_code_engineering_or_professional_compliance_advice",
+            "local_reference_corpus",
+            "not_legal_code_engineering_architectural_or_professional_compliance_advice",
         ]
+        if any("official_public" in str(citation.get("allowed_use", "")) for citation in citations):
+            limitations.append("official_public_sources_for_local_reference_only")
+        else:
+            limitations.append("synthetic_demo_corpus")
         if source_status["requires_review"]:
             limitations.append("source_status_review_required")
         return {
@@ -384,7 +413,7 @@ class RAGAssistant:
                 )
             )
         return (
-            "Based on the synthetic demo guidance retrieved locally, review these items:\n"
+            "Based on the retrieved local guidance, review these items:\n"
             + "\n".join(bullets)
             + "\n\nThis is decision-support text only; a qualified reviewer would still "
             "check the governing jurisdiction, current code version, and project-specific constraints."

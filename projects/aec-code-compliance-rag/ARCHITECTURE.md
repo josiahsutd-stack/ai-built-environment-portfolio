@@ -1,13 +1,14 @@
 # Architecture
 
-This project is a local, synthetic-data RAG assistant for AEC guidance. It is designed to be inspectable by recruiters and technical reviewers, not to provide real compliance advice.
+This project is a local RAG assistant for AEC guidance. It is designed to be inspectable by recruiters and technical reviewers, not to provide real compliance advice. The default path uses synthetic documents; the optional public-source path downloads official Singapore BCA, URA, NEA, SCDF, and LTA documents locally for more realistic retrieval testing.
 
 ## System Flow
 
 ```mermaid
 flowchart LR
-  A["Synthetic Markdown and PDF guidance"] --> B["Section/page-aware chunker"]
-  M["source_manifest.json"] --> C["Chunk metadata contract"]
+  A["Synthetic Markdown/PDF guidance or downloaded Singapore public sources"] --> B["Section/page-aware chunker"]
+  S["public_sources/sources.json downloader"] --> A
+  M["source_manifest.json or generated public source manifest"] --> C["Chunk metadata contract"]
   B --> C["Chunk metadata contract"]
   C --> D["Filtered local hybrid lexical retriever"]
   Q["Reviewer question"] --> D
@@ -29,12 +30,15 @@ flowchart LR
 | Chunking | `src/aec_code_compliance_rag/chunking.py` | Splits markdown by headings, preserves page markers, converts PDF page text into chunks, and emits chunk metadata. |
 | PDF ingestion | `src/aec_code_compliance_rag/pdf_ingestion.py` | Extracts text page by page from PDFs with `pypdf` and passes real page numbers into the chunk metadata contract. |
 | Source manifest | `src/aec_code_compliance_rag/source_manifest.py` | Loads `source_manifest.json` and applies source title, type, allowed-use, jurisdiction, version, and superseded metadata. |
-| Retrieval | `src/aec_code_compliance_rag/retrieval.py` | Provides TF-IDF, BM25, dense LSA, and hybrid retrieval over local chunks. |
+| Public sources | `src/aec_code_compliance_rag/public_sources.py` | Downloads official public Singapore source documents to an ignored local folder and generates source metadata for retrieval. |
+| Retrieval | `src/aec_code_compliance_rag/retrieval.py` | Provides TF-IDF, BM25, dense LSA, hybrid retrieval, and optional sentence-transformer/cross-encoder modes over local chunks. |
 | Assistant | `src/aec_code_compliance_rag/assistant.py` | Builds the retrieval boundary, applies source filters, handles questions, formats citations, checks source status, checks support, and returns abstention statuses. |
 | Faithfulness | `src/aec_code_compliance_rag/faithfulness.py` | Applies deterministic citation-marker and lexical-support checks for demo answers. |
+| Observability | `src/aec_code_compliance_rag/observability.py` | Persists local query metadata to SQLite for review and debugging. |
 | Evaluation | `src/aec_code_compliance_rag/evaluation.py` | Loads evaluation cases and computes retrieval metrics. |
 | Evaluation CLI | `evaluate_retrieval.py` | Runs the evaluator and writes reviewer artifacts in `demo_outputs/`. |
 | Demo UI | `app.py` | Streamlit interface for local question answering and citation inspection. |
+| API | `api.py` | FastAPI review surface for health, source catalog, query, retrieve, and recent local logs. |
 
 ## Data Contract
 
@@ -46,6 +50,11 @@ Every retrieved chunk carries this metadata:
 | `title` | Human-readable document title from the manifest or source filename. |
 | `source_type` | Document type such as `markdown` or `pdf`. |
 | `allowed_use` | Synthetic allowed-use label from the source manifest. |
+| `publisher` | Publisher for public-source records, such as BCA, URA, NEA, SCDF, or LTA. |
+| `source_url` | Official source URL captured by the downloader manifest. |
+| `rights` | Local-use and redistribution boundary note. |
+| `downloaded_at` | Timestamp for public-source download snapshots. |
+| `source_note` | Short source-role note used for reviewer context. |
 | `document_id` | Stable document identifier derived from the source. |
 | `jurisdiction` | Synthetic jurisdiction label when supplied in the document header. |
 | `code_year` | Synthetic code year when supplied in the document header. |
@@ -60,9 +69,13 @@ Every retrieved chunk carries this metadata:
 
 The sample corpus includes markdown files, a generated text-based PDF addendum, and `sample_data/source_manifest.json`. Markdown page values come from comments such as `<!-- page: 2 -->`; PDF page values come from page-by-page extraction with `pypdf`. The manifest is the local place where document title, type, allowed use, jurisdiction, version, and superseded state are made explicit.
 
+The optional public corpus uses `public_sources/sources.json` as the committed source inventory, downloads official public documents into ignored `public_sources/downloaded/`, and writes a generated `source_manifest.json` for chunk metadata. This allows real-document retrieval experiments without committing copied government PDFs.
+
 ## Retrieval Design
 
-The default retriever combines local TF-IDF and BM25 scores, then applies a small lexical coverage boost. The project also includes TF-IDF-only, BM25-only, and dense LSA modes for comparison. All modes stay runnable without paid APIs, local model downloads, or external infrastructure. This is intentionally transparent: reviewers can inspect exact chunk text, component scores, dense scores, metadata, filters, and citations.
+The default retriever combines local TF-IDF and BM25 scores, then applies a small lexical coverage boost. The project also includes TF-IDF-only, BM25-only, and dense LSA modes for comparison. These committed modes stay runnable without paid APIs, local model downloads, or external infrastructure. This is intentionally transparent: reviewers can inspect exact chunk text, component scores, dense scores, metadata, filters, and citations.
+
+Optional `semantic` and `hybrid_cross_encoder` modes use `sentence-transformers` for embedding retrieval and cross-encoder reranking. They are useful extension points, but the default review path does not require downloading model weights.
 
 The assistant can rebuild a temporary retriever over a filtered source subset for a query. Supported local filters include jurisdiction, source type, and superseded status. In a deployment-oriented extension, the same assistant boundary could support:
 
@@ -77,6 +90,7 @@ Citations are structured dictionaries, not just rendered strings. Each citation 
 
 - `citation_id`, for answer references such as `[C1]`.
 - `source`, `title`, `source_type`, `allowed_use`, `heading`, `clause_id`, `page`, and `chunk_id`.
+- public-source provenance fields such as `publisher`, `source_url`, `rights`, `downloaded_at`, and `source_note`.
 - `score`, so reviewers can see retrieval confidence.
 - retrieval-specific scores such as `tfidf_score`, `bm25_score`, or `dense_score`.
 - `excerpt`, so the answer evidence is visible.
@@ -107,7 +121,7 @@ For compliance-oriented workflows, this behavior is more important than always g
 The current project is intentionally local and synthetic. A serious applied extension would add:
 
 - Layout-aware PDF parsing for tables, scanned documents, OCR fallback, and clause segmentation.
-- Source inventory validation against authorized or public documents.
+- Source inventory validation against authorized or public documents, including Singapore amendment refresh checks.
 - Stronger source conflict detection for contradictory clauses and superseded guidance.
 - Hosted/local embedding retrieval and reranking.
 - Stronger answer-faithfulness evaluation against retrieved chunks.

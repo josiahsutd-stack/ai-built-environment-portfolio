@@ -1,12 +1,12 @@
 # Demo Answer: Accessible Route Review
 
-Synthetic demo output. Not legal, code, or professional compliance advice.
+Synthetic demo demo output. Not legal, code, engineering, architectural, or professional compliance advice.
 
 **Question:** What clear width should be checked for high traffic accessible routes?
 
 ## Grounded Answer
 
-Based on the synthetic demo guidance retrieved locally, review these items:
+Based on the retrieved local guidance, review these items:
 - Accessible Routes. Primary public routes should provide a clear width of at least 1200 mm in high traffic zones. Doorways serving accessible rooms should provide a clear opening of at least 850 mm. Threshold changes greater than 12 mm should be ramped or otherwise resolved in the design. [C1]
 - Accessible Route Width. Primary public routes should provide a clear width of at least 1200 mm in high traffic zones. Secondary staff-only routes may require a separate project review when equipment, trolleys, or queuing are expected. [C2]
 
