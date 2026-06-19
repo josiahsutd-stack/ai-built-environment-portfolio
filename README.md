@@ -33,7 +33,7 @@ python scripts/check_portfolio_site.py
 - Architecture docs close to the code: [AEC ARCHITECTURE.md](projects/aec-code-compliance-rag/ARCHITECTURE.md), [technical review guide](docs/technical-review-guide.md)
 - Demo screenshots: [portfolio home](docs/assets/screenshots/portfolio-home.png), [AEC RAG app](docs/assets/screenshots/aec-rag-demo.png)
 - Test coverage for retrieval, citations, no-answer handling, agent traces, MLOps metadata, LoRA validation, and VLM prompt contracts.
-- Project scope and review docs: [CLAIMS_POLICY.md](docs/CLAIMS_POLICY.md), [AUTHENTICITY_AND_OWNERSHIP.md](docs/AUTHENTICITY_AND_OWNERSHIP.md), [PROJECT_DEPTH_SCORECARD.md](docs/PROJECT_DEPTH_SCORECARD.md)
+- Project scope and review docs: [CLAIMS_POLICY.md](docs/CLAIMS_POLICY.md), [AUTHENTICITY_AND_OWNERSHIP.md](docs/AUTHENTICITY_AND_OWNERSHIP.md), [REVIEWER_GUIDE.md](docs/REVIEWER_GUIDE.md)
 
 ## Scope
 
@@ -183,7 +183,6 @@ These broaden the portfolio but should not be treated as equally deep:
 - [Reviewer guide](docs/REVIEWER_GUIDE.md)
 - [Claims policy](docs/CLAIMS_POLICY.md)
 - [Authenticity and ownership](docs/AUTHENTICITY_AND_OWNERSHIP.md)
-- [Project depth scorecard](docs/PROJECT_DEPTH_SCORECARD.md)
 - [Demo recording guide](docs/DEMO_RECORDING_GUIDE.md)
 
 ## Portfolio Site

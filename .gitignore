@@ -9,6 +9,7 @@ htmlcov/
 .env
 .artifacts/
 tmp/
+local-internal/
 *.sqlite
 *.db
 *.pkl
