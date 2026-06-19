@@ -8,6 +8,8 @@ This repository is intentionally local-first: projects run with synthetic data o
 
 This portfolio focuses on applied AI engineering work that is runnable locally and documented with tests, evaluation scripts, architecture notes, and sample outputs.
 
+![Portfolio site screenshot](docs/assets/screenshots/portfolio-home.png)
+
 | Project | What it demonstrates | Evidence |
 | --- | --- | --- |
 | [AEC Code Compliance RAG](projects/aec-code-compliance-rag/README.md) | Source-grounded retrieval, citation formatting, no-answer handling, and AEC domain translation. | [EVAL.md](projects/aec-code-compliance-rag/EVAL.md), [demo outputs](projects/aec-code-compliance-rag/demo_outputs/), [tests](tests/test_rag.py) |
@@ -29,6 +31,7 @@ python scripts/check_portfolio_site.py
 
 - AEC eval and generated demo outputs: [EVAL.md](projects/aec-code-compliance-rag/EVAL.md), [demo_outputs/](projects/aec-code-compliance-rag/demo_outputs/)
 - Architecture docs close to the code: [AEC ARCHITECTURE.md](projects/aec-code-compliance-rag/ARCHITECTURE.md), [technical review guide](docs/technical-review-guide.md)
+- Demo screenshots: [portfolio home](docs/assets/screenshots/portfolio-home.png), [AEC RAG app](docs/assets/screenshots/aec-rag-demo.png)
 - Test coverage for retrieval, citations, no-answer handling, agent traces, MLOps metadata, LoRA validation, and VLM prompt contracts.
 - Project scope and review docs: [CLAIMS_POLICY.md](docs/CLAIMS_POLICY.md), [AUTHENTICITY_AND_OWNERSHIP.md](docs/AUTHENTICITY_AND_OWNERSHIP.md), [PROJECT_DEPTH_SCORECARD.md](docs/PROJECT_DEPTH_SCORECARD.md)
 
@@ -173,20 +176,15 @@ These broaden the portfolio but should not be treated as equally deep:
 - Do not infer real LoRA model improvement from the fine-tuning lab.
 - Do not infer senior-level MLOps ownership from the local MLOps skeleton.
 
-## Reviewer Docs
+## Supporting Docs
 
-- [Baseline audit](PORTFOLIO_BASELINE_AUDIT.md)
-- [Review rounds](PORTFOLIO_REVIEW_ROUNDS.md)
-- [External portfolio benchmark](EXTERNAL_PORTFOLIO_BENCHMARK.md)
-- [Research notes, not SOTA claims](SOTA_RESEARCH_NOTES.md)
-- [Final hiring-manager review](FINAL_HIRING_MANAGER_REVIEW.md)
 - [How to review this portfolio](docs/how-to-review-this-portfolio.md)
 - [Technical review guide](docs/technical-review-guide.md)
 - [Reviewer guide](docs/REVIEWER_GUIDE.md)
 - [Claims policy](docs/CLAIMS_POLICY.md)
 - [Authenticity and ownership](docs/AUTHENTICITY_AND_OWNERSHIP.md)
 - [Project depth scorecard](docs/PROJECT_DEPTH_SCORECARD.md)
-- [Upgrade work log](docs/CODEX_UPGRADE_PLAN.md)
+- [Demo recording guide](docs/DEMO_RECORDING_GUIDE.md)
 
 ## Portfolio Site
 

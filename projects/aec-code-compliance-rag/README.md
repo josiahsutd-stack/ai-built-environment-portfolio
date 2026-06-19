@@ -21,6 +21,7 @@ Key reviewer signals:
 - Evidence-first retrieval over synthetic AEC guidance.
 - Chunk metadata for section, heading, clause ID, page marker, chunk ID, and word offsets.
 - Citation objects that include readable references, scores, excerpts, and traceable chunk IDs.
+- Source-status warnings for superseded, mixed-version, mixed-jurisdiction, or mixed-year evidence.
 - Retrieval evaluation with sample questions and repeatable metrics.
 - Tests for chunking, retrieval, citations, and no-result handling.
 - Clear architecture, limitations, demo artifacts, and production next steps.
@@ -43,6 +44,8 @@ The app runs locally without paid APIs. If `OPENAI_API_KEY` is not set, the assi
 ```bash
 streamlit run projects/aec-code-compliance-rag/app.py
 ```
+
+![AEC RAG Streamlit demo](../../docs/assets/screenshots/aec-rag-demo.png)
 
 Try these questions:
 
@@ -73,6 +76,7 @@ python projects/aec-code-compliance-rag/scripts/evaluate_retrieval.py
 - Local hybrid TF-IDF/BM25 retrieval as an inspectable lexical retrieval baseline.
 - Deterministic no-API answer mode plus optional OpenAI-compatible provider through shared portfolio utilities.
 - Citation formatting with references like `[C1] mock_aec_guidance.md > Accessible Routes`.
+- Source-status analysis that flags retrieved evidence requiring version/jurisdiction review.
 - Retrieval evaluation over sample questions.
 - No-answer evaluation for unsupported compliance questions.
 - Demo output generation for reviewers.
@@ -88,9 +92,9 @@ python projects/aec-code-compliance-rag/scripts/evaluate_retrieval.py
 
 1. Synthetic markdown guidance is loaded from `sample_data/`.
 2. The chunker splits by markdown headings and optional page markers such as `<!-- page: 2 -->`.
-3. Each chunk receives traceable metadata: source, section, heading, clause ID, page marker, chunk ID, start word, and end word.
+3. Each chunk receives traceable metadata: source, section, heading, clause ID, page marker, chunk ID, start word, end word, document version, jurisdiction, code year, and superseded status.
 4. A local hybrid retriever combines TF-IDF and BM25 results for a question.
-5. The assistant returns an answer only from retrieved evidence and exposes structured citations.
+5. The assistant returns an answer only from retrieved evidence, exposes structured citations, and warns when retrieved sources need version or jurisdiction review.
 6. The evaluation script runs sample questions and writes metrics plus demo outputs.
 
 ## Tests
@@ -104,6 +108,7 @@ The tests cover:
 - Chunk metadata and page-marker parsing.
 - Retrieval of the expected section.
 - Citation formatting and chunk IDs.
+- Document-version, jurisdiction, and superseded-source metadata.
 - Empty and no-result handling.
 - Retrieval evaluation metrics.
 
@@ -122,7 +127,7 @@ The tests cover:
 - Add embedding retrieval and stronger reranking if local hardware or hosted providers are appropriate.
 - Strengthen citation-faithfulness checks beyond the current deterministic lexical coverage check.
 - Expand the evaluation set with negative questions, ambiguous jurisdiction cases, and adversarial wording.
-- Add versioned document metadata for jurisdiction, code year, issue date, and superseded clauses.
+- Add stronger conflict detection for contradictory source content and superseded clauses.
 - Add a reviewer workflow where uncertain answers are routed to a qualified professional.
 
 ## Reviewer Signal

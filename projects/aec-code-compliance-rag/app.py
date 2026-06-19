@@ -29,6 +29,11 @@ if st.button("Answer", type="primary") or question:
     result = assistant.answer(question, k=k)
     st.subheader("Grounded answer")
     st.write(result["answer"])
+    source_status = result.get("source_status", {})
+    if source_status.get("requires_review"):
+        st.warning(source_status.get("note", "Retrieved sources require review."))
+        with st.expander("Source status details"):
+            st.json(source_status)
     st.caption(
         f"Retrieved {result['retrieval']['result_count']} chunks "
         f"(top score {result['retrieval'].get('top_score', 0)})."
@@ -42,6 +47,13 @@ if st.button("Answer", type="primary") or question:
         with st.expander(title):
             st.write(source["reference"])
             st.write(f"Chunk: `{source['chunk_id']}`")
+            st.write(
+                "Source status: "
+                f"version `{source.get('document_version', '')}`, "
+                f"jurisdiction `{source.get('jurisdiction', '')}`, "
+                f"code year `{source.get('code_year', '')}`, "
+                f"superseded `{source.get('superseded', False)}`"
+            )
             if source["page"]:
                 st.write(f"Demo page marker: {source['page']}")
             st.write(source["excerpt"])

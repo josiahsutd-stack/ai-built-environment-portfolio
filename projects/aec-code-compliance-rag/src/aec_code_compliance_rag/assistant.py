@@ -53,6 +53,11 @@ class RAGAssistant:
         return {
             "citation_id": citation_id,
             "source": result.source,
+            "document_id": result.metadata.get("document_id", ""),
+            "jurisdiction": result.metadata.get("jurisdiction", ""),
+            "code_year": result.metadata.get("code_year", ""),
+            "document_version": result.metadata.get("document_version", ""),
+            "superseded": result.metadata.get("superseded", "false") == "true",
             "section": result.metadata.get("section", ""),
             "heading": result.metadata.get("heading", ""),
             "clause_id": result.metadata.get("clause_id", ""),
@@ -127,6 +132,7 @@ class RAGAssistant:
             f"Question: {question}\n\nContext:\n{context}"
         )
         citations = [self.format_citation(result, idx + 1) for idx, result in enumerate(results)]
+        source_status = self._source_status(citations)
         if getattr(self.provider, "name", "") == "mock-local-llm":
             answer = self._local_grounded_answer(citations)
         else:
@@ -137,12 +143,21 @@ class RAGAssistant:
                     "Use only the provided context and cite chunk IDs like [C1]."
                 ),
             )
+        if source_status["requires_review"]:
+            answer = f"{answer}\n\n{source_status['note']}"
         faithfulness = check_citation_faithfulness(answer, citations)
+        limitations = [
+            "synthetic_demo_corpus",
+            "not_legal_code_engineering_or_professional_compliance_advice",
+        ]
+        if source_status["requires_review"]:
+            limitations.append("source_status_review_required")
         return {
             "answer": answer,
             "status": "answered",
             "confidence": self._confidence_label(citations),
             "sources": citations,
+            "source_status": source_status,
             "retrieval": {
                 "k": k,
                 "result_count": len(results),
@@ -150,10 +165,7 @@ class RAGAssistant:
                 "mode": self.retrieval_mode,
             },
             "citation_check": faithfulness,
-            "limitations": [
-                "synthetic_demo_corpus",
-                "not_legal_code_engineering_or_professional_compliance_advice",
-            ],
+            "limitations": limitations,
         }
 
     def _unsupported_status(self, question: str) -> str | None:
@@ -210,6 +222,70 @@ class RAGAssistant:
         if top_score >= 0.16:
             return "medium"
         return "low"
+
+    def _source_status(self, citations: list[dict[str, object]]) -> dict[str, object]:
+        superseded = [
+            {
+                "citation_id": citation["citation_id"],
+                "source": citation["source"],
+                "document_version": citation.get("document_version", ""),
+            }
+            for citation in citations
+            if citation.get("superseded") is True
+        ]
+        versions = sorted(
+            {
+                str(citation.get("document_version", ""))
+                for citation in citations
+                if citation.get("document_version")
+            }
+        )
+        jurisdictions = sorted(
+            {
+                str(citation.get("jurisdiction", ""))
+                for citation in citations
+                if citation.get("jurisdiction")
+            }
+        )
+        code_years = sorted(
+            {
+                str(citation.get("code_year", ""))
+                for citation in citations
+                if citation.get("code_year")
+            }
+        )
+        warnings: list[str] = []
+        if superseded:
+            warnings.append("retrieved_superseded_sources")
+        if len(versions) > 1:
+            warnings.append("mixed_document_versions")
+        if len(jurisdictions) > 1:
+            warnings.append("mixed_jurisdictions")
+        if len(code_years) > 1:
+            warnings.append("mixed_code_years")
+        note = ""
+        if warnings:
+            reason_labels = {
+                "retrieved_superseded_sources": "superseded sources",
+                "mixed_document_versions": "multiple document versions",
+                "mixed_jurisdictions": "multiple jurisdictions",
+                "mixed_code_years": "multiple code years",
+            }
+            reasons = ", ".join(reason_labels[warning] for warning in warnings)
+            note = (
+                f"Source status note: retrieved evidence includes {reasons}. "
+                "Treat the answer as review input and verify the governing source set "
+                "before relying on it."
+            )
+        return {
+            "requires_review": bool(warnings),
+            "warnings": warnings,
+            "superseded_sources": superseded,
+            "document_versions": versions,
+            "jurisdictions": jurisdictions,
+            "code_years": code_years,
+            "note": note,
+        }
 
     def _local_grounded_answer(self, citations: list[dict[str, object]]) -> str:
         top_score = float(citations[0]["score"]) if citations else 0.0

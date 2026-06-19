@@ -33,6 +33,28 @@ def test_chunking_preserves_review_metadata() -> None:
     assert int(metadata["end_word"]) > int(metadata["start_word"])
 
 
+def test_chunking_preserves_document_status_metadata() -> None:
+    text = """
+    document_id: access_v1
+    jurisdiction: demo-city
+    code_year: 2024
+    document_version: v1
+    superseded: true
+
+    ## Accessible Routes
+
+    Accessible routes should include doorway and threshold review notes.
+    """
+
+    metadata = chunk_text(text, source="access-v1.md")[0].metadata()
+
+    assert metadata["document_id"] == "access_v1"
+    assert metadata["jurisdiction"] == "demo-city"
+    assert metadata["code_year"] == "2024"
+    assert metadata["document_version"] == "v1"
+    assert metadata["superseded"] == "true"
+
+
 def test_chunking_and_retrieval_returns_accessibility_source() -> None:
     text = """
     # Accessibility
@@ -106,6 +128,47 @@ def test_citation_format_exposes_clause_and_chunk_metadata() -> None:
     assert citation["page"] == "2"
     assert citation["chunk_id"] == "mock-fire-compartment-notes-000"
     assert "[C1]" in citation["reference"]
+
+
+def test_rag_flags_superseded_and_mixed_version_sources() -> None:
+    old = """
+    document_id: access_old
+    jurisdiction: synthetic-demo
+    code_year: synthetic
+    document_version: demo-v1
+    superseded: true
+
+    ## Doorway And Threshold Checks
+
+    Doorways serving accessible rooms should provide doorway clearance and threshold notes.
+    """
+    current = """
+    document_id: access_current
+    jurisdiction: synthetic-demo
+    code_year: synthetic
+    document_version: demo-v2
+    superseded: false
+
+    ## Doorway And Threshold Checks
+
+    Doorways serving accessible rooms should provide doorway clearance and threshold notes.
+    Threshold changes greater than 12 mm should be resolved before issue.
+    """
+    chunks = chunk_text(old, source="access-old.md") + chunk_text(
+        current, source="access-current.md"
+    )
+    assistant = RAGAssistant(chunks, min_score=0)
+
+    response = assistant.answer("What doorway clearance and threshold checks apply?", k=2)
+
+    assert response["status"] == "answered"
+    assert response["source_status"]["requires_review"]
+    assert "retrieved_superseded_sources" in response["source_status"]["warnings"]
+    assert "mixed_document_versions" in response["source_status"]["warnings"]
+    assert "source_status_review_required" in response["limitations"]
+    assert "Source status note" in response["answer"]
+    assert response["sources"][0]["document_version"] in {"demo-v1", "demo-v2"}
+    assert response["citation_check"]["passed"]
 
 
 def test_rag_handles_empty_question() -> None:

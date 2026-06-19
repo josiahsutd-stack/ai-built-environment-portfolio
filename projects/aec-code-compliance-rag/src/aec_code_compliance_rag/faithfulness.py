@@ -77,6 +77,8 @@ def _is_limitation_sentence(sentence: str) -> bool:
             "professional compliance advice",
             "based on the synthetic demo guidance",
             "review these items",
+            "source status note",
+            "governing source set",
         ]
     )
 

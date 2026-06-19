@@ -13,8 +13,10 @@ flowchart LR
   D --> E["Top-k chunks with scores"]
   E --> F["Grounded answer builder"]
   E --> G["Citation formatter"]
+  E --> K["Source status analyzer"]
   F --> H["Answer"]
   G --> H
+  K --> H
   D --> I["Retrieval evaluator"]
   I --> J["demo_outputs"]
 ```
@@ -25,7 +27,7 @@ flowchart LR
 | --- | --- | --- |
 | Chunking | `src/aec_code_compliance_rag/chunking.py` | Splits markdown by headings, preserves page markers, and emits chunk metadata. |
 | Retrieval | `src/aec_code_compliance_rag/retrieval.py` | Provides TF-IDF, BM25, and hybrid lexical retrieval over local chunks. |
-| Assistant | `src/aec_code_compliance_rag/assistant.py` | Builds the retrieval boundary, handles questions, formats citations, checks support, and returns abstention statuses. |
+| Assistant | `src/aec_code_compliance_rag/assistant.py` | Builds the retrieval boundary, handles questions, formats citations, checks source status, checks support, and returns abstention statuses. |
 | Faithfulness | `src/aec_code_compliance_rag/faithfulness.py` | Applies deterministic citation-marker and lexical-support checks for demo answers. |
 | Evaluation | `src/aec_code_compliance_rag/evaluation.py` | Loads evaluation cases and computes retrieval metrics. |
 | Evaluation CLI | `evaluate_retrieval.py` | Runs the evaluator and writes reviewer artifacts in `demo_outputs/`. |
@@ -72,8 +74,15 @@ Citations are structured dictionaries, not just rendered strings. Each citation 
 - `score`, so reviewers can see retrieval confidence.
 - `excerpt`, so the answer evidence is visible.
 - `reference`, a readable citation label.
+- version and source-status fields such as `document_version`, `jurisdiction`, `code_year`, and `superseded`.
 
 This makes citations easy to display in Streamlit, test in pytest, and export in demo outputs.
+
+## Source Status Warnings
+
+The assistant inspects citation metadata before returning an answer. If retrieved evidence includes superseded sources, multiple document versions, multiple jurisdictions, or multiple code years, the response includes a `source_status` object and a visible source-status note in the answer. The answer can still be returned, but the status warning makes clear that the governing source set needs review.
+
+This is deterministic metadata handling, not legal validation. It models an important production concern: compliance-oriented RAG systems need to identify when retrieved evidence may come from the wrong source set before a person relies on the answer.
 
 ## No-Result Handling
 
@@ -91,7 +100,7 @@ For compliance-oriented workflows, this behavior is more important than always g
 The current project is intentionally local and synthetic. A serious applied extension would add:
 
 - PDF ingestion with page extraction and clause parsing.
-- Source document versioning and jurisdiction metadata.
+- Stronger source conflict detection for contradictory clauses and superseded guidance.
 - Embedding retrieval, reranking, and filterable search.
 - Stronger answer-faithfulness evaluation against retrieved chunks.
 - Human approval workflow for compliance-sensitive responses.

@@ -17,7 +17,7 @@ Synthetic demo evaluation for the AEC Code Compliance RAG Assistant.
 - Citation check pass rate: 1.0
 - Hit@1: 0.86
 - Hit@3: 1.0
-- Average latency ms: 0.1
+- Average latency ms: 0.16
 - No-answer accuracy: 1.0
 - Unsupported-scope accuracy: 1.0
 

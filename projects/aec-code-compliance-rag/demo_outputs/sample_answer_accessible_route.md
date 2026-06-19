@@ -12,6 +12,31 @@ Based on the synthetic demo guidance retrieved locally, review these items:
 
 This is decision-support text only; a qualified reviewer would still check the governing jurisdiction, current code version, and project-specific constraints.
 
+Source status note: retrieved evidence includes multiple document versions. Treat the answer as review input and verify the governing source set before relying on it.
+
+## Source Status
+
+```json
+{
+  "requires_review": true,
+  "warnings": [
+    "mixed_document_versions"
+  ],
+  "superseded_sources": [],
+  "document_versions": [
+    "demo",
+    "demo-v2"
+  ],
+  "jurisdictions": [
+    "synthetic-demo"
+  ],
+  "code_years": [
+    "synthetic"
+  ],
+  "note": "Source status note: retrieved evidence includes multiple document versions. Treat the answer as review input and verify the governing source set before relying on it."
+}
+```
+
 ## Citations
 
 - [C1] mock_aec_guidance.md > Accessible Routes (AEC-ACCESSIBLE-ROUTES, page 1) - score `0.803`

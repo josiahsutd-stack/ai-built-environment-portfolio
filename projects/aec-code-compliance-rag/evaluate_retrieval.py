@@ -117,6 +117,12 @@ def _write_answer_demo(assistant, output_path: Path) -> None:
         "",
         str(result["answer"]),
         "",
+        "## Source Status",
+        "",
+        "```json",
+        json.dumps(result.get("source_status", {}), indent=2),
+        "```",
+        "",
         "## Citations",
         "",
     ]
